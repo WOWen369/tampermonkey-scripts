@@ -11,6 +11,21 @@
 // ==/UserScript==
 
 (function () {
+  // --- Tăng chiều cao ô Ghi chú ---
+  const style = document.createElement('style');
+  style.textContent = `
+    .box-56px {
+      min-height: 180px !important;
+      height: auto !important;
+      overflow: visible !important;
+    }
+    .box-56px textarea.qlch-txt-area {
+      min-height: 180px !important;
+      resize: vertical !important;
+    }
+  `;
+  document.head.appendChild(style);
+
   const imageCache = {};
   const norm = (code) => (code || '').replace(/[-\s]/g, '').toUpperCase();
 
