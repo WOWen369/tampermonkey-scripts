@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         MISA Auto Search (Tampermonkey port)
+// @name         MISA Auto Search
 // @namespace    misa-autosearch
-// @version      1.0.2
+// @version      1.0.3
 // @description  Tự động paste SKU vào ô tìm kiếm MISA — port 100% logic + UI/UX từ Chrome Extension gốc (content.js v3.7 + popup.js v4.0)
-// @author       —
+// @author       VTV
 // @match        https://*.misa.vn/*
 // @match        https://*.misacdn.net/*
 // @grant        GM_setValue
@@ -433,7 +433,7 @@
     wrap.id = 'misaas-panel';
     wrap.innerHTML = `
       <div id="misaas-header">
-        <h3>🚀 Auto Search MISA <span style="opacity:.6;font-weight:400;font-size:10px">v1.0.2</span></h3>
+        <h3>🚀 Auto Search MISA <span style="opacity:.6;font-weight:400;font-size:10px">v1.0.3</span></h3>
         <div id="misaas-headerMeta">
           <span id="misaas-autoTypeBadge" class="auto-type-badge" style="display:none"></span>
           <span id="misaas-skuCount"></span>
@@ -1006,7 +1006,7 @@
 
     GM_registerMenuCommand('🚀 Mở Auto Search MISA', () => togglePanel(true));
 
-    console.log('[MISA AutoSearch] v1.0.2 sẵn sàng trên', location.href);
+    console.log('[MISA AutoSearch] v1.0.3 sẵn sàng trên', location.href);
   }
 
   if (document.readyState === 'loading') {
