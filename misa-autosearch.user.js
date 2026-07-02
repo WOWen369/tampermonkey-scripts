@@ -834,21 +834,31 @@
    *  6. PHÍM TẮT ĐỘNG (run / stop / toggle panel)
    * ============================================================ */
   const DEFAULT_KEYS = {
-    run:    { key: ' ',      ctrl: true,  shift: false, alt: false, label: 'Ctrl+Space' },
-    stop:   { key: 'Escape', ctrl: false, shift: false, alt: false, label: 'Escape' },
-    toggle: { key: 'S',      ctrl: false, shift: true,  alt: true,  label: 'Alt+Shift+S' },
+    run:    { code: 'Space',  ctrl: true,  shift: false, alt: false, label: 'Ctrl+Space' },
+    stop:   { code: 'Escape', ctrl: false, shift: false, alt: false, label: 'Escape' },
+    toggle: { code: 'KeyS',   ctrl: false, shift: true,  alt: true,  label: 'Alt+Shift+S' },
   };
   let _hotkeys   = { run: {...DEFAULT_KEYS.run}, stop: {...DEFAULT_KEYS.stop}, toggle: {...DEFAULT_KEYS.toggle} };
   let _capturing = null;
 
   async function loadHotkeys() {
-    try {
-      const saved = GM_getValue('hotkeys', null);
-      if (saved?.run)    _hotkeys.run    = saved.run;
-      if (saved?.stop)   _hotkeys.stop   = saved.stop;
-      if (saved?.toggle) _hotkeys.toggle = saved.toggle;
-    } catch(e) {}
-    syncHotkeyUI();
+  
+      try {
+  
+          const saved = GM_getValue('hotkeys', null);
+  
+          if (saved?.run?.code)
+              _hotkeys.run = saved.run;
+  
+          if (saved?.stop?.code)
+              _hotkeys.stop = saved.stop;
+  
+          if (saved?.toggle?.code)
+              _hotkeys.toggle = saved.toggle;
+  
+      } catch(e){}
+  
+      syncHotkeyUI();
   }
   function syncHotkeyUI() {
     const map = { run: 'misaas-keyRun', stop: 'misaas-keyStop', toggle: 'misaas-keyToggle' };
@@ -863,10 +873,10 @@
   function saveHotkeys() { GM_setValue('hotkeys', _hotkeys); }
 
   function matchHotkey(e, hk) {
-    return e.key === hk.key
-      && !!e.ctrlKey  === !!hk.ctrl
-      && !!e.shiftKey === !!hk.shift
-      && !!e.altKey   === !!hk.alt;
+      return e.code === hk.code
+          && e.ctrlKey === hk.ctrl
+          && e.shiftKey === hk.shift
+          && e.altKey === hk.alt;
   }
 
   // Keydown: hotkeys (run/stop chỉ có tác dụng khi panel đang mở — giống việc phải mở popup mới bấm nút trong bản gốc)
@@ -914,7 +924,7 @@
     const keyLabel = e.key === ' ' ? 'Space' : e.key;
     parts.push(keyLabel);
     const label = parts.join('+');
-    _hotkeys[_capturing] = { key: e.key, ctrl: e.ctrlKey, shift: e.shiftKey, alt: e.altKey, label };
+    _hotkeys[_capturing] = { code: e.code, ctrl: e.ctrlKey, shift: e.shiftKey, alt: e.altKey, label };
     syncHotkeyUI();
     stopCapture();
     saveHotkeys();
