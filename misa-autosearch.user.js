@@ -4,8 +4,7 @@
 // @version      1.0.0
 // @description  Tự động paste SKU vào ô tìm kiếm MISA — port 100% logic + UI/UX từ Chrome Extension gốc (content.js v3.7 + popup.js v4.0)
 // @author       VTV
-// @match        https://*.misa.vn/*
-// @match        https://*.misacdn.net/*
+// @match        https://eshopapp.misa.vn/sale/pos*
 // @grant        GM_setValue
 // @grant        GM_getValue
 // @grant        GM_deleteValue
