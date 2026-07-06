@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kho Script — WOWen369</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    --bg: #12161a;
+    --bg-raised: #191f23;
+    --line: #262f34;
+    --text: #e7ede9;
+    --text-dim: #90a29a;
+    --accent: #2ee6a6;
+    --accent-dim: #1d5e49;
+    --ok: #6fcf97;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:
+      radial-gradient(ellipse 900px 500px at 15% -10%, rgba(46,230,166,0.08), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'JetBrains Mono', monospace;
+    min-height:100vh;
+    padding:64px 20px 80px;
+  }
+
+  .wrap{ max-width:760px; margin:0 auto; }
+
+  /* ---- Header ---- */
+  header{ margin-bottom:48px; }
+
+  .brand{
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:26px;
+  }
+  .brand img, .brand .logo-mark{
+    width:38px; height:38px;
+    border-radius:9px;
+    flex-shrink:0;
+  }
+  .logo-mark{
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(155deg, var(--accent), #14806a);
+    color:#08281f;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:15px;
+  }
+  .brand-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    color:var(--text);
+  }
+
+  .eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12.5px; color:var(--accent); letter-spacing:.12em; text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .eyebrow .dot{
+    width:7px; height:7px; border-radius:50%; background:var(--accent);
+    box-shadow:0 0 0 4px rgba(245,166,35,0.15);
+  }
+  h1{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:clamp(28px, 4.5vw, 40px);
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+  }
+  h1 .prompt{ color:var(--accent); }
+  header p{
+    color:var(--text-dim);
+    font-size:14.5px;
+    line-height:1.7;
+    max-width:520px;
+    margin:0;
+  }
+
+  /* ---- Script list ---- */
+  .list{ display:flex; flex-direction:column; gap:14px; }
+
+  .card{
+    background:var(--bg-raised);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:22px 24px;
+    position:relative;
+    transition:border-color .18s ease, transform .18s ease;
+  }
+  .card:hover{
+    border-color:#3a3f4c;
+  }
+  .card::before{
+    content:"";
+    position:absolute; left:0; top:14px; bottom:14px; width:3px;
+    background:var(--accent-dim);
+    border-radius:0 3px 3px 0;
+    transition:background .18s ease;
+  }
+  .card:hover::before{ background:var(--accent); }
+
+  .card-top{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:16px; flex-wrap:wrap; margin-bottom:8px;
+  }
+  .name-row{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .name{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:18px;
+    color:var(--text);
+  }
+  .version{
+    font-size:11.5px;
+    color:var(--accent);
+    background:rgba(46,230,166,0.1);
+    border:1px solid rgba(46,230,166,0.25);
+    padding:2px 8px;
+    border-radius:5px;
+  }
+
+  .desc{
+    color:var(--text-dim);
+    font-size:13.5px;
+    line-height:1.65;
+    margin:6px 0 14px;
+  }
+
+  .meta-row{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; flex-wrap:wrap;
+  }
+  .match{
+    font-size:12px;
+    color:#7d8494;
+    display:flex; align-items:center; gap:7px;
+    overflow:hidden;
+  }
+  .match .label{ color:#565d6b; }
+  .match code{
+    background:#0f1114;
+    border:1px solid var(--line);
+    padding:3px 8px;
+    border-radius:5px;
+    color:#c7cbd4;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:280px;
+  }
+
+  .install-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--accent);
+    color:#08281f;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+    text-decoration:none;
+    padding:9px 16px;
+    border-radius:7px;
+    white-space:nowrap;
+    transition:background .15s ease, transform .1s ease;
+    flex-shrink:0;
+  }
+  .install-btn:hover{ background:#5cf0c0; }
+  .install-btn:active{ transform:scale(0.97); }
+  .install-btn svg{ width:14px; height:14px; }
+
+  /* ---- Footer note ---- */
+  footer{
+    margin-top:44px;
+    padding-top:24px;
+    border-top:1px solid var(--line);
+    color:#5c6372;
+    font-size:12px;
+    line-height:1.8;
+  }
+  footer a{ color:var(--text-dim); }
+
+  @media (max-width:520px){
+    .meta-row{ flex-direction:column; align-items:stretch; }
+    .install-btn{ justify-content:center; }
+    .match code{ max-width:100%; }
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img src="logobrandname.png" alt="MA TEAM" class="logo-mark">
+        <span class="brand-name">MA TEAM</span>
+      </div>
+      <div class="eyebrow"><span class="dot"></span>Tampermonkey · Userscripts</div>
+      <h1>Kho script <span class="prompt">$</span> WOWen369</h1>
+      <p>Chọn script bên dưới và bấm “Cài đặt” — Tampermonkey sẽ tự mở trang xác nhận, chỉ cần bấm Install trong đó là xong.</p>
+    </header>
+
+    <div class="list" id="script-list"></div>
+
+    <footer>
+      Cần cài extension <a href="https://www.tampermonkey.net/" target="_blank" rel="noopener">Tampermonkey</a> trước khi bấm nút cài đặt.<br>
+      Script được cập nhật tự động qua GitHub — Tampermonkey sẽ tự kiểm tra bản mới theo <code style="color:#7d8494">@updateURL</code>.
+    </footer>
+  </div>
+
+<script>
+  // Khai báo danh sách script tại đây — thêm script mới chỉ cần thêm 1 object vào mảng này.
+  const SCRIPTS = [
+    {
+      name: "MISA ADD IMAGE",
+      version: "1.0.0",
+      description: "Thêm cột hình ảnh vào đơn hàng trên MISA eShop.",
+      match: "eshopapp.misa.vn/sale/pos*",
+      installUrl: "https://raw.githubusercontent.com/WOWen369/tampermonkey-scripts/main/misa-addimg.user.js"
+    }
+  ];
+
+  const listEl = document.getElementById('script-list');
+
+  function renderScripts(scripts) {
+    listEl.innerHTML = scripts.map(s => `
+      <div class="card">
+        <div class="card-top">
+          <div class="name-row">
+            <span class="name">${escapeHtml(s.name)}</span>
+            <span class="version">v${escapeHtml(s.version)}</span>
+          </div>
+        </div>
+        <p class="desc">${escapeHtml(s.description)}</p>
+        <div class="meta-row">
+          <div class="match">
+            <span class="label">@match</span>
+            <code>${escapeHtml(s.match)}</code>
+          </div>
+          <a class="install-btn" href="${encodeURI(s.installUrl)}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+            Cài đặt
+          </a>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  renderScripts(SCRIPTS);
+</script>
+</body>
+</html>
