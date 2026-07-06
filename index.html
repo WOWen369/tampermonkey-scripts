@@ -242,12 +242,33 @@
   // Khai báo danh sách script tại đây — thêm script mới chỉ cần thêm 1 object vào mảng này.
   const SCRIPTS = [
     {
-      name: "MISA ADD IMAGE",
+      name: "MISA - ADD IMAGE",
       version: "1.0.0",
       description: "Thêm cột hình ảnh vào đơn hàng trên MISA eShop.",
       match: "eshopapp.misa.vn/sale/pos*",
       installUrl: "https://raw.githubusercontent.com/WOWen369/tampermonkey-scripts/main/misa-addimg.user.js"
-    }
+    };
+    {
+      name: "MISA - AUTO SEARCH",
+      version: "1.0.0",
+      description: "Copy SKU - PASTE vào ô Auto và tận hưởng cuộc sống.",
+      match: "eshopapp.misa.vn/sale/pos*",
+      installUrl: "https://raw.githubusercontent.com/WOWen369/tampermonkey-scripts/main/misa-autosearch.user.js"
+    };
+    {
+      name: "MISA - SMART SEARCH",
+      version: "1.0.0",
+      description: "Nhấn Ctrl + Space (dấu cách) để tận hưởng.",
+      match: "eshopapp.misa.vn/sale/pos*",
+      installUrl: "https://raw.githubusercontent.com/WOWen369/tampermonkey-scripts/main/misa-smart-search.user.js"
+    };
+    {
+      name: "TIKTOK - COPY ẢNH",
+      version: "1.0.0",
+      description: "Copy Ảnh - Paste và ô nhắn tin và click vào chố ĐÍNH KÈM TỆP",
+      match: "tiktok.com/*",
+      installUrl: "https://raw.githubusercontent.com/WOWen369/tampermonkey-scripts/main/tiktok-clipboard-paste.user.js"
+    };
   ];
 
   const listEl = document.getElementById('script-list');
