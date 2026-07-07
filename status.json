@@ -1,0 +1,10 @@
+{
+  "enable": true,
+  "message": "",
+  "scripts": {
+    "misa-autosearch": true,
+    "misa-addimg": true,
+    "misa-smart-search": true,
+    "tiktok-clipboard-paste": true
+  }
+}
