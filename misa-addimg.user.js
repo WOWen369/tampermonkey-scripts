@@ -2,7 +2,7 @@
 // @name         MISA ADD IMAGE - VTV
 // @namespace    misa-addimg
 // @version      1.0.0
-// @description  Thêm cột hình ảnh độc lập, giữ nguyên 100% các cột Giá, Kho, Số lượng của MISA
+// @description  Thêm cột hình ảnh vào bán hàng trên Misa
 // @author       VTV
 // @match        https://eshopapp.misa.vn/sale/pos*
 // @grant        none
