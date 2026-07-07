@@ -4,7 +4,7 @@
   "scripts": {
     "misa-autosearch": true,
     "misa-addimg": true,
-    "misa-smart-search": true,
+    "misa-smart-search": false,
     "tiktok-clipboard-paste": true
   }
 }
