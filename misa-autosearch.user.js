@@ -2,7 +2,7 @@
 // @name         MISA Auto Search - VTV
 // @namespace    misa-autosearch
 // @version      1.0.0
-// @description  Tự động paste SKU vào ô tìm kiếm MISA — port 100% logic + UI/UX từ Chrome Extension gốc (content.js v3.7 + popup.js v4.0)
+// @description  Tự động nhập SKU vào ô tìm kiếm MISA
 // @author       VTV
 // @match        https://eshopapp.misa.vn/sale/pos*
 // @grant        GM_setValue
