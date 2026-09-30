@@ -234,13 +234,21 @@
 
     <footer>
       Cần cài extension <a href="https://www.tampermonkey.net/" target="_blank" rel="noopener">Tampermonkey</a> trước khi bấm nút cài đặt.<br>
-      Hàng nóng sẽ tự động kiểm tra phiên bản mới và cập nhật tự động.
+      Hàng nóng sẽ tự động kiểm tra phiên bản mới và cập nhật tự động.<br>
+      Công cụ web (như Soạn bài viết) không cần cài gì — bấm “Mở” là dùng ngay trên trình duyệt.
     </footer>
   </div>
 
 <script>
   // Khai báo danh sách script tại đây — thêm script mới chỉ cần thêm 1 object vào mảng này.
   const SCRIPTS = [
+    {
+      type: "tool",
+      name: "SOẠN BÀI VIẾT WEB",
+      version: "1.0.0",
+      description: "Soạn bài blog Zin Zin Motor như Word: gõ chữ, chèn bảng, ảnh, video, nút mua hàng rồi lấy mã dán lên website. Có sẵn bài mẫu bên cạnh để vừa xem vừa viết.",
+      openUrl: "soan-bai-viet.html"
+    },
     {
       name: "MISA - ADD IMAGE",
       version: "1.0.0",
@@ -285,12 +293,12 @@
         <p class="desc">${escapeHtml(s.description)}</p>
         <div class="meta-row">
           <div class="match">
-            <span class="label">@match</span>
-            <code>${escapeHtml(s.match)}</code>
+            <span class="label">${s.type === 'tool' ? '@loại' : '@match'}</span>
+            <code>${escapeHtml(s.type === 'tool' ? 'công cụ web · không cần cài' : s.match)}</code>
           </div>
-          <a class="install-btn" href="${encodeURI(s.installUrl)}">
+          <a class="install-btn" href="${encodeURI(s.type === 'tool' ? s.openUrl : s.installUrl)}"${s.type === 'tool' ? ' target="_blank" rel="noopener"' : ''}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-            Cài đặt
+            ${s.type === 'tool' ? 'Mở soạn bài' : 'Cài đặt'}
           </a>
         </div>
       </div>
