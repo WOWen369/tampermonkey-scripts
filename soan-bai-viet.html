@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Soạn bài viết – Zin Zin Motor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eceef1; --chrome:#ffffff; --ink:#1d2530; --mute:#5f6b7a; --line:#d9dde3; --hover:#f1f3f6;
+  --red:#d32f2f; --red-d:#b32222; --on:#fdecec; --warn:#8a5a00; --warnbg:#fff4d6;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#14171b;--chrome:#1e2329;--ink:#e8ebef;--mute:#98a3b1;--line:#333b45;--hover:#2a313a;--on:#3a2224;--warn:#f0c674;--warnbg:#3a3220}
+}
+:root[data-theme="dark"]{--bg:#14171b;--chrome:#1e2329;--ink:#e8ebef;--mute:#98a3b1;--line:#333b45;--hover:#2a313a;--on:#3a2224;--warn:#f0c674;--warnbg:#3a3220}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:940px;margin:0 auto;padding:0 14px}
+
+/* ---------- Thanh trên ---------- */
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 0 12px}
+.top h1{margin:0;font-size:22px;line-height:1.2;font-weight:700;letter-spacing:-.01em}
+.steps{margin:2px 0 0;color:var(--mute);font-size:13.5px}
+.grow{flex:1;min-width:120px}
+.status{font-size:12.5px;color:var(--mute)}
+.status.warn{color:var(--warn);background:var(--warnbg);padding:3px 8px;border-radius:6px}
+
+/* ---------- Nút ---------- */
+.btn{border:1px solid var(--line);background:var(--chrome);border-radius:7px;padding:7px 11px;cursor:pointer;line-height:1.2;white-space:nowrap;min-height:36px}
+.btn:hover{background:var(--hover)}
+.btn:focus-visible,input:focus-visible,#ed:focus-visible{outline:2px solid var(--red);outline-offset:1px}
+.btn.on{background:var(--on);border-color:var(--red);color:var(--red)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff;font-weight:600;padding:8px 16px}
+.btn.primary:hover{background:var(--red-d)}
+.btn.danger{color:var(--red);border-color:var(--red)}
+.btn.b{font-weight:800}.btn.i{font-style:italic}
+
+/* ---------- Thanh công cụ ---------- */
+.tools{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--chrome);border:1px solid var(--line);border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.row{display:flex;flex-wrap:wrap;gap:6px 18px;padding:10px 12px}
+.grp{display:flex;flex-direction:column;gap:4px}
+.gl{font-size:12px;color:var(--mute)}
+.btns{display:flex;flex-wrap:wrap;gap:5px}
+.ctx{border-top:1px solid var(--line);padding:9px 12px;min-height:56px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:color-mix(in srgb,var(--chrome) 92%,var(--red) 4%);border-radius:0 0 10px 10px}
+.ctx[hidden]{display:flex}
+.ctx .lbl{font-weight:600;margin-right:4px}
+.ctx .hint{color:var(--mute);font-size:13.5px}
+.ctx .sep{width:1px;align-self:stretch;background:var(--line);margin:0 2px}
+.panel[hidden]{display:none}
+.panel{display:flex;align-items:center;flex-wrap:wrap;gap:6px 6px;width:100%}
+.panel input[type=text],.panel input[type=url]{border:1px solid var(--line);background:var(--chrome);border-radius:7px;padding:7px 10px;min-height:36px;min-width:0}
+.fld{display:flex;align-items:center;gap:6px}
+.fld span{font-size:13px;color:var(--mute);white-space:nowrap}
+
+/* ---------- Popover ---------- */
+#pop{position:fixed;z-index:60;background:var(--chrome);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.2);padding:14px;width:min(330px,calc(100vw - 20px))}
+#pop[hidden]{display:none}
+#pop h3{margin:0 0 10px;font-size:15px}
+#pop label{display:block;font-size:13px;color:var(--mute);margin:8px 0 3px}
+#pop input[type=text],#pop input[type=number]{width:100%;border:1px solid var(--line);background:var(--chrome);border-radius:7px;padding:8px 10px;min-height:38px}
+#pop .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#pop .chk{display:flex;gap:8px;align-items:center;margin:12px 0 2px;font-size:14px;color:var(--ink)}
+#pop .acts{display:flex;gap:8px;margin-top:14px;justify-content:flex-end;flex-wrap:wrap}
+
+/* ---------- Tờ giấy soạn thảo (giống giao diện bài đăng thật) ---------- */
+.paper-wrap{padding:18px 0 90px}
+#ed{background:#fff;color:#2b2b2b;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.12);padding:34px clamp(16px,5vw,48px);min-height:70vh;outline:none;font:16px/1.75 "Be Vietnam Pro",system-ui,Arial,sans-serif;word-wrap:break-word}
+#ed p{margin:0 0 1em}
+#ed h2{font-size:26px;line-height:1.3;margin:1.5em 0 .5em;font-weight:700;color:#1a1a1a}
+#ed h3{font-size:20px;line-height:1.35;margin:1.3em 0 .4em;font-weight:700;color:#1a1a1a}
+#ed a{color:#1565c0;text-decoration:underline}
+#ed ul,#ed ol{line-height:1.8;margin:0 0 1em;padding-left:1.5em}
+#ed p.gioi-thieu{font-size:18px;line-height:1.7;background:#f7f9fb;border-left:4px solid #d32f2f;padding:16px 20px;margin:0 0 28px}
+#ed p.ghi-chu{font-size:14px;color:#666;line-height:1.6;font-style:italic}
+#ed p.chan-bai{font-size:14px;color:#666;line-height:1.6}
+#ed p.cta{margin:18px 0}
+#ed p.cta a{display:inline-block;background:linear-gradient(180deg,#ffb74d 0%,#ff9800 45%,#f57c00 100%);color:#fff;padding:16px 34px;border-radius:50px;font-weight:700;font-size:16px;text-decoration:none;box-shadow:0 6px 14px rgba(245,124,0,.35),inset 0 1px 0 rgba(255,255,255,.5)}
+#ed p.anh{text-align:center;margin:16px 0}
+#ed p.anh img{max-width:100%;height:auto;border-radius:4px;display:inline-block;vertical-align:top;cursor:pointer}
+#ed p.anh img[data-w="40"]{width:40%}#ed p.anh img[data-w="65"]{width:65%}#ed p.anh img[data-w="100"]{width:100%}
+#ed hr.ke{border:0;height:26px;margin:22px 0;background:linear-gradient(#e0e0e0,#e0e0e0) center/100% 1px no-repeat;cursor:pointer}
+#ed .lien-he{background:#f7f9fb;border-radius:8px;padding:20px 24px;margin:20px 0}
+#ed .lien-he p{margin:0 0 8px}#ed .lien-he p:last-child{margin:0}
+#ed table{width:100%;min-width:480px;border-collapse:collapse;font-size:15px;margin:16px 0;table-layout:auto}
+#ed th,#ed td{border:1px solid #ddd;padding:10px;vertical-align:middle;text-align:left;min-width:56px}
+#ed th{background:#d32f2f;color:#fff;font-weight:700;text-align:center}
+#ed table:not([data-s="plain"]) tbody tr:nth-child(even){background:#f7f9fb}
+#ed [data-a="c"]{text-align:center}#ed [data-a="l"]{text-align:left}#ed [data-a="r"]{text-align:right}
+#ed td p,#ed th p{margin:0}
+#ed td img,#ed th img{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;border:1px solid #ccc;border-radius:4px;padding:3px;background:#fafafa;cursor:pointer;min-width:60px}
+#ed [data-ph][data-e]::before{content:attr(data-ph);color:#a3abb5;pointer-events:none}
+#ed th[data-ph][data-e]::before{color:#f3b8b8}
+#ed img[data-chon],#ed hr[data-chon]{outline:3px solid #1976d2;outline-offset:2px}
+.tablewrap{overflow-x:auto}
+#ed td[data-sel],#ed th[data-sel]{outline:2px solid #1976d2;outline-offset:-2px;background-image:linear-gradient(rgba(25,118,210,.18),rgba(25,118,210,.18))!important}
+#ed.dragging{-webkit-user-select:none;user-select:none}
+#ed.mobile{max-width:390px;margin:0 auto;overflow-x:auto}
+.sw{width:28px;min-width:28px;min-height:28px;padding:0;border-radius:50%}
+input[type=color]{width:34px;height:30px;padding:0;border:1px solid var(--line);border-radius:6px;background:var(--chrome);cursor:pointer}
+#ed .vidblk{position:relative;width:200px;max-width:100%;aspect-ratio:9/16;margin:16px auto;background:#000 center/cover;border:1px solid #ccc;cursor:pointer}
+#ed .vidblk .pl{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:rgba(211,47,47,.9)}
+#ed .vidblk .pl::after{content:"";position:absolute;left:22px;top:16px;border:12px solid transparent;border-left:20px solid #fff}
+#ed .vidblk[data-chon]{outline:3px solid #1976d2;outline-offset:2px}
+
+/* ---------- Hộp thoại lấy mã ---------- */
+.modal{position:fixed;inset:0;z-index:80;background:rgba(10,14,20,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal[hidden]{display:none}
+.card{background:var(--chrome);border-radius:12px;max-width:760px;width:100%;max-height:90vh;overflow:auto;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.card h2{margin:0 0 6px;font-size:20px}
+.card ol{margin:8px 0 12px;padding-left:20px;color:var(--ink)}
+.card li{margin:3px 0}
+.card textarea{width:100%;height:190px;border:1px solid var(--line);border-radius:8px;padding:10px;font:12.5px/1.5 ui-monospace,Consolas,monospace;background:var(--bg);color:var(--ink);resize:vertical}
+.note{background:var(--warnbg);color:var(--warn);border-radius:8px;padding:9px 12px;font-size:13.5px;margin:8px 0}
+.card .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap}
+.offscreen{position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0}
+
+#toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:#1d2530;color:#fff;padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:90;max-width:92vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){#toast{transition:none}}
+@media (max-width:640px){.top h1{font-size:19px}.row{gap:8px 12px}}
+
+/* ===== Thanh công cụ dạng biểu tượng (kiểu Word/Excel) ===== */
+.row{gap:8px 14px;align-items:stretch}
+.grp{flex-direction:column;align-items:center;gap:5px;border-right:1px solid var(--line);padding-right:14px}
+.grp:last-child{border-right:0;padding-right:0}
+.gl{font-size:11.5px;text-align:center}
+.btns{justify-content:center;align-items:center}
+.btn.ic{width:36px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.btn.ic svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn.ic .tg{font-size:17px;line-height:1}
+.btn[data-cmd=italic] .tg{font-family:Georgia,serif}
+.btn.ic.danger svg{stroke:var(--red)}
+.btn.big{width:62px;height:58px;flex-direction:column;gap:3px;padding:4px 2px}
+.btn.big .bl{font-size:11px;line-height:1.1;text-align:center;white-space:normal}
+.btn[data-tag=h2]{font-weight:700;font-size:16px}.btn[data-tag=h3]{font-weight:700;font-size:14px}
+.ctx .panel{gap:6px}
+#tip{position:fixed;z-index:95;max-width:270px;background:#1d2530;color:#fff;border-radius:7px;padding:7px 10px;font-size:12.5px;line-height:1.4;box-shadow:0 6px 18px rgba(0,0,0,.3);border-top:0}
+#tip::before{content:"";position:absolute;left:0;right:0;top:-8px;height:8px}
+#tip b{display:block;font-size:13px}#tip span{display:block;opacity:.85;margin-top:2px}
+#tip[hidden]{display:none}
+#lb{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:zoom-out;padding:16px}
+#lb[hidden]{display:none}#lb img{max-width:100%;max-height:85vh;object-fit:contain;background:#fff;border-radius:4px}
+#lb p{color:#fff;margin:0;font-size:13px}
+#ed h4{font-size:17px;line-height:1.4;margin:1.2em 0 .4em;font-weight:700;color:#1a1a1a}
+#ed [data-a="j"]{text-align:justify}
+#styleSel{min-height:36px;min-width:200px;border:1px solid var(--line);border-radius:7px;background:var(--chrome);padding:0 8px;cursor:pointer}
+.btn[data-cmd=underline] .tg{text-decoration:underline}.btn[data-cmd=strikeThrough] .tg{text-decoration:line-through}
+.grp .btns{flex:1;align-content:center}
+#ed.mobile{overflow-x:hidden}
+#ed.mobile table{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+#ed.mobile table{min-width:0;padding-bottom:2px}
+#ed.mobile td,#ed.mobile th{min-width:calc(480px / var(--n,3))}
+#ed.mobile table::-webkit-scrollbar{height:9px}
+#ed.mobile table::-webkit-scrollbar-track{background:#e6e9ed;border-radius:5px}
+#ed.mobile table::-webkit-scrollbar-thumb{background:#8d96a3;border-radius:5px}
+@supports not selector(::-webkit-scrollbar){#ed.mobile table{scrollbar-width:thin;scrollbar-color:#8d96a3 #e6e9ed}}
+#ed td img,#ed th img{aspect-ratio:auto;height:auto}
+#ed td img[data-fit="sq"],#ed th img[data-fit="sq"]{aspect-ratio:1/1}
+#ed td:has(> img){padding:3px}
+.colw{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;width:100%;padding:6px 8px;border:1px dashed var(--line);border-radius:8px}
+.colw .cl{font-size:12.5px;font-weight:700;color:var(--ink)}
+.colw .cwi{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:7px;padding:2px 6px 2px 8px;background:var(--chrome);font-size:13px}
+.colw .cwi input{width:58px;min-height:28px;border:1px solid var(--line);border-radius:5px;padding:0 4px;text-align:right;background:var(--bg);color:var(--ink);font:inherit}
+.colw .cwi.lock{border-color:#1976d2;background:#e8f1fb}
+.colw .cwi.lock input{border-color:#1976d2}
+.colw .tot{font-size:12.5px;color:var(--mute)}
+.colw .tip2{flex-basis:100%;font-size:12.5px;color:var(--mute)}
+
+/* ===== Khung bài mẫu (bên phải) ===== */
+#split{display:block}body.ref-on #split{display:flex;align-items:flex-start}
+body.ref-on .wrap{max-width:none;margin:0;flex:1 1 0;min-width:0}
+#refPane{flex:0 0 var(--refW,46vw);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;background:#fff;border-left:1px solid var(--line);box-shadow:-2px 0 10px rgba(0,0,0,.05)}
+#refPane[hidden]{display:none}
+#refHead{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--chrome);border-bottom:1px solid var(--line)}
+#refHead b{font-size:14px}#refHead span{font-size:12px;color:var(--muted,#667);flex:1}
+#refFrame{flex:1;width:100%;border:0;background:#fff}
+#refGrip{position:absolute;left:-6px;top:0;bottom:0;width:12px;cursor:col-resize;z-index:3;touch-action:none}
+#refGrip::after{content:"";position:absolute;left:5px;top:50%;height:44px;margin-top:-22px;width:3px;border-radius:2px;background:#b7bec8}
+#refGrip:hover::after,#refGrip:focus-visible::after{background:var(--red)}
+body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;cursor:col-resize}
+@media(max-width:900px){body.ref-on #split{display:block}body.ref-on #refPane{position:fixed;inset:0;width:auto;height:auto;z-index:60}#refGrip{display:none}}
+</style>
+</head>
+<body>
+<div id="split"><div class="wrap">
+  <div class="top">
+    <div>
+      <h1>Soạn bài viết</h1>
+      <p class="steps">1. Gõ nội dung vào tờ giấy bên dưới &nbsp;•&nbsp; 2. Bấm biểu tượng phía trên (rê chuột vào để xem công dụng) để thêm tiêu đề, bảng, ảnh &nbsp;•&nbsp; 3. Bấm “Lấy mã đăng web” rồi dán vào website</p>
+    </div>
+    <div class="grow"></div>
+    <span class="status" id="status" aria-live="polite"></span>
+    <button class="btn" id="btnRef" type="button" aria-pressed="false" data-tip="Bài mẫu|Mở bài chuẩn bên phải để vừa xem vừa viết">Xem bài mẫu</button>
+    <button class="btn" id="btnMob" type="button" aria-pressed="false">Xem như điện thoại</button>
+    <button class="btn" id="btnNew" type="button">Bài mới</button>
+    <button class="btn primary" id="btnExport" type="button">Lấy mã đăng web</button>
+  </div>
+
+  <div class="tools" id="tools">
+    <div class="row" id="bar">
+      <div class="grp"><span class="gl">Kiểu đoạn</span><div class="btns">
+        <button class="btn" type="button" data-act="block" data-tag="p" data-cls="">Chữ thường</button>
+        <button class="btn" type="button" data-act="block" data-tag="h2" data-cls="">Tiêu đề lớn</button>
+        <button class="btn" type="button" data-act="block" data-tag="h3" data-cls="">Tiêu đề nhỏ</button>
+        <button class="btn" type="button" data-act="block" data-tag="p" data-cls="gioi-thieu">Khung tóm tắt</button>
+        <button class="btn" type="button" data-act="block" data-tag="p" data-cls="ghi-chu">Ghi chú nhỏ</button>
+      </div></div>
+      <div class="grp"><span class="gl">Định dạng</span><div class="btns">
+        <button class="btn b" type="button" data-act="cmd" data-cmd="bold" title="Ctrl+B">B</button>
+        <button class="btn i" type="button" data-act="cmd" data-cmd="italic" title="Ctrl+I">I</button>
+        <button class="btn" type="button" data-act="cmd" data-cmd="underline">U</button>
+        <button class="btn" type="button" data-act="cmd" data-cmd="strikeThrough">S</button>
+        <button class="btn" type="button" data-act="pop" data-pop="link" title="Ctrl+K">Liên kết</button>
+        <button class="btn" type="button" data-act="cmd" data-cmd="insertUnorderedList">Danh sách</button>
+        <button class="btn" type="button" data-act="cmd" data-cmd="insertOrderedList">Danh sách số</button>
+      </div></div>
+      <div class="grp"><span class="gl">Căn đoạn</span><div class="btns">
+        <button class="btn" type="button" data-act="align" data-al="l">Trái</button>
+        <button class="btn" type="button" data-act="align" data-al="c">Giữa</button>
+        <button class="btn" type="button" data-act="align" data-al="r">Phải</button>
+        <button class="btn" type="button" data-act="align" data-al="j">Đều 2 bên</button>
+      </div></div>
+      <div class="grp"><span class="gl">Hoàn tác</span><div class="btns">
+        <button class="btn" type="button" id="btnUndo" data-act="undo" title="Ctrl+Z">Hoàn tác</button>
+        <button class="btn" type="button" id="btnRedo" data-act="redo" title="Ctrl+Y">Làm lại</button>
+      </div></div>
+      <div class="grp"><span class="gl">Chèn thêm</span><div class="btns">
+        <button class="btn" type="button" data-act="pop" data-pop="table">Bảng</button>
+        <button class="btn" type="button" data-act="pop" data-pop="img">Ảnh</button>
+        <button class="btn" type="button" data-act="pop" data-pop="video">Video</button>
+        <button class="btn" type="button" data-act="pop" data-pop="cta">Nút mua hàng</button>
+        <button class="btn" type="button" data-act="contact">Khung liên hệ</button>
+        <button class="btn" type="button" data-act="footer">Cuối bài</button>
+        <button class="btn" type="button" data-act="hr">Đường kẻ</button>
+      </div></div>
+      <div class="grp"><span class="gl">Màu chữ &nbsp;/&nbsp; nền chữ</span><div class="btns" style="align-items:center">
+        <button class="btn sw" type="button" data-act="color" data-cmd="foreColor" data-c="#d32f2f" style="background:#d32f2f" title="Chữ đỏ" aria-label="Chữ đỏ"></button>
+        <button class="btn sw" type="button" data-act="color" data-cmd="foreColor" data-c="#f57c00" style="background:#f57c00" title="Chữ cam" aria-label="Chữ cam"></button>
+        <button class="btn sw" type="button" data-act="color" data-cmd="foreColor" data-c="#1565c0" style="background:#1565c0" title="Chữ xanh dương" aria-label="Chữ xanh dương"></button>
+        <button class="btn sw" type="button" data-act="color" data-cmd="foreColor" data-c="#2e7d32" style="background:#2e7d32" title="Chữ xanh lá" aria-label="Chữ xanh lá"></button>
+        <button class="btn sw" type="button" data-act="color" data-cmd="foreColor" data-c="#2b2b2b" style="background:#2b2b2b" title="Chữ đen" aria-label="Chữ đen"></button>
+        <input type="color" id="fgIn" value="#d32f2f" title="Chọn màu chữ khác" aria-label="Chọn màu chữ khác">
+        <span class="sep" style="width:1px;height:24px;background:var(--line)"></span>
+        <button class="btn sw" type="button" data-act="color" data-cmd="hiliteColor" data-c="#fff59d" style="background:#fff59d" title="Nền vàng" aria-label="Nền chữ vàng"></button>
+        <button class="btn sw" type="button" data-act="color" data-cmd="hiliteColor" data-c="#ffe0b2" style="background:#ffe0b2" title="Nền cam nhạt" aria-label="Nền chữ cam nhạt"></button>
+        <button class="btn sw" type="button" data-act="color" data-cmd="hiliteColor" data-c="#c8e6c9" style="background:#c8e6c9" title="Nền xanh nhạt" aria-label="Nền chữ xanh nhạt"></button>
+        <input type="color" id="bgIn" value="#fff59d" title="Chọn màu nền chữ khác" aria-label="Chọn màu nền chữ khác">
+        <button class="btn" type="button" data-act="cmd" data-cmd="removeFormat" title="Bỏ màu và định dạng của đoạn đang chọn">Xóa định dạng</button>
+      </div></div>
+    </div>
+
+    <div class="ctx" id="ctx">
+      <div class="panel" data-panel="none"><span class="hint">Bấm vào một bảng hoặc một tấm ảnh trong bài, các nút chỉnh sửa (thêm/xóa dòng, cột, đổi cỡ ảnh…) sẽ hiện ở đây.</span></div>
+
+      <div class="panel" data-panel="table" hidden>
+        <span class="lbl">Đang sửa bảng</span>
+        <span class="hint" style="width:100%">Mẹo: kéo chuột qua nhiều ô để chọn (Delete để xóa chữ); kéo mép phải / mép dưới của ô để đổi độ rộng cột / chiều cao dòng.</span>
+        <div class="colw" id="colW" role="group" aria-label="Độ rộng từng cột (%)"></div>
+        <button class="btn" type="button" data-t="merge">Gộp ô đã chọn</button>
+        <button class="btn" type="button" data-t="split">Tách ô</button>
+        <button class="btn" type="button" data-t="eqCols">Chia đều cột</button>
+        <button class="btn" type="button" data-t="money" title="Gõ 2670000 → 2.670.000 ₫ (ô đang đứng hoặc các ô đã chọn)">Số tiền ₫ (ô chọn)</button>
+        <button class="btn" type="button" data-t="moneyCol" title="Định dạng số tiền cho cả cột (trừ dòng tiêu đề)">Số tiền ₫ (cả cột)</button>
+        <span class="sep"></span>
+        <button class="btn" type="button" data-t="rowBefore">+ Dòng phía trên</button>
+        <button class="btn" type="button" data-t="rowAfter">+ Dòng phía dưới</button>
+        <button class="btn" type="button" data-t="colBefore">+ Cột bên trái</button>
+        <button class="btn" type="button" data-t="colAfter">+ Cột bên phải</button>
+        <span class="sep"></span>
+        <button class="btn" type="button" data-t="rowDel">Xóa dòng này</button>
+        <button class="btn" type="button" data-t="colDel">Xóa cột này</button>
+        <span class="sep"></span>
+        <button class="btn" type="button" data-t="alignL" title="Căn chữ cả cột sang trái">Cột: căn trái</button>
+        <button class="btn" type="button" data-t="alignC" title="Căn chữ cả cột vào giữa">Cột: căn giữa</button>
+        <button class="btn" type="button" data-t="alignR">Cột: căn phải</button>
+        <button class="btn" type="button" data-t="head">Bật/tắt dòng tiêu đề đỏ</button>
+        <span class="sep"></span>
+        <button class="btn" type="button" data-t="colWider">Cột rộng hơn</button>
+        <button class="btn" type="button" data-t="colNarrower">Cột hẹp lại</button>
+        <button class="btn" type="button" data-t="rowTaller">Dòng cao hơn</button>
+        <button class="btn" type="button" data-t="rowShorter">Dòng thấp lại</button>
+        <label class="fld"><span>Màu nền ô</span><input type="color" id="cellBg" value="#ffe0b2"></label>
+        <button class="btn" type="button" data-t="bgClear">Bỏ màu ô</button>
+        <button class="btn" type="button" data-t="zebra" title="Chuyển qua lại giữa dòng xen kẽ 2 màu và 1 màu">Dòng: xen kẽ 2 màu ⇄ 1 màu</button>
+        <span class="sep"></span>
+        <button class="btn danger" type="button" data-t="tableDel">Xóa cả bảng</button>
+      </div>
+
+      <div class="panel" data-panel="image" hidden>
+        <span class="lbl">Đang chọn ảnh</span><span class="hint" id="zoomInfo"></span><span class="hint">Bấm đúp vào ảnh để xem thử phóng to.</span>
+        <label class="fld"><span>Mô tả ảnh (giúp Google tìm thấy)</span><input type="text" id="altIn" placeholder="VD: Dàn áo AB 2026 màu đen nhám" style="width:min(300px,60vw)"></label>
+        <span class="fld" id="sizeBox"><span>Cỡ:</span>
+          <button class="btn" type="button" data-w="40">Nhỏ</button>
+          <button class="btn" type="button" data-w="65">Vừa</button>
+          <button class="btn" type="button" data-w="100">Đầy khung</button>
+        </span>
+        <span class="fld" id="fitBox" style="display:none"><span>Khung ảnh:</span><button class="btn" type="button" data-fit="auto" data-tip="Theo hình|Ảnh ngang/dọc đều vừa bề rộng ô, cao theo tỉ lệ ảnh, không có dải trống">Theo hình</button><button class="btn" type="button" data-fit="sq" data-tip="Vuông (như bài mẫu)|Khung vuông cố định, ảnh không vuông sẽ có dải trống hai bên hoặc trên dưới">Vuông (như mẫu)</button></span>
+        <span class="fld" id="padBox" style="display:none;flex-wrap:wrap;gap:6px 10px;align-items:center">
+          <label class="fld" data-tip="Đệm trong khung ảnh|Khoảng trống giữa ảnh và viền khung ảnh (px). 0 = ảnh sát viền khung. Bài mẫu dùng 3"><span>Đệm trong khung (px)</span><input type="number" id="padIn" min="0" max="30" step="1" value="3" style="width:62px"></label>
+          <label class="fld" data-tip="Đệm quanh khung|Khoảng trống giữa khung ảnh và viền ô của bảng (px). Bài mẫu dùng 3"><span>Đệm quanh khung, sát mép ô (px)</span><input type="number" id="padCellIn" min="0" max="30" step="1" value="3" style="width:62px"></label>
+          <button class="btn" type="button" data-padall="1" data-tip="Áp dụng cho mọi ảnh trong bảng|Copy 2 số đệm này sang tất cả ảnh khác trong cùng bảng">Áp dụng cho mọi ảnh trong bảng</button>
+        </span>
+        <label class="fld"><span>Link ảnh trên website (nếu có)</span><input type="url" id="srcIn" placeholder="https://…" style="width:min(260px,60vw)"></label>
+        <button class="btn danger" type="button" data-t="imgDel">Xóa ảnh</button>
+      </div>
+
+      <div class="panel" data-panel="hr" hidden>
+        <span class="lbl">Đang chọn</span>
+        <button class="btn danger" type="button" data-t="objDel">Xóa mục này</button>
+      </div>
+
+      <div class="panel" data-panel="contact" hidden>
+        <span class="lbl">Đang sửa khung liên hệ</span>
+        <span class="hint">Gõ trực tiếp vào khung để đổi nội dung.</span>
+        <button class="btn danger" type="button" data-t="contactDel">Xóa khung liên hệ</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="paper-wrap">
+    <div id="ed" contenteditable="true" spellcheck="true" role="textbox" aria-multiline="true" aria-label="Nội dung bài viết"></div>
+  </div>
+</div>
+<aside id="refPane" hidden aria-label="Bài mẫu">
+  <div id="refGrip" role="separator" aria-orientation="vertical" tabindex="0" aria-label="Kéo để đổi độ rộng bài mẫu"></div>
+  <div id="refHead"><b>Bài mẫu</b><span>Chỉ để xem, không ảnh hưởng bài đang viết</span><button class="btn" id="refClose" type="button">✕ Đóng bài mẫu</button></div>
+  <iframe id="refFrame" title="Bài mẫu" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox" allow="fullscreen; autoplay; encrypted-media" allowfullscreen></iframe>
+</aside>
+</div>
+
+<div id="pop" hidden role="dialog"></div>
+<input type="file" id="file" accept="image/*" multiple hidden>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="card">
+    <h2 id="mTitle">Mã bài viết đã sẵn sàng</h2>
+    <ol>
+      <li>Bấm nút <b>Sao chép mã</b> bên dưới.</li>
+      <li>Vào trang quản trị website → <b>Bài viết → Thêm mới</b>.</li>
+      <li>Ở khung soạn bài, bấm tab <b>“Văn bản”</b> (không phải “Trực quan”), rồi bấm <b>Ctrl+V</b> để dán. Sau đó bấm <b>Đăng / Cập nhật</b>.</li>
+    </ol>
+    <div class="note" id="mCheck" hidden></div>
+    <div class="note" id="mNote" hidden></div>
+    <textarea id="pre" readonly aria-label="Xem trước mã HTML"></textarea>
+    <textarea id="full" class="offscreen" tabindex="-1" aria-hidden="true"></textarea>
+    <div class="acts">
+      <button class="btn" id="mClose" type="button">Đóng</button>
+      <button class="btn primary" id="mCopy" type="button">Sao chép mã</button>
+    </div>
+  </div>
+</div>
+<div id="toast" role="status"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ================= THÔNG TIN CỬA HÀNG (chủ web sửa ở đây) ================= */
+const SHOP = {
+  hotline: '0966 962 993',
+  zaloUrl: 'https://zalo.me/0966962993', zaloText: 'zalo.me/0966962993',
+  fanUrl: 'https://www.facebook.com/ZINZINMOTOR', fanText: 'facebook.com/ZINZINMOTOR',
+  diaChi: '58 Bình Phú, Tam Phú, Thủ Đức, TP. Hồ Chí Minh',
+  ownDomain: 'zzm.vn',
+  bienTap: 'Đội ngũ kỹ thuật Zin Zin Motor',
+  luuY: 'Giá và thông tin sản phẩm mang tính tham khảo, có thể thay đổi theo thời điểm — vui lòng liên hệ trực tiếp cửa hàng để có báo giá chính xác nhất.',
+  nguon: 'Honda Việt Nam (honda.com.vn) · … · …'
+};
+const STORE_KEY = 'zzm-soan-bai-v1';
+const IMG_MAX = 1000;          // cạnh dài tối đa của ảnh (px) để bài nhẹ
+
+/* ================= Tiện ích ================= */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const ed = $('#ed'), ctx = $('#ctx'), pop = $('#pop');
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const BLOCK = new Set(['P','H1','H2','H3','H4','UL','OL','TABLE','HR','DIV','BLOCKQUOTE']);
+let toastT;
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2800); }
+function setStatus(msg, warn){ const s=$('#status'); s.textContent=msg; s.classList.toggle('warn',!!warn); }
+const nodeLen = n => n.nodeType===3 ? n.length : n.childNodes.length;
+
+/* ================= Chọn vùng (selection) ================= */
+const inEd = n => !!n && ed.contains(n);
+function path(n){ const p=[]; while(n && n!==ed){ p.unshift(Array.prototype.indexOf.call(n.parentNode.childNodes,n)); n=n.parentNode; } return p; }
+function resolve(p){ let n=ed; for(const i of p){ n = n && n.childNodes[i]; } return n; }
+function saveSel(){
+  const s=getSelection(); if(!s.rangeCount) return null;
+  const r=s.getRangeAt(0); if(!inEd(r.startContainer)||!inEd(r.endContainer)) return null;
+  return {s:path(r.startContainer),so:r.startOffset,e:path(r.endContainer),eo:r.endOffset};
+}
+function restoreSel(o){
+  if(!o) return false;
+  const a=resolve(o.s), b=resolve(o.e); if(!a||!b) return false;
+  try{ const r=document.createRange(); r.setStart(a,Math.min(o.so,nodeLen(a))); r.setEnd(b,Math.min(o.eo,nodeLen(b)));
+       const s=getSelection(); s.removeAllRanges(); s.addRange(r); return true; }catch(e){ return false; }
+}
+function caretIn(el, end=true){
+  const r=document.createRange(); r.selectNodeContents(el); r.collapse(!end);
+  const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+function caretStart(el){ const r=document.createRange(); r.setStart(el,0); r.collapse(true); const s=getSelection(); s.removeAllRanges(); s.addRange(r); }
+function selectCell(cell){
+  const r=document.createRange(); r.selectNodeContents(cell);
+  if(cell.querySelector('img')||!cell.textContent) r.collapse(false);
+  const s=getSelection(); s.removeAllRanges(); s.addRange(r);
+}
+function curEl(){ const s=getSelection(); if(!s.rangeCount) return null; const n=s.anchorNode; if(!inEd(n)) return null; return n.nodeType===1?n:n.parentElement; }
+function topOf(n){ while(n && n.parentNode!==ed) n=n.parentNode; return n && n.nodeType===1 ? n : null; }
+let lastSel=null;
+function currentTop(){ const e=curEl(); return e && e!==ed ? topOf(e) : null; }
+function ensureFocus(){
+  try{ document.execCommand('defaultParagraphSeparator',false,'p'); document.execCommand('styleWithCSS',false,false); }catch(e){}
+  ed.focus({preventScroll:true});
+  const s=getSelection();
+  if(!(s.rangeCount && inEd(s.anchorNode))){
+    if(!restoreSel(lastSel)){ const last=ed.lastElementChild; if(last) caretIn(last,true); }
+  }
+}
+
+/* ================= Giữ luôn có đoạn trống ở cuối & bọc chữ mồ côi ================= */
+function ensureTail(){
+  if(!ed.firstChild){ const p=document.createElement('p'); p.setAttribute('data-ph','Bắt đầu viết bài tại đây…'); ed.appendChild(p); return; }
+  const last=ed.lastElementChild;
+  if(!last || last.tagName!=='P' || last.className){ const p=document.createElement('p'); p.innerHTML='<br>'; ed.appendChild(p); }
+}
+function normalizeRoot(){
+  let changed=false; const s=getSelection(); let ref=null;
+  if(s.rangeCount){ const r=s.getRangeAt(0); ref=[r.startContainer,r.startOffset,r.endContainer,r.endOffset]; }
+  Array.from(ed.childNodes).forEach(n=>{
+    if(n.nodeType===3){
+      if(!n.nodeValue.trim()){ n.remove(); return; }
+      const p=document.createElement('p'); ed.replaceChild(p,n); p.appendChild(n); changed=true;
+    } else if(n.nodeType===1){
+      if(n.tagName==='DIV' && !n.classList.contains('lien-he') && !n.classList.contains('vidblk')){ const p=document.createElement('p'); while(n.firstChild) p.appendChild(n.firstChild); ed.replaceChild(p,n); changed=true; }
+      else if(!BLOCK.has(n.tagName) && n.tagName!=='DIV'){ const p=document.createElement('p'); ed.replaceChild(p,n); p.appendChild(n); changed=true; }
+    } else n.remove();
+  });
+  if(changed && ref && ed.contains(ref[0]) && ed.contains(ref[2])){
+    try{ const r=document.createRange(); r.setStart(ref[0],Math.min(ref[1],nodeLen(ref[0]))); r.setEnd(ref[2],Math.min(ref[3],nodeLen(ref[2]))); s.removeAllRanges(); s.addRange(r); }catch(e){}
+  }
+  return changed;
+}
+
+/* ================= Lịch sử Hoàn tác / Làm lại ================= */
+const H = {stack:[], i:-1, max:60};
+let commitT;
+const cleanInner = () => ed.innerHTML.replace(/ style="--n:\d+;?"/g,'').replace(/ data-chon=""/g,'').replace(/ data-sel=""/g,'');
+function commit(){
+  clearTimeout(commitT);
+  const html=cleanInner(), cur=H.stack[H.i];
+  if(cur && cur.html===html){ cur.sel=saveSel(); updateUndo(); return; }
+  H.stack=H.stack.slice(0,H.i+1);
+  H.stack.push({html, sel:saveSel()});
+  if(H.stack.length>H.max) H.stack.shift();
+  H.i=H.stack.length-1;
+  scheduleSave(); updateUndo();
+}
+function later(){ clearTimeout(commitT); commitT=setTimeout(commit,500); }
+function applyState(st){
+  ed.innerHTML=st.html; restoreSel(st.sel); ensureTail(); syncPh(); refreshCtx(); scheduleSave(); updateUndo();
+}
+function undo(){ commit(); if(H.i>0){ H.i--; applyState(H.stack[H.i]); } }
+function redo(){ commit(); if(H.i<H.stack.length-1){ H.i++; applyState(H.stack[H.i]); } }
+function updateUndo(){ $('#btnUndo').disabled = H.i<=0; $('#btnRedo').disabled = H.i>=H.stack.length-1; }
+function syncPh(){ $$('[data-ph]',ed).forEach(x=>{ const empty=!x.textContent.replace(/[\u200b\u00a0]/g,'').trim() && !x.querySelector('img'); if(empty) x.setAttribute('data-e',''); else x.removeAttribute('data-e'); }); }
+function mobTables(){ $$('table',ed).forEach(t=>{ if(ed.classList.contains('mobile')){ const n=Math.max(1,...Array.from(t.rows).map(r=>r.cells.length)); t.style.setProperty('--n',n); } else if(t.style.getPropertyValue('--n')){ t.style.removeProperty('--n'); if(!t.getAttribute('style')) t.removeAttribute('style'); } }); }
+function done(){ mobTables(); normalizeRoot(); ensureTail(); syncPh(); refreshCtx(); commit(); }
+
+/* ================= Lưu nháp tự động ================= */
+let saveT;
+function scheduleSave(){ clearTimeout(saveT); saveT=setTimeout(saveNow,700); }
+function saveNow(){
+  try{
+    localStorage.setItem(STORE_KEY, cleanInner());
+    const d=new Date(); setStatus('Đã tự lưu lúc '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'));
+  }catch(e){ setStatus('Chưa lưu nháp được (bài quá nặng). Hãy “Lấy mã” sớm nhé.', true); }
+}
+
+/* ================= Mẫu bài mở đầu ================= */
+function tableHTML(rows, cols, header, heads, plain){
+  let h='<table'+(plain?' data-s="plain"':'')+'>';
+  if(header){ h+='<thead><tr>'; for(let c=0;c<cols;c++) h+=`<th data-ph="${esc((heads&&heads[c])||'Tiêu đề')}"></th>`; h+='</tr></thead>'; }
+  h+='<tbody>';
+  for(let r=0;r<rows;r++){ h+='<tr>'; for(let c=0;c<cols;c++) h+='<td data-ph="…"></td>'; h+='</tr>'; }
+  return h+'</tbody></table>';
+}
+function contactHTML(){
+  return `<div class="lien-he">
+<p><strong>Hotline:</strong> ${esc(SHOP.hotline)}</p>
+<p><strong>Zalo tư vấn nhanh:</strong> <a href="${esc(SHOP.zaloUrl)}">${esc(SHOP.zaloText)}</a> — gửi ảnh xe / chi tiết cần thay để được báo giá ngay</p>
+<p><strong>Fanpage:</strong> <a href="${esc(SHOP.fanUrl)}">${esc(SHOP.fanText)}</a></p>
+<p><strong>Địa chỉ:</strong> ${esc(SHOP.diaChi)}</p></div>`;
+}
+function footerHTML(){
+  const d=new Date(), m=String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+  return `<hr class="ke" contenteditable="false">
+<p class="chan-bai"><strong>Biên tập:</strong> ${esc(SHOP.bienTap)}<br><strong>Cập nhật lần cuối:</strong> ${m} — ${esc(SHOP.luuY)}</p>
+<p class="chan-bai"><strong>Nguồn tham khảo:</strong> ${esc(SHOP.nguon)}</p>`;
+}
+function insertFooter(){
+  ensureFocus();
+  const old=$('p.chan-bai',ed);
+  if(old){ const pv=old.previousElementSibling; if(pv && pv.tagName==='HR') pv.remove(); }
+  $$('p.chan-bai',ed).forEach(x=>x.remove());
+  const t=document.createElement('template'); t.innerHTML=footerHTML();
+  const last=ed.lastElementChild, ref=(last && isBlankP(last))?last:null;
+  let lastNode=null;
+  Array.from(t.content.children).forEach(n=>{ ed.insertBefore(n,ref); lastNode=n; });
+  done(); ensureTail();
+  if(lastNode){ try{ caretIn(lastNode,false); }catch(e){} lastNode.scrollIntoView({block:'center',behavior:'smooth'}); }
+  refreshCtx(); toast('Đã thêm ghi chú cuối bài. Bấm vào chữ … để điền nguồn tham khảo.');
+}
+function starterHTML(){
+  return `<p class="gioi-thieu" data-ph="Khung tóm tắt: nói ngắn gọn trong 2–3 câu bài này về sản phẩm gì, giá bao nhiêu, cam kết gì."></p>
+<h2 data-ph="Tiêu đề phần 1 (bấm vào đây và gõ)"></h2>
+<p data-ph="Gõ nội dung vào đây. Bấm Enter để xuống đoạn mới."></p>
+<hr class="ke" contenteditable="false">
+<h2 data-ph="Bảng giá (bấm vào đây và gõ)"></h2>
+${tableHTML(3,3,true,['Sản phẩm','Giá','Ghi chú'])}
+<hr class="ke" contenteditable="false">
+<h2 data-ph="Câu hỏi thường gặp"></h2>
+<h3 data-ph="Câu hỏi 1"></h3>
+<p data-ph="Trả lời câu hỏi 1"></p>
+<hr class="ke" contenteditable="false">
+<h2 data-ph="Mua ở đâu uy tín?"></h2>
+<p data-ph="Giới thiệu ngắn về cửa hàng."></p>
+${contactHTML()}
+${footerHTML()}`;
+}
+
+/* ================= Chèn khối ================= */
+const isBlankP = b => b && b.tagName==='P' && !b.className && !b.textContent.trim() && !b.querySelector('img');
+function insertBlock(node){
+  ensureFocus();
+  const b=currentTop();
+  if(isBlankP(b)) ed.replaceChild(node,b);
+  else if(b) ed.insertBefore(node,b.nextSibling);
+  else ed.appendChild(node);
+  return node;
+}
+function focusInto(node){
+  if(!node) return;
+  const t=node.tagName;
+  if(t==='TABLE'){ const c=node.querySelector('th,td'); if(c) selectCell(c); }
+  else if(t==='HR'){ const n=node.nextElementSibling; if(n) caretIn(n,false); }
+  else if(node.classList && node.classList.contains('vidblk')){ const n=node.nextElementSibling; if(n) caretIn(n,false); }
+  else if(node.classList && node.classList.contains('lien-he')){ const p=node.querySelector('p'); if(p) caretIn(p,true); }
+  else caretIn(node,true);
+}
+function htmlToNode(html){ const t=document.createElement('template'); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function addBlockHTML(html){ const n=insertBlock(htmlToNode(html)); done(); focusInto(n); refreshCtx(); return n; }
+
+/* ---- Đổi kiểu chữ ---- */
+const keyOf = b => b ? b.tagName.toLowerCase()+'.'+(b.className||'') : '';
+function setBlock(tag, cls){
+  ensureFocus();
+  const b=currentTop();
+  if(!b){ return; }
+  if(b.tagName==='UL'||b.tagName==='OL'){
+    if(tag==='p' && !cls){ document.execCommand(b.tagName==='UL'?'insertUnorderedList':'insertOrderedList'); done(); return; }
+    toast('Bấm vào một đoạn văn thường (không phải danh sách) rồi chọn kiểu chữ.'); return;
+  }
+  if(!['P','H2','H3','H1','H4'].includes(b.tagName) || b.classList.contains('anh') || b.classList.contains('cta')){
+    toast('Hãy bấm vào một đoạn chữ trong bài rồi chọn kiểu chữ.'); return;
+  }
+  const same = keyOf(b)===tag+'.'+cls;
+  if(same){ tag='p'; cls=''; }
+  const saved=saveSel();
+  const n=document.createElement(tag);
+  if(cls) n.className=cls;
+  while(b.firstChild) n.appendChild(b.firstChild);
+  ed.replaceChild(n,b);
+  restoreSel(saved); if(!saved) caretIn(n,true);
+  done();
+}
+
+/* ================= Bảng ================= */
+let lastCell=null;
+function cellInfo(){
+  const e=curEl(); const cell = e && e.closest('td,th');
+  if(cell && inEd(cell)) return {cell,row:cell.parentElement,table:cell.closest('table')};
+  if(lastCell && inEd(lastCell)) return {cell:lastCell,row:lastCell.parentElement,table:lastCell.closest('table')};
+  return null;
+}
+const mkCell = tag => { const c=document.createElement(tag); c.setAttribute('data-ph', tag==='th'?'Tiêu đề':'…'); return c; };
+function tableOp(op){
+  const info=cellInfo(); if(!info){ toast('Bấm vào một ô của bảng trước.'); return; }
+  const {cell,row,table}=info; const idx=cell.cellIndex;
+  let focus=null;
+  if(op==='rowBefore'||op==='rowAfter'){
+    const tr=document.createElement('tr'); const n=row.children.length;
+    for(let i=0;i<n;i++){ const c=mkCell('td'); const a=row.children[i].getAttribute('data-a'); if(a) c.setAttribute('data-a',a); tr.appendChild(c); }
+    if(row.parentElement.tagName==='THEAD'){
+      let tb=table.tBodies[0]; if(!tb){ tb=document.createElement('tbody'); table.appendChild(tb); }
+      tb.insertBefore(tr,tb.firstChild);
+    } else row.parentElement.insertBefore(tr, op==='rowBefore'?row:row.nextSibling);
+    focus=tr.children[Math.min(idx,n-1)];
+  }
+  else if(op==='colBefore'||op==='colAfter'){
+    let f=null;
+    Array.from(table.rows).forEach(tr=>{
+      const ref=tr.children[idx]; const c=mkCell(tr.parentElement.tagName==='THEAD'?'th':'td');
+      tr.insertBefore(c, op==='colBefore'?ref:(ref?ref.nextSibling:null));
+      if(tr===row) f=c;
+    });
+    focus=f;
+  }
+  else if(op==='rowDel'){
+    if(table.rows.length<=1){ tableOp('tableDel'); return; }
+    const rows=Array.from(table.rows); const i=rows.indexOf(row);
+    const parent=row.parentElement; row.remove();
+    if(parent.tagName==='THEAD' && !parent.children.length) parent.remove();
+    const nr=Array.from(table.rows); const t=nr[Math.min(i,nr.length-1)];
+    focus=t.children[Math.min(idx,t.children.length-1)];
+  }
+  else if(op==='colDel'){
+    if(row.children.length<=1){ tableOp('tableDel'); return; }
+    Array.from(table.rows).forEach(tr=>{ if(tr.children[idx]) tr.children[idx].remove(); });
+    focus=row.children[Math.min(idx,row.children.length-1)];
+  }
+  else if(op==='alignL'||op==='alignC'||op==='alignR'){
+    const tg=selCells.filter(x=>table.contains(x)); (tg.length>1?tg:[cell]).forEach(c=>c.setAttribute('data-a', op==='alignC'?'c':op==='alignR'?'r':'l'));
+    focus=cell;
+  }
+  else if(op==='head'){
+    const first=table.rows[0];
+    if(table.tHead){
+      const th=table.tHead; const tr=th.rows[0];
+      Array.from(tr.children).forEach(c=>{ const d=mkCell('td'); while(c.firstChild) d.appendChild(c.firstChild); const a=c.getAttribute('data-a'); if(a) d.setAttribute('data-a',a); tr.replaceChild(d,c); });
+      let tb=table.tBodies[0]; if(!tb){ tb=document.createElement('tbody'); table.appendChild(tb); }
+      tb.insertBefore(tr,tb.firstChild); th.remove();
+    } else if(first){
+      const th=document.createElement('thead'); const tr=first;
+      Array.from(tr.children).forEach(c=>{ const d=mkCell('th'); while(c.firstChild) d.appendChild(c.firstChild); const a=c.getAttribute('data-a'); if(a) d.setAttribute('data-a',a); tr.replaceChild(d,c); });
+      table.insertBefore(th,table.firstChild); th.appendChild(tr);
+    }
+    focus=table.querySelector('th,td');
+  }
+  else if(op==='colWider'||op==='colNarrower'){
+    const base=getColWidths(table), col=cell._p?cell._p[1]:idx;
+    if(base.length<2){ toast('Bảng chỉ có 1 cột nên không cần chỉnh độ rộng.'); return; }
+    applyColWidth(table,col,base[col]+(op==='colWider'?5:-5),base);
+    focus=cell;
+  }
+  else if(op==='rowTaller'||op==='rowShorter'){
+    const cur=parseFloat(cell.getAttribute('data-rh'))||10, v=Math.max(4,Math.min(40,cur+(op==='rowTaller'?4:-4)));
+    Array.from(row.children).forEach(c=>{ if(!c.querySelector('img')){ c.setAttribute('data-rh',v); c.style.padding=v+'px 10px'; } });
+    focus=cell;
+  }
+  else if(op==='zebra'){ if(table.getAttribute('data-s')==='plain') table.removeAttribute('data-s'); else table.setAttribute('data-s','plain'); focus=cell; }
+  else if(op==='bgClear'){ (selCells.length>1?selCells:[cell]).forEach(x=>{ x.removeAttribute('data-bg'); x.style.background=''; }); focus=cell; }
+  else if(op==='merge'){
+    const cs=selCells.filter(x=>table.contains(x));
+    if(cs.length<2){ toast('Kéo chuột qua nhiều ô để chọn trước, rồi bấm Gộp ô.'); return; }
+    const g=tmap(table), R=rectOf(cs,g), tgt=g[R.r1][R.c1], seen=new Set([tgt]);
+    const has=x=>x.textContent.trim()||x.querySelector('img');
+    for(let r=R.r1;r<=R.r2;r++) for(let c=R.c1;c<=R.c2;c++){ const x=g[r][c];
+      if(x && !seen.has(x)){ seen.add(x); if(has(x)){ if(has(tgt)) tgt.appendChild(document.createElement('br')); while(x.firstChild) tgt.appendChild(x.firstChild); } x.remove(); } }
+    if(R.r2>R.r1) tgt.setAttribute('rowspan',R.r2-R.r1+1); else tgt.removeAttribute('rowspan');
+    if(R.c2>R.c1) tgt.setAttribute('colspan',R.c2-R.c1+1); else tgt.removeAttribute('colspan');
+    clearSel(); focus=tgt;
+  }
+  else if(op==='split'){
+    if(cell.rowSpan<2 && cell.colSpan<2){ toast('Ô này chưa bị gộp nên không cần tách.'); return; }
+    const g=tmap(table), r=cell._p[0], c=cell._p[1], rs=cell.rowSpan, cs=cell.colSpan, tg=cell.tagName==='TH'?'th':'td';
+    cell.removeAttribute('rowspan'); cell.removeAttribute('colspan');
+    for(let i=r;i<r+rs;i++) for(let j=c;j<c+cs;j++){
+      if(i===r && j===c) continue;
+      const nc=mkCell(tg); nc._p=[i,j]; const tr=table.rows[i];
+      const ref=Array.from(tr.cells).find(x=>x._p && x._p[1]>j); tr.insertBefore(nc,ref||null);
+    }
+    focus=cell;
+  }
+  else if(op==='eqCols'){
+    const g=tmap(table), n=Math.max(...g.map(r=>r?r.length:0)), v=(100/n).toFixed(1);
+    g.forEach(r=>r && r.forEach(x=>{ if(x && x.colSpan===1){ x.setAttribute('data-cw',v); x.style.width=v+'%'; } }));
+    focus=cell;
+  }
+  else if(op==='money'||op==='moneyCol'){
+    let list;
+    if(op==='moneyCol'){ const g=tmap(table), col=cell._p[1]; list=g.map(r=>r && r[col]).filter((x,i,a)=>x && x.tagName==='TD' && a.indexOf(x)===i); }
+    else list=(selCells.length>1?selCells:[cell]).filter(x=>x.tagName==='TD');
+    let n=0;
+    list.forEach(x=>{
+      if(x.querySelector('img')) return;
+      const t=x.textContent.trim(); if(!t || !/^[\d.,\s₫đĐdDvVnN]*$/.test(t)) return;
+      const dg=t.replace(/\D/g,''); if(!dg) return;
+      x.textContent=dg.replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' ₫'; x.setAttribute('data-a','c'); n++;
+    });
+    toast(n?'Đã định dạng '+n+' ô thành số tiền.':'Chưa có ô nào chứa số để định dạng (VD: 2670000).');
+    focus=cell;
+  }
+  else if(op==='tableDel'){
+    const prev=table.previousElementSibling, next=table.nextElementSibling; table.remove(); lastCell=null;
+    ensureTail(); done(); const t=next||prev; if(t) caretIn(t, !next); return;
+  }
+  done(); if(focus){ selectCell(focus); refreshCtx(); }
+}
+/* ---- Chia độ rộng cột: chỉnh 1 cột thì các cột còn lại cùng bù/trừ đều, tổng luôn 100% ---- */
+const COL_MIN=6;
+function getColWidths(table){
+  const g=tmap(table), n=Math.max(...g.map(r=>r?r.length:0)), tw=table.offsetWidth||1, w=[];
+  for(let c=0;c<n;c++){
+    let x=null; for(const r of g){ if(r && r[c] && r[c].colSpan===1){ x=r[c]; break; } }
+    w.push(x ? (parseFloat(x.getAttribute('data-cw')) || x.offsetWidth/tw*100) : 100/n);
+  }
+  const sum=w.reduce((a,b)=>a+b,0)||1; return w.map(v=>v*100/sum);
+}
+function applyColWidth(table,col,v,base){
+  const w=(base||getColWidths(table)).slice(), n=w.length; if(n<2||col<0||col>=n) return;
+  const oth=w.map((_,i)=>i).filter(i=>i!==col);
+  v=Math.max(COL_MIN,Math.min(100-COL_MIN*(n-1),v));
+  let rem=-(v-w[col]); w[col]=v;               // rem>0: chia thêm cho các cột kia; rem<0: lấy bớt của các cột kia
+  for(let k=0;k<12 && Math.abs(rem)>0.01;k++){
+    const act=oth.filter(i=>rem>0 || w[i]>COL_MIN+0.001); if(!act.length) break;
+    const share=rem/act.length;
+    act.forEach(i=>{ const nv=Math.max(COL_MIN,w[i]+share); rem-=(nv-w[i]); w[i]=nv; });
+  }
+  const g=tmap(table);
+  g.forEach(r=>r && r.forEach((x,c)=>{ if(x && x.colSpan===1){ const t=w[c].toFixed(1); x.setAttribute('data-cw',t); x.style.width=t+'%'; } }));
+}
+/* ---- Nhập số % cho từng cột ---- */
+let colWT=null, colWLock=[], colWSig='';
+const sigOf=w=>w.map(v=>v.toFixed(1)).join(',');
+function writeColWidths(table,w){
+  tmap(table).forEach(r=>r && r.forEach((x,c)=>{ if(x && x.colSpan===1 && c<w.length){ const t=w[c].toFixed(1); x.setAttribute('data-cw',t); x.style.width=t+'%'; } }));
+}
+function renderColW(force){
+  const box=$('#colW'); if(!box) return;
+  if(!force && document.activeElement && box.contains(document.activeElement)) return;
+  const info=cellInfo(); if(!info) return;
+  const t=info.table, w=getColWidths(t), n=w.length, sg=sigOf(w);
+  if(colWT!==t || sg!==colWSig){ colWLock=[]; colWT=t; colWSig=sg; }
+  if(n<2){ box.innerHTML='<span class="hint">Bảng chỉ có 1 cột nên không cần chỉnh độ rộng.</span>'; return; }
+  const head=tmap(t)[0]||[];
+  let ins=$$('input[data-c]',box);
+  if(ins.length!==n){
+    box.innerHTML='<span class="cl">Độ rộng cột (%)</span>'+w.map((v,i)=>{
+      const h=((head[i]&&head[i].textContent)||'').trim().slice(0,30);
+      return `<label class="cwi" title="${esc(h||'Cột '+(i+1))}"><span>Cột ${i+1}</span><input type="number" inputmode="decimal" step="0.1" min="${COL_MIN}" max="${100-COL_MIN*(n-1)}" data-c="${i}" aria-label="Độ rộng cột ${i+1} (phần trăm)">%</label>`;
+    }).join('')+'<span class="tot"></span><span class="tip2">Gõ số vào cột muốn đổi rồi nhấn Enter. Cột đã gõ (viền xanh) được giữ nguyên, các cột còn lại tự chia đều phần còn lại, tổng luôn 100%.</span>';
+    ins=$$('input[data-c]',box);
+  }
+  ins.forEach((inp,i)=>{ inp.value=w[i].toFixed(1).replace(/\.0$/,''); inp.closest('.cwi').classList.toggle('lock',colWLock.includes(i)); });
+  $('.tot',box).textContent='Tổng: '+w.reduce((a,b)=>a+b,0).toFixed(0)+'%';
+}
+function applyColInput(inp){
+  const info=cellInfo(); if(!info) return;
+  const t=info.table, w=getColWidths(t), n=w.length, c=+inp.dataset.c;
+  if(colWT!==t || sigOf(w)!==colWSig){ colWLock=[]; colWT=t; }
+  let v=parseFloat(String(inp.value).replace(',','.'));
+  if(!isFinite(v)){ renderColW(true); return; }
+  colWLock=colWLock.filter(i=>i!==c && i<n); colWLock.push(c); while(colWLock.length>n-1) colWLock.shift();
+  const others=colWLock.filter(i=>i!==c), unl=n-colWLock.length;
+  const sumO=others.reduce((a,i)=>a+w[i],0), vmax=100-sumO-COL_MIN*unl; let msg='';
+  if(v>vmax){ v=Math.max(COL_MIN,vmax); msg='Các cột còn lại cần ít nhất '+COL_MIN+'% mỗi cột, nên cột '+(c+1)+' tối đa '+v.toFixed(1).replace(/\.0$/,'')+'%.'; }
+  if(v<COL_MIN){ v=COL_MIN; msg='Mỗi cột tối thiểu '+COL_MIN+'%.'; }
+  const nw=w.slice(); nw[c]=v; const share=(100-sumO-v)/unl;
+  for(let i=0;i<n;i++) if(!colWLock.includes(i)) nw[i]=share;
+  writeColWidths(t,nw); colWSig=sigOf(getColWidths(t)); colWT=t;
+  done(); renderColW(true); if(msg) toast(msg);
+}
+$('#colW').addEventListener('change',e=>{ const inp=e.target.closest('input[data-c]'); if(inp) applyColInput(inp); });
+$('#colW').addEventListener('keydown',e=>{ if(e.key==='Escape'){ renderColW(true); ed.focus(); } });
+function tabMove(dir){
+  const info=cellInfo(); if(!info) return false;
+  const cells=Array.from(info.table.querySelectorAll('th,td')); let i=cells.indexOf(info.cell)+dir;
+  if(i<0) return true;
+  if(i>=cells.length){
+    const lastRow=info.table.rows[info.table.rows.length-1]; const c=lastRow.lastElementChild;
+    lastCell=c; const before=cellInfo(); tableOp('rowAfter'); return true;
+  }
+  selectCell(cells[i]); return true;
+}
+
+/* ================= Ảnh ================= */
+function fileToDataUrl(file){
+  return new Promise((ok,fail)=>{
+    const url=URL.createObjectURL(file); const img=new Image();
+    img.onload=()=>{
+      let {naturalWidth:w, naturalHeight:h}=img; const k=Math.min(1, IMG_MAX/Math.max(w,h));
+      w=Math.round(w*k); h=Math.round(h*k);
+      const cv=document.createElement('canvas'); cv.width=w; cv.height=h; const g=cv.getContext('2d');
+      const png = file.type==='image/png' && file.size<250000;
+      if(!png){ g.fillStyle='#fff'; g.fillRect(0,0,w,h); }
+      g.drawImage(img,0,0,w,h); URL.revokeObjectURL(url);
+      ok(png? cv.toDataURL('image/png') : cv.toDataURL('image/jpeg',0.82));
+    };
+    img.onerror=()=>{ URL.revokeObjectURL(url); fail(new Error('Không đọc được ảnh')); };
+    img.src=url;
+  });
+}
+function cleanCell(c){ if(c.textContent.replace(/[\u200b\u00a0\s]/g,'')) return; c.querySelectorAll('br').forEach(x=>x.remove()); c.querySelectorAll('p').forEach(x=>{ if(!x.textContent.trim() && !x.querySelector('img')) x.remove(); }); }
+function altFromName(n){ return n.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim(); }
+async function insertImages(files){
+  const list=Array.from(files).filter(f=>f.type.startsWith('image/'));
+  if(!list.length){ toast('Chỉ chèn được file ảnh (JPG, PNG, WebP).'); return; }
+  toast('Đang xử lý ảnh…');
+  let last=null;
+  for(const f of list){
+    try{
+      const src=await fileToDataUrl(f);
+      ensureFocus();
+      const e=curEl(); const cell=e && e.closest('td,th');
+      const img=document.createElement('img'); img.src=src; img.alt=altFromName(f.name);
+      if(cell){ cell.insertBefore(img,cell.firstChild); cleanCell(cell); cell.setAttribute('data-a','c'); }
+      else { const p=document.createElement('p'); p.className='anh'; img.setAttribute('data-w','65'); p.appendChild(img); insertBlock(p); }
+      last=img; done();
+    }catch(err){ toast('Không mở được ảnh “'+f.name+'”. Thử ảnh JPG hoặc PNG nhé.'); }
+  }
+  if(last){ const lc=last.closest('td,th'); if(lc){ caretStart(lc); refreshCtx(); } else selectNode(last); toast('Đã thêm ảnh. Bạn có thể điền “Mô tả ảnh” ở thanh công cụ.'); }
+}
+function insertImageUrls(urls){
+  ensureFocus();
+  const e0=curEl(), cell=e0 && e0.closest('td,th'); let last=null;
+  const rows=cell?Array.from(cell.closest('table').rows):null, r0=cell?cell.parentElement.rowIndex:0, ci=cell?cell.cellIndex:0;
+  urls.forEach((u,i)=>{
+    const img=document.createElement('img'); img.src=u; img.alt=altFromName(u.split('?')[0].split('/').pop()||'');
+    img.onerror=()=>toast('Link ảnh này không mở được: '+u);
+    const c=cell && rows[r0+i] && rows[r0+i].cells[ci];
+    if(c){ c.querySelectorAll('img').forEach(x=>x.remove()); c.insertBefore(img,c.firstChild); cleanCell(c); c.setAttribute('data-a','c'); }
+    else { const p=document.createElement('p'); p.className='anh'; img.setAttribute('data-w','65'); p.appendChild(img); insertBlock(p); }
+    last=img;
+  });
+  done(); if(cell && inEd(cell)){ caretStart(cell); refreshCtx(); } else if(last) selectNode(last);
+  if(last){ toast('Đã thêm '+urls.length+' ảnh. Bạn có thể sửa “Mô tả ảnh” ở thanh công cụ.'); }
+}
+function applyColor(cmd,c){
+  ensureFocus();
+  try{ document.execCommand('styleWithCSS',false,true); document.execCommand(cmd,false,c); }catch(x){}
+  try{ document.execCommand('styleWithCSS',false,false); }catch(x){}
+  done();
+}
+function selectNode(n){ const r=document.createRange(); r.selectNode(n); const s=getSelection(); s.removeAllRanges(); s.addRange(r); refreshCtx(); }
+
+/* ================= Thanh công cụ ngữ cảnh ================= */
+function selectedObj(){
+  const s=getSelection(); if(!s.rangeCount) return null;
+  const r=s.getRangeAt(0); if(!inEd(r.commonAncestorContainer)) return null;
+  if(r.startContainer===r.endContainer && r.startContainer.nodeType===1 && r.endOffset-r.startOffset===1){
+    const n=r.startContainer.childNodes[r.startOffset];
+    if(n && (n.tagName==='IMG' || n.tagName==='HR' || (n.classList && n.classList.contains('vidblk')))) return n;
+  }
+  return null;
+}
+let curObj=null;
+function showPanel(name){ $$('.panel',ctx).forEach(p=>p.hidden = p.dataset.panel!==name); }
+function refreshCtx(){
+  if(document.activeElement && (ctx.contains(document.activeElement)||pop.contains(document.activeElement))) return;
+  $$('[data-chon]',ed).forEach(x=>x.removeAttribute('data-chon'));
+  const obj=selectedObj(); curObj=obj;
+  if(obj){ obj.setAttribute('data-chon',''); }
+  const e=curEl();
+  if(obj && obj.tagName==='IMG'){
+    showPanel('image');
+    $('#altIn').value=obj.getAttribute('alt')||'';
+    const isData=(obj.getAttribute('src')||'').startsWith('data:');
+    $('#zoomInfo').textContent = isData ? '⚠ Ảnh nhúng: khách CHƯA bấm phóng to được — dán link ảnh vào ô bên dưới để bật.' : '✓ Khách bấm vào ảnh sẽ được phóng to.';
+    $('#srcIn').value = isData ? '' : (obj.getAttribute('src')||'');
+    const inCell=!!obj.closest('td,th');
+    $('#sizeBox').style.display = inCell ? 'none':''; $('#fitBox').style.display = inCell ? '':'none';
+    $('#padBox').style.display = inCell ? 'inline-flex':'none';
+    if(inCell){ const pc=obj.closest('td,th'); $('#padIn').value=obj.getAttribute('data-pad')||'3'; $('#padCellIn').value=pc.getAttribute('data-pc')||'3'; }
+    $$('#fitBox .btn').forEach(b=>b.classList.toggle('on',(b.dataset.fit==='sq')===(obj.getAttribute('data-fit')==='sq')));
+    $$('#sizeBox .btn').forEach(b=>b.classList.toggle('on', b.dataset.w===(obj.getAttribute('data-w')||'65')));
+  }
+  else if(obj){ showPanel('hr'); }
+  else if(e && e.closest('td,th') && inEd(e)){ lastCell=e.closest('td,th'); showPanel('table'); renderColW(); }
+  else if(e && e.closest('.lien-he')){ showPanel('contact'); }
+  else showPanel('none');
+  updateActive();
+}
+function updateActive(){
+  syncUI();
+  const b=currentTop(); const key=keyOf(b);
+  $$('#bar [data-act="block"]').forEach(btn=>btn.classList.toggle('on', key===btn.dataset.tag+'.'+btn.dataset.cls));
+  ['bold','italic','underline','strikeThrough'].forEach(c=>{ const btn=$(`#bar [data-cmd="${c}"]`); let on=false; try{ on=document.queryCommandState(c);}catch(e){} btn.classList.toggle('on',on); });
+  const ul=$('#bar [data-cmd="insertUnorderedList"]'), ol=$('#bar [data-cmd="insertOrderedList"]');
+  ul.classList.toggle('on', !!b && b.tagName==='UL'); ol.classList.toggle('on', !!b && b.tagName==='OL');
+}
+function removeObj(){
+  const o=curObj; if(!o) return;
+  let victim=o;
+  if(o.tagName==='IMG'){ const p=o.parentElement; if(p && p.classList.contains('anh') && p.querySelectorAll('img').length===1) victim=p; }
+  const next=victim.nextElementSibling||victim.previousElementSibling; victim.remove(); curObj=null;
+  ensureTail(); done(); if(next) caretIn(next,false);
+}
+
+/* ================= Popover (Bảng / Liên kết / Nút mua hàng) ================= */
+let popKind=null, popSel=null, popLink=null;
+const POPS = {
+  img: () => `<h3>Chèn ảnh</h3>
+    <label for="pUrls">Dán link ảnh trên website của bạn (mỗi dòng 1 link)</label>
+    <textarea id="pUrls" rows="4" style="width:100%;border:1px solid var(--line);background:var(--chrome);border-radius:7px;padding:8px 10px" placeholder="https://zzm.vn/wp-content/uploads/…jpg"></textarea>
+    <p style="font-size:12.5px;color:var(--mute);margin:6px 0 0">Đang đứng trong ô của bảng và dán nhiều link: ảnh sẽ điền lần lượt xuống các dòng bên dưới.</p>
+    <div class="acts"><button class="btn" type="button" data-p="file" title="Ảnh nhúng trực tiếp sẽ làm bài nặng hơn">Chọn ảnh từ máy…</button><button class="btn" type="button" data-p="close">Hủy</button><button class="btn primary" type="button" data-p="ok">Chèn ảnh</button></div>`,
+  video: () => `<h3>Chèn video YouTube</h3>
+    <label for="pUrl">Link video YouTube</label><input id="pUrl" type="text" placeholder="https://www.youtube.com/shorts/…">
+    <label for="pText">Mô tả video (giúp Google hiểu)</label><input id="pText" type="text" placeholder="VD: Video 12 chi tiết dàn áo AB 2026">
+    <div class="acts"><button class="btn" type="button" data-p="close">Hủy</button><button class="btn primary" type="button" data-p="ok">Chèn video</button></div>`,
+  table: () => `<h3>Chèn bảng</h3>
+    <div class="two"><div><label for="pRows">Số dòng</label><input id="pRows" type="number" min="1" max="30" value="4"></div>
+    <div><label for="pCols">Số cột</label><input id="pCols" type="number" min="1" max="10" value="3"></div></div>
+    <label class="chk"><input id="pHead" type="checkbox" checked> Dòng đầu là tiêu đề (nền đỏ, chữ trắng)</label>
+    <label class="chk"><input id="pSz" name="pS" type="radio" checked> Dòng xen kẽ 2 màu (trắng / xám nhạt)</label>
+    <label class="chk"><input id="pSp" name="pS" type="radio"> Tất cả dòng 1 màu (trắng)</label>
+    <div class="acts"><button class="btn" type="button" data-p="close">Hủy</button><button class="btn primary" type="button" data-p="ok">Chèn bảng</button></div>`,
+  link: () => {
+    const sel=getSelection().toString().trim();
+    const a = popLink;
+    return `<h3>${a?'Sửa liên kết':'Chèn liên kết'}</h3>
+    <label for="pText">Chữ hiển thị</label><input id="pText" type="text" value="${esc(a?a.textContent:sel)}" placeholder="VD: Xem bảng giá">
+    <label for="pUrl">Đường dẫn (link)</label><input id="pUrl" type="text" value="${esc(a?a.getAttribute('href'):'')}" placeholder="https://zzm.vn/…">
+    <div class="acts">${a?'<button class="btn danger" type="button" data-p="unlink">Gỡ liên kết</button>':''}<button class="btn" type="button" data-p="close">Hủy</button><button class="btn primary" type="button" data-p="ok">Áp dụng</button></div>`;
+  },
+  cta: () => `<h3>Nút mua hàng</h3>
+    <label for="pText">Chữ trên nút</label><input id="pText" type="text" value="Xem bảng giá mới nhất và đặt mua ngay">
+    <label for="pUrl">Nút dẫn tới link nào?</label><input id="pUrl" type="text" placeholder="https://zzm.vn/san-pham/…">
+    <div class="acts"><button class="btn" type="button" data-p="close">Hủy</button><button class="btn primary" type="button" data-p="ok">Chèn nút</button></div>`
+};
+function fixUrl(u){
+  u=(u||'').trim(); if(!u) return '';
+  if(/^(https?:|mailto:|tel:|\/|#)/i.test(u)) return u;
+  if(/^\+?\d[\d\s.]{7,}$/.test(u)) return 'tel:'+u.replace(/[^\d+]/g,'');
+  return 'https://'+u;
+}
+function openPop(kind, anchorBtn){
+  popSel=saveSel()||lastSel; popKind=kind; popLink=null;
+  if(kind==='link'){ const e=curEl(); popLink = e && e.closest('a') && inEd(e) ? e.closest('a') : null; }
+  pop.innerHTML=POPS[kind](); pop.hidden=false;
+  const r=anchorBtn.getBoundingClientRect();
+  const w=pop.offsetWidth; pop.style.left=Math.max(8,Math.min(r.left,innerWidth-w-8))+'px'; pop.style.top=(r.bottom+6)+'px';
+  const first=$('input',pop); if(first){ first.focus(); if(first.type==='text') first.select(); }
+}
+function closePop(){ pop.hidden=true; popKind=null; }
+pop.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closePop(); ed.focus(); } else if(e.key==='Enter' && e.target.tagName==='INPUT'){ e.preventDefault(); $('[data-p="ok"]',pop).click(); } });
+pop.addEventListener('click',e=>{
+  const b=e.target.closest('[data-p]'); if(!b) return;
+  const act=b.dataset.p;
+  if(act==='close'){ closePop(); ed.focus(); restoreSel(popSel); return; }
+  if(act==='file'){ closePop(); lastSel=popSel||lastSel; $('#file').click(); return; }
+  ed.focus(); restoreSel(popSel);
+  if(popKind==='img' && act==='ok'){
+    const urls=$('#pUrls').value.split(/\s+/).map(fixUrl).filter(u=>/^(https?:)?\/\//i.test(u)||u.startsWith('/'));
+    if(!urls.length){ toast('Chưa có link ảnh hợp lệ (phải bắt đầu bằng https://).'); $('#pUrls').focus(); return; }
+    closePop(); insertImageUrls(urls); return;
+  }
+  if(popKind==='video' && act==='ok'){
+    const m=($('#pUrl').value||'').match(/(?:youtu\.be\/|shorts\/|v=|embed\/)([\w-]{11})/);
+    if(!m){ toast('Chưa nhận ra link YouTube. Hãy dán lại link của video.'); $('#pUrl').focus(); return; }
+    const id=m[1], alt=$('#pText').value.trim()||'Video';
+    closePop(); addBlockHTML(`<div class="vidblk" contenteditable="false" data-vid="${id}" data-alt="${esc(alt)}" style="background-image:url(https://img.youtube.com/vi/${id}/hqdefault.jpg)"><span class="pl"></span></div>`); return;
+  }
+  if(popKind==='table' && act==='ok'){
+    const r=Math.max(1,Math.min(30,parseInt($('#pRows').value)||3)), c=Math.max(1,Math.min(10,parseInt($('#pCols').value)||3)), h=$('#pHead').checked, plain=$('#pSp').checked;
+    closePop(); addBlockHTML(tableHTML(h?Math.max(1,r-1):r, c, h, null, plain)); return;
+  }
+  if(popKind==='cta' && act==='ok'){
+    const url=fixUrl($('#pUrl').value), text=$('#pText').value.trim()||'Xem chi tiết';
+    if(!url){ toast('Bạn chưa nhập link cho nút.'); $('#pUrl').focus(); return; }
+    closePop(); addBlockHTML(`<p class="cta"><a href="${esc(url)}">${esc(text)}</a></p>`); return;
+  }
+  if(popKind==='link'){
+    if(act==='unlink'){ const a=popLink; closePop(); if(a && inEd(a)){ a.replaceWith(...a.childNodes); done(); } return; }
+    const url=fixUrl($('#pUrl').value); let text=$('#pText').value.trim();
+    if(!url){ toast('Bạn chưa nhập đường dẫn.'); $('#pUrl').focus(); return; }
+    const a=popLink; closePop();
+    if(a && inEd(a)){ a.setAttribute('href',url); if(text) a.textContent=text; done(); }
+    else { ensureFocus(); document.execCommand('insertHTML',false,`<a href="${esc(url)}">${esc(text||url)}</a>`); done(); }
+  }
+});
+document.addEventListener('mousedown',e=>{ if(!pop.hidden && !pop.contains(e.target) && !e.target.closest('[data-act="pop"]')) closePop(); });
+
+/* ================= Sự kiện thanh công cụ ================= */
+$('#tools').addEventListener('mousedown',e=>{ if(!e.target.closest('input,select,textarea')) e.preventDefault(); });
+$('#bar').addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]'); if(!b) return;
+  const act=b.dataset.act;
+  if(act==='block') setBlock(b.dataset.tag,b.dataset.cls);
+  else if(act==='cmd'){ ensureFocus(); document.execCommand(b.dataset.cmd); done(); }
+  else if(act==='pop') openPop(b.dataset.pop,b);
+  else if(act==='image'){ lastSel=saveSel()||lastSel; $('#file').click(); }
+  else if(act==='contact') addBlockHTML(contactHTML());
+  else if(act==='footer') insertFooter();
+  else if(act==='hr'){ const n=htmlToNode('<hr class="ke" contenteditable="false">'); insertBlock(n); done(); focusInto(n); }
+  else if(act==='color') applyColor(b.dataset.cmd,b.dataset.c);
+  else if(act==='align') alignBlock(b.dataset.al);
+  else if(act==='undo') undo();
+  else if(act==='redo') redo();
+});
+$('#file').addEventListener('change',e=>{ const f=e.target.files; if(f&&f.length) insertImages(f); e.target.value=''; });
+ctx.addEventListener('mousedown',e=>{ if(!e.target.closest('input,select,textarea')){ e.preventDefault(); const a=document.activeElement;
+  if(a && a.matches && a.matches('#colW input')){ const i=cellInfo(), v=parseFloat(String(a.value).replace(',','.'));
+    if(i && isFinite(v) && Math.abs(v-getColWidths(i.table)[+a.dataset.c])>0.05) applyColInput(a); } } });
+ctx.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.t){
+    const t=b.dataset.t;
+    if(t==='imgDel'||t==='objDel') removeObj();
+    else if(t==='contactDel'){ const c=curEl() && curEl().closest('.lien-he'); if(c){ const nx=c.nextElementSibling||c.previousElementSibling; c.remove(); ensureTail(); done(); if(nx) caretIn(nx,false); } }
+    else{ tableOp(t); renderColW(true); }
+  } else if(b.dataset.padall && curObj && curObj.tagName==='IMG'){
+    const t=curObj.closest('table'); if(!t) return;
+    const fr=clampPad($('#padIn').value), ce=clampPad($('#padCellIn').value); let n=0;
+    $$('img',t).forEach(im=>{ if(im.closest('td,th')){ setImgPad(im,fr,ce); n++; } });
+    done(); toast('Đã áp dụng đệm cho '+n+' ảnh trong bảng.');
+  } else if(b.dataset.fit && curObj && curObj.tagName==='IMG'){
+    if(b.dataset.fit==='sq') curObj.setAttribute('data-fit','sq'); else curObj.removeAttribute('data-fit'); done(); selectNode(curObj);
+  } else if(b.dataset.w && curObj && curObj.tagName==='IMG'){
+    curObj.setAttribute('data-w',b.dataset.w); done(); selectNode(curObj);
+  }
+});
+const clampPad=v=>{ v=parseInt(v,10); return isFinite(v)?Math.max(0,Math.min(30,v)):null; };
+function setImgPad(img,fr,ce){
+  const cell=img.closest('td,th'); if(!cell) return;
+  if(fr!==null){ img.setAttribute('data-pad',fr); img.style.padding=fr+'px'; }
+  if(ce!==null){ cell.setAttribute('data-pc',ce); cell.style.padding=ce+'px'; }
+}
+['padIn','padCellIn'].forEach(id=>$('#'+id).addEventListener('input',()=>{
+  if(!curObj || curObj.tagName!=='IMG' || !curObj.closest('td,th')) return;
+  setImgPad(curObj, clampPad($('#padIn').value), clampPad($('#padCellIn').value)); later();
+}));
+['padIn','padCellIn'].forEach(id=>$('#'+id).addEventListener('change',e=>{ const v=clampPad(e.target.value); e.target.value=v===null?'3':v; if(curObj && curObj.tagName==='IMG'){ setImgPad(curObj,clampPad($('#padIn').value),clampPad($('#padCellIn').value)); commit(); } }));
+$('#altIn').addEventListener('input',e=>{ if(curObj && curObj.tagName==='IMG'){ curObj.setAttribute('alt',e.target.value); later(); } });
+$('#srcIn').addEventListener('change',e=>{
+  const v=e.target.value.trim(); if(!curObj || curObj.tagName!=='IMG' || !v) return;
+  if(!/^(https?:)?\/\//i.test(v) && !v.startsWith('/')){ toast('Link ảnh phải bắt đầu bằng https://'); return; }
+  curObj.setAttribute('src',v); done(); toast('Đã dùng link ảnh trên website.');
+});
+
+$('#fgIn').addEventListener('input',e=>applyColor('foreColor',e.target.value));
+$('#bgIn').addEventListener('input',e=>applyColor('hiliteColor',e.target.value));
+$('#cellBg').addEventListener('input',e=>{ const i=cellInfo(); if(!i) return; (selCells.length>1?selCells:[i.cell]).forEach(x=>{ x.setAttribute('data-bg',e.target.value); x.style.background=e.target.value; }); later(); });
+
+/* ================= Chọn nhiều ô, kéo mép bảng ================= */
+let selCells=[], drag=null, rz=null;
+function tmap(t){
+  const g=[];
+  Array.from(t.rows).forEach((tr,r)=>{ g[r]=g[r]||[]; let c=0;
+    Array.from(tr.cells).forEach(cell=>{ while(g[r][c]) c++;
+      for(let i=0;i<cell.rowSpan;i++) for(let j=0;j<cell.colSpan;j++) (g[r+i]=g[r+i]||[])[c+j]=cell;
+      cell._p=[r,c]; c+=cell.colSpan; }); });
+  return g;
+}
+function rectOf(cs,g){
+  let r1=1e9,c1=1e9,r2=-1,c2=-1;
+  const ext=x=>{ r1=Math.min(r1,x._p[0]); c1=Math.min(c1,x._p[1]); r2=Math.max(r2,x._p[0]+x.rowSpan-1); c2=Math.max(c2,x._p[1]+x.colSpan-1); };
+  cs.forEach(ext);
+  for(let k=0;k<6;k++){ const o=[r1,c1,r2,c2].join();
+    for(let r=r1;r<=r2;r++) for(let c=c1;c<=c2;c++){ const x=g[r]&&g[r][c]; if(x) ext(x); }
+    if(o===[r1,c1,r2,c2].join()) break; }
+  return {r1,c1,r2,c2};
+}
+function clearSel(){ selCells.forEach(x=>x.removeAttribute('data-sel')); selCells=[]; }
+function selectRect(a,b){
+  const g=tmap(a.closest('table')), R=rectOf([a,b],g), seen=new Set(); clearSel();
+  for(let r=R.r1;r<=R.r2;r++) for(let c=R.c1;c<=R.c2;c++){ const x=g[r][c]; if(x && !seen.has(x)){ seen.add(x); x.setAttribute('data-sel',''); selCells.push(x); } }
+}
+const nearR=(r,e)=>r.right-e.clientX<6 && r.right-e.clientX>=-2, nearB=(r,e)=>r.bottom-e.clientY<5 && r.bottom-e.clientY>=-2;
+ed.addEventListener('mousedown',e=>{
+  if(e.button!==0) return;
+  const cell=e.target.closest && e.target.closest('td,th');
+  if(!cell || !inEd(cell)){ clearSel(); return; }
+  const r=cell.getBoundingClientRect(), t=cell.closest('table'), col=nearR(r,e), row=!col && nearB(r,e);
+  clearSel();
+  if(col||row){
+    e.preventDefault();
+    const base=col?getColWidths(t):null, ci=col?cell._p[1]+cell.colSpan-1:0;
+    rz={cell,t,type:col?'c':'r',x:e.clientX,y:e.clientY,base,ci,
+        v0: col ? base[ci] : (parseFloat(cell.getAttribute('data-rh'))||10)};
+    return;
+  }
+  drag={cell,t};
+});
+document.addEventListener('mousemove',e=>{
+  if(rz){
+    if(rz.type==='c'){
+      applyColWidth(rz.t,rz.ci,rz.v0+(e.clientX-rz.x)/rz.t.offsetWidth*100,rz.base);
+    } else {
+      const v=Math.round(Math.max(4,Math.min(60,rz.v0+(e.clientY-rz.y)/2)));
+      Array.from(rz.cell.parentElement.children).forEach(x=>{ if(!x.querySelector('img')){ x.setAttribute('data-rh',v); x.style.padding=v+'px 10px'; } });
+    }
+    return;
+  }
+  if(drag && e.buttons===1){
+    const c=e.target.closest && e.target.closest('td,th');
+    if(c && c!==drag.cell && c.closest('table')===drag.t){
+      if(!ed.classList.contains('dragging')){ ed.classList.add('dragging'); getSelection().removeAllRanges(); }
+      selectRect(drag.cell,c);
+    }
+    return;
+  }
+  if(!e.buttons){
+    const c=e.target.closest && e.target.closest('td,th'); let cur='';
+    if(c && inEd(c)){ const r=c.getBoundingClientRect(); cur = nearR(r,e)?'col-resize':nearB(r,e)?'row-resize':''; }
+    ed.style.cursor=cur;
+  }
+});
+document.addEventListener('mouseup',()=>{
+  if(rz){ rz=null; done(); renderColW(true); }
+  if(drag){ const d=drag; drag=null; ed.classList.remove('dragging'); if(selCells.length>1){ caretIn(d.cell,true); refreshCtx(); } }
+});
+ed.addEventListener('keydown',e=>{
+  if((e.key==='Delete'||e.key==='Backspace') && selCells.length>1){ e.preventDefault(); selCells.forEach(x=>{ x.innerHTML=''; }); done(); }
+  else if(selCells.length && !e.ctrlKey && !e.metaKey && e.key.length===1) clearSel();
+});
+$('#btnMob').addEventListener('click',ev=>{
+  const b=ev.currentTarget, on=ed.classList.toggle('mobile'); mobTables();
+  b.classList.toggle('on',on); b.setAttribute('aria-pressed',on); b.textContent=on?'Thoát xem điện thoại':'Xem như điện thoại';
+});
+
+/* ================= Kiểm tra bài trước khi lấy mã ================= */
+function checkPost(){
+  syncPh(); const L=[];
+  if(!$$('h2',ed).some(x=>x.textContent.trim())) L.push('Bài chưa có “Tiêu đề lớn” nào (Google cần tiêu đề để hiểu bài).');
+  const gt=$('p.gioi-thieu',ed); if(!gt || !gt.textContent.trim()) L.push('Chưa có khung tóm tắt ở đầu bài.');
+  const na=$$('img',ed).filter(x=>!(x.getAttribute('alt')||'').trim()).length; if(na) L.push(na+' ảnh chưa có “Mô tả ảnh” (bấm vào ảnh để điền).');
+  const nd=$$('img',ed).filter(x=>(x.getAttribute('src')||'').startsWith('data:')).length; if(nd) L.push(nd+' ảnh đang nhúng trực tiếp nên khách KHÔNG bấm phóng to được. Hãy tải ảnh lên Thư viện media, rồi bấm vào ảnh và dán link vào ô “Link ảnh trên website”.');
+  const cb=$$('p.chan-bai',ed); if(!cb.length) L.push('Chưa có ghi chú cuối bài (bấm nút “Cuối bài” trên thanh công cụ).'); else if(cb.some(x=>/…|\.\.\./.test(x.textContent))) L.push('Ghi chú cuối bài còn dấu “…” chưa điền (nguồn tham khảo hoặc ngày).');
+  const ne=$$('td,th',ed).filter(x=>!x.textContent.trim() && !x.querySelector('img')).length; if(ne) L.push(ne+' ô trong bảng đang trống.');
+  const nph=$$('[data-e]',ed).filter(x=>!x.closest('td,th')).length; if(nph) L.push(nph+' mục gợi ý chưa điền (sẽ không xuất ra web).');
+  const words=(ed.textContent.trim().match(/\S+/g)||[]).length; if(words<300) L.push('Bài mới khoảng '+words+' từ, hơi ngắn (nên từ 300 từ trở lên).');
+  return L;
+}
+
+/* ================= Sự kiện trong tờ soạn thảo ================= */
+document.addEventListener('selectionchange',()=>{
+  const s=getSelection();
+  if(s.rangeCount && inEd(s.anchorNode)){ lastSel=saveSel(); refreshCtx(); }
+});
+ed.addEventListener('input',()=>{ normalizeRoot(); ensureTail(); syncPh(); later(); });
+ed.addEventListener('beforeinput',e=>{
+  if(e.inputType==='historyUndo'){ e.preventDefault(); undo(); }
+  else if(e.inputType==='historyRedo'){ e.preventDefault(); redo(); }
+});
+ed.addEventListener('click',e=>{
+  const t=e.target;
+  if(t.closest('.vidblk')){ selectNode(t.closest('.vidblk')); }
+  else if(t.tagName==='IMG'||(t.tagName==='HR'&&t.classList.contains('ke'))){ selectNode(t); }
+  else if(t.closest('a')){ e.preventDefault(); }
+});
+ed.addEventListener('keydown',e=>{
+  if(e.key==='Tab' && !e.ctrlKey && !e.altKey){ const e2=curEl(); if(e2 && e2.closest('td,th')){ e.preventDefault(); tabMove(e.shiftKey?-1:1); return; } }
+  if(e.key==='Enter' && !e.shiftKey){
+    const s=getSelection(); if(!s.rangeCount) return;
+    const b=currentTop();
+    if(b && b.tagName==='P' && b.className){
+      const r=s.getRangeAt(0);
+      const tail=r.cloneRange(); tail.selectNodeContents(b); tail.setStart(r.endContainer,r.endOffset);
+      const atEnd = r.collapsed && tail.toString()==='' ;
+      if(atEnd || b.classList.contains('anh') || b.classList.contains('cta')){
+        e.preventDefault();
+        const p=document.createElement('p'); p.innerHTML='<br>';
+        ed.insertBefore(p,b.nextSibling);
+        if(!b.textContent.trim() && !b.querySelector('img')) b.remove();
+        caretIn(p,false); done(); return;
+      }
+    }
+  }
+  if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){
+    e.preventDefault(); const btn=$('#bar [data-pop="link"]'); openPop('link',btn);
+  }
+});
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey) && !e.altKey && !e.target.closest('input,textarea')){
+    const k=e.key.toLowerCase();
+    if(k==='z'){ e.preventDefault(); e.shiftKey?redo():undo(); }
+    else if(k==='y'){ e.preventDefault(); redo(); }
+  }
+  if(e.key==='Escape' && !$('#modal').hidden) closeModal();
+});
+ed.addEventListener('dragover',e=>{ if(e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files')) e.preventDefault(); });
+ed.addEventListener('drop',e=>{
+  const files=e.dataTransfer && e.dataTransfer.files; if(!files || !files.length) return;
+  e.preventDefault();
+  try{ const r=document.caretRangeFromPoint ? document.caretRangeFromPoint(e.clientX,e.clientY) : null;
+       if(r && inEd(r.startContainer)){ const s=getSelection(); s.removeAllRanges(); s.addRange(r); } }catch(x){}
+  insertImages(files);
+});
+
+/* ---- Dán: làm sạch định dạng thừa từ Word / Google Docs / web ---- */
+function walk(n){ let o=''; n.childNodes.forEach(c=>{ if(c.nodeType===3) o+=esc(c.nodeValue.replace(/[\r\n\t]+/g,' ')); else if(c.nodeType===1) o+=cleanEl(c); }); return o; }
+function cleanEl(c){
+  const t=c.tagName, st=(c.getAttribute('style')||'').toLowerCase(), inner=()=>walk(c);
+  switch(t){
+    case 'SCRIPT': case 'STYLE': case 'META': case 'TITLE': case 'HEAD': case 'LINK': return '';
+    case 'B': case 'STRONG': return /font-weight:\s*(normal|400)/.test(st) ? inner() : `<strong>${inner()}</strong>`;
+    case 'I': case 'EM': return `<em>${inner()}</em>`;
+    case 'H1': case 'H2': return `<h2>${inner()}</h2>`;
+    case 'H4': return `<h4>${inner()}</h4>`;
+    case 'H3': case 'H5': case 'H6': return `<h3>${inner()}</h3>`;
+    case 'P': return `<p>${inner()}</p>`;
+    case 'DIV': case 'SECTION': case 'ARTICLE': case 'BLOCKQUOTE': case 'FIGURE':
+      return c.querySelector('p,div,ul,ol,table,h1,h2,h3,h4,h5,h6') ? inner() : `<p>${inner()}</p>`;
+    case 'UL': return `<ul>${inner()}</ul>`;
+    case 'OL': return `<ol>${inner()}</ol>`;
+    case 'LI': return `<li>${inner()}</li>`;
+    case 'BR': return '<br>';
+    case 'A': { const h=c.getAttribute('href')||''; return /^(https?:|mailto:|tel:)/i.test(h) ? `<a href="${esc(h)}">${inner()}</a>` : inner(); }
+    case 'IMG': { const s=c.getAttribute('src')||''; return /^(https?:|data:image)/i.test(s) ? `<img src="${esc(s)}" alt="${esc(c.getAttribute('alt')||'')}">` : ''; }
+    case 'TABLE': return `<table>${inner()}</table>`;
+    case 'THEAD': return `<thead>${inner()}</thead>`; case 'TBODY': return `<tbody>${inner()}</tbody>`;
+    case 'TR': return `<tr>${inner()}</tr>`; case 'TH': return `<th>${inner()}</th>`; case 'TD': return `<td>${inner()}</td>`;
+    case 'SPAN': { let i=inner(); if(/font-weight:\s*(bold|[6-9]00)/.test(st)) i=`<strong>${i}</strong>`; if(/font-style:\s*italic/.test(st)) i=`<em>${i}</em>`; return i; }
+    default: return inner();
+  }
+}
+ed.addEventListener('paste',e=>{
+  const cd=e.clipboardData; if(!cd) return;
+  const imgs=Array.from(cd.files||[]).filter(f=>f.type.startsWith('image/'));
+  e.preventDefault();
+  if(imgs.length){ insertImages(imgs); return; }
+  const html=cd.getData('text/html');
+  ensureFocus();
+  if(html){
+    const doc=new DOMParser().parseFromString(html,'text/html');
+    let out=walk(doc.body).replace(/(<\/?(?:p|h2|h3|ul|ol|li|table|thead|tbody|tr|td|th)[^>]*>)\s+(?=<)/g,'$1');
+    document.execCommand('insertHTML',false,out);
+  } else {
+    const text=cd.getData('text/plain').replace(/\r/g,'');
+    const lines=text.split(/\n+/).filter(x=>x.length);
+    if(lines.length>1) document.execCommand('insertHTML',false,lines.map(l=>`<p>${esc(l)}</p>`).join(''));
+    else document.execCommand('insertText',false,text);
+  }
+  done();
+});
+
+/* ================= Xuất mã HTML (style nội tuyến giống bài hiện tại) ================= */
+const S = {
+  intro:'font-size: 18px; line-height: 1.7; background: #f7f9fb; border-left: 4px solid #d32f2f; padding: 16px 20px; margin: 0 0 28px 0;',
+  note:'font-size: 14px; color: #666; font-style: italic;',
+  foot:'font-size: 14px; color: #666;',
+  hr:'margin: 36px 0; border: none; border-top: 1px solid #e0e0e0;',
+  list:'line-height: 1.8;',
+  wrap:'width: 100%; max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; margin: 16px 0; display: block;',
+  table:'width: 100% !important; min-width: 480px; border-collapse: collapse !important; font-size: 15px; table-layout: auto !important;',
+  th:'border: 1px solid #ddd; padding: 10px; text-align: center; background: #d32f2f; color: #fff; font-weight: bold;',
+  td:'border: 1px solid #ddd; padding: 10px; vertical-align: middle;',
+  tdImg:'border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;',
+  contact:'background: #f7f9fb; border-radius: 8px; padding: 20px 24px; margin: 20px 0;',
+  cta:'display: inline-block; background: #d32f2f; color: #fff; padding: 12px 22px; border-radius: 6px; font-weight: bold; text-decoration: none;',
+  imgBox:'width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;',
+  imgCell:'display: block; width: 100%; aspect-ratio: 1/1; object-fit: contain; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; background: #fafafa;',
+};
+const isEmptyEl = x => !x.textContent.replace(/\u00a0/g,' ').trim() && !x.querySelector('img');
+function swap(x,tag){ const n=document.createElement(tag); while(x.firstChild) n.appendChild(x.firstChild); x.replaceWith(n); return n; }
+function buildHtml(){
+  const c=ed.cloneNode(true); c.removeAttribute('id');
+  const vids=[]; $$('.vidblk',c).forEach(x=>{ const p=document.createElement('p'); p.textContent='@@VID'+vids.length+'@@'; vids.push([x.getAttribute('data-vid')||'', x.getAttribute('data-alt')||'Video']); x.replaceWith(p); });
+  $$('b',c).forEach(x=>swap(x,'strong')); $$('i',c).forEach(x=>swap(x,'em')); $$('strike',c).forEach(x=>swap(x,'s'));
+  $$('div:not(.lien-he)',c).forEach(x=>swap(x,'p'));
+  $$('span,font',c).forEach(x=>{
+    const ok=v=>/^(#[0-9a-f]{3,8}|rgba?\([\d\s.,%]+\))$/i.test(v||''); let st='';
+    if(ok(x.style.color)) st+='color: '+x.style.color+'; ';
+    if(ok(x.style.backgroundColor)) st+='background-color: '+x.style.backgroundColor+'; ';
+    if(x.tagName==='SPAN' && st) x.setAttribute('style',st.trim()); else x.replaceWith(...x.childNodes);
+  });
+  $$('p,h2,h3,li',c).forEach(x=>{ if(!x.closest('td,th') && isEmptyEl(x)) x.remove(); });
+  $$('ul,ol',c).forEach(x=>{ if(!x.querySelector('li')) x.remove(); });
+  $$('.lien-he',c).forEach(x=>{ if(isEmptyEl(x)) x.remove(); });
+  $$('td,th',c).forEach(x=>{ if(x.querySelector('img') && !x.textContent.trim()){ x.querySelectorAll('br').forEach(b=>b.remove()); x.querySelectorAll('p').forEach(p=>{ if(!p.textContent.trim() && !p.querySelector('img')) p.remove(); }); } });
+
+  Array.from(c.querySelectorAll('*')).forEach(x=>{
+    const cls=x.className||'', align=x.getAttribute('data-a'), w=x.getAttribute('data-w'), fit=x.getAttribute('data-fit'), tag=x.tagName;
+    const keep={};['href','src','alt','rowspan','colspan'].forEach(a=>{ if(x.hasAttribute(a)) keep[a]=x.getAttribute(a); });
+    if(tag==='SPAN' && x.hasAttribute('style')) keep.style=x.getAttribute('style');
+    const dpad=parseInt(x.getAttribute('data-pad'),10), dpc=parseInt(x.getAttribute('data-pc'),10), ds=x.getAttribute('data-s'), bg=x.getAttribute('data-bg'), cw=parseFloat(x.getAttribute('data-cw')), rh=parseFloat(x.getAttribute('data-rh'));
+    const bgs=(bg&&/^#[0-9a-f]{3,8}$/i.test(bg)?' background: '+bg+';':'')+(isFinite(cw)?' width: '+cw+'%;':'')+(isFinite(rh)?' padding: '+rh+'px 10px;':'');
+    Array.from(x.attributes).forEach(a=>x.removeAttribute(a.name));
+    Object.entries(keep).forEach(([k,v])=>x.setAttribute(k,v));
+    const st=s=>x.setAttribute('style',s);
+    if(tag==='P'){
+      if(/\bgioi-thieu\b/.test(cls)) st(S.intro);
+      else if(/\bghi-chu\b/.test(cls)) st(S.note);
+      else if(/\bchan-bai\b/.test(cls)) st(S.foot);
+      else if(/\banh\b/.test(cls)) st('text-align: center; margin: 16px 0;');
+      else if(/\bcta\b/.test(cls)) st('margin: 20px 0;');
+      else if(x.closest('.lien-he')) st('margin: 0 0 8px 0;');
+      else if(x.closest('td,th')) st('margin: 0;');
+    }
+    else if(tag==='HR') st(S.hr);
+    else if(tag==='UL'||tag==='OL') st(S.list);
+    else if(tag==='TABLE') st(S.table);
+    else if(tag==='TH') st(S.th + (align==='l'?' text-align: left;':align==='r'?' text-align: right;':'') + bgs);
+    else if(tag==='TD'){
+      const onlyImg = x.querySelector('img') && !x.textContent.trim();
+      let s = onlyImg ? S.tdImg : S.td;
+      if(onlyImg && isFinite(dpc)) s=s.replace('padding: 3px;','padding: '+dpc+'px;');
+      const al = align==='c'?'center':align==='r'?'right':align==='l'?'left':'';
+      if(al && !(onlyImg && al==='center')) s+=' text-align: '+al+';';
+      st(s+bgs);
+    }
+    else if(tag==='IMG'){
+      const inCell=!!x.closest('td,th'); const src=x.getAttribute('src')||'';
+      if(inCell) st(fit==='sq' ? 'max-width: 100%; max-height: 100%; object-fit: contain;' : 'display: block; width: 100%; height: auto;'); else st('max-width: 100%; height: auto; border-radius: 4px;'+(w&&w!=='100'?' width: '+w+'%;':''));
+      x.setAttribute('loading','lazy'); x.setAttribute('decoding','async');
+      if(!/^data:/.test(src)){
+        x.style.cursor='zoom-in'; const a=document.createElement('a'); a.setAttribute('href',src); a.setAttribute('target','_blank'); a.setAttribute('rel','noopener'); a.setAttribute('title','Bấm để phóng to');
+        if(inCell && fit!=='sq') a.setAttribute('style','display: block; width: 100%;');
+        x.replaceWith(a); a.appendChild(x);
+      }
+      if(inCell){ const top=x.parentElement.tagName==='A'?x.parentElement:x; const bx=document.createElement('div'); let bs=fit==='sq' ? S.imgBox : S.imgBox.replace(' aspect-ratio: 1/1;',''); if(isFinite(dpad)) bs=bs.replace('padding: 3px;','padding: '+dpad+'px;'); bx.setAttribute('style', bs); top.replaceWith(bx); bx.appendChild(top); }
+    }
+    else if(tag==='A'){
+      const h=x.getAttribute('href')||'';
+      if(x.parentElement && x.parentElement.classList && false){}
+    }
+    if(align && /^(P|H2|H3|H4|UL|OL)$/.test(tag)) x.setAttribute('style',(x.getAttribute('style')||'')+' text-align: '+({c:'center',r:'right',l:'left',j:'justify'})[align]+';');
+    x.__cls=cls; x.__s=ds;
+  });
+  // liên kết: nút mua hàng + link ngoài
+  $$('a[href]',c).forEach(a=>{
+    const h=a.getAttribute('href');
+    const p=a.closest('p');
+    if(p && p.__cls && /\bcta\b/.test(p.__cls) && !a.querySelector('img')){ a.setAttribute('class','zzm-cta-btn'); }
+    if(/^https?:/i.test(h) && !h.includes(SHOP.ownDomain) && !a.querySelector('img')){ a.setAttribute('target','_blank'); a.setAttribute('rel','nofollow noopener'); }
+  });
+  // khung liên hệ
+  $$('.lien-he',c).forEach(d=>d.setAttribute('style',S.contact));
+  // dòng chẵn/lẻ của bảng
+  $$('table',c).forEach(t=>{
+    Array.from(t.tBodies).forEach(tb=>Array.from(tb.rows).forEach((tr,i)=>tr.setAttribute('style','background: '+((i%2&&t.__s!=='plain')?'#f7f9fb':'#fff')+';')));
+    if(t.tHead) Array.from(t.tHead.rows).forEach(tr=>tr.setAttribute('style','background: #d32f2f;'));
+    const w=document.createElement('div'); w.setAttribute('style',S.wrap); t.replaceWith(w); w.appendChild(t);
+  });
+  const parts=Array.from(c.children).map(x=>x.outerHTML.replace(/(<\/tr>|<\/thead>|<tbody[^>]*>|<\/tbody>|<thead[^>]*>|<table[^>]*>)/g,'$1\n'));
+  const vidHtml=(id,alt)=>/^[\w-]{11}$/.test(id)?`<div style="${S.wrap}"><table style="width: auto; border-collapse: collapse; margin: 0 auto;"><tbody><tr><td id="zzmVidCell" style="padding: 3px; text-align: center; vertical-align: middle; width: 280px; max-width: 100%;"><div id="zzmVidWrap" style="position: relative; display: block; margin: 0 auto; width: 256px; aspect-ratio: 9 / 16; border: 1px solid #ccc; box-sizing: border-box; background: #000; overflow: hidden; cursor: pointer;"><img style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center;" src="https://img.youtube.com/vi/${id}/hqdefault.jpg" alt="${esc(alt)}"><div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"><div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(211,47,47,0.9); display: flex; align-items: center; justify-content: center;"><div style="width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 20px solid #fff; margin-left: 4px;"></div></div></div></div></td></tr></tbody></table></div>`:'';
+  const html=parts.join('\n\n').replace(/<p>@@VID(\d+)@@<\/p>/g,(m,i)=>vidHtml(...(vids[i]||['','']))); 
+  const emb=(html.match(/src="data:image/g)||[]).length;
+  return {html, emb, bytes:new Blob([html]).size};
+}
+function shorten(html){ return html.replace(/src="data:image\/([a-z]+);base64,([A-Za-z0-9+/=]+)"/g,(m,t,d)=>`src="data:image/${t};base64,…(ảnh nhúng ~${Math.round(d.length*0.75/1024)} KB)…"`); }
+function openExport(){
+  syncPh(); commit();
+  const {html,emb,bytes}=buildHtml();
+  if(!html.trim()){ toast('Bài chưa có nội dung để lấy mã.'); return; }
+  $('#full').value=html; $('#pre').value=shorten(html);
+  const L=checkPost(), k=$('#mCheck'); k.hidden=false;
+  k.style.background=L.length?'':'#e6f4ea'; k.style.color=L.length?'':'#1e6b34';
+  k.innerHTML=L.length?'<b>Nên kiểm tra trước khi đăng:</b><ul style="margin:6px 0 0;padding-left:18px">'+L.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'✓ Bài đã ổn: có tiêu đề, khung tóm tắt, ảnh đều có mô tả.';
+  const n=$('#mNote');
+  if(emb){ n.hidden=false; n.textContent=`Bài đang có ${emb} ảnh nhúng trực tiếp (tổng ~${Math.round(bytes/1024)} KB). Dán được ngay, nhưng trang sẽ nặng hơn. Muốn nhẹ hơn: tải ảnh lên Thư viện media của website, rồi dán link ảnh vào ô “Link ảnh trên website” khi bấm chọn ảnh.`; }
+  else n.hidden=true;
+  $('#modal').hidden=false; $('#mCopy').textContent='Sao chép mã'; $('#mCopy').focus();
+}
+function closeModal(){ $('#modal').hidden=true; ed.focus(); }
+$('#btnExport').addEventListener('click',openExport);
+$('#mClose').addEventListener('click',closeModal);
+$('#modal').addEventListener('mousedown',e=>{ if(e.target.id==='modal') closeModal(); });
+$('#mCopy').addEventListener('click',async()=>{
+  const ta=$('#full'), text=ta.value; let ok=false;
+  try{ await navigator.clipboard.writeText(text); ok=true; }catch(e){}
+  if(!ok){ try{ ta.select(); ok=document.execCommand('copy'); }catch(e){} }
+  if(ok){ $('#mCopy').textContent='Đã sao chép ✓'; toast('Đã sao chép. Giờ vào website và bấm Ctrl+V để dán.'); }
+  else { const pre=$('#pre'); pre.value=text; pre.focus(); pre.select(); toast('Chưa tự sao chép được. Bấm Ctrl+C để sao chép mã đang được chọn.'); }
+});
+
+/* ================= Bài mới ================= */
+let newT;
+$('#btnNew').addEventListener('click',e=>{
+  const b=e.currentTarget;
+  if(!b.dataset.arm){
+    b.dataset.arm='1'; b.textContent='Bấm lần nữa để xóa bài này'; b.classList.add('danger');
+    newT=setTimeout(resetNewBtn,3500); return;
+  }
+  resetNewBtn(); commit(); ed.innerHTML=starterHTML(); ensureTail(); syncPh(); clearSel(); lastCell=null; curObj=null; lastSel=null; getSelection().removeAllRanges(); mobTables(); commit(); refreshCtx(); scrollTo(0,0);
+  toast('Đã tạo bài mới. Nếu bấm nhầm, chọn “Hoàn tác”.');
+});
+function resetNewBtn(){ const b=$('#btnNew'); clearTimeout(newT); delete b.dataset.arm; b.textContent='Bài mới'; b.classList.remove('danger'); }
+
+
+/* ================= Biểu tượng + chú thích khi rê chuột ================= */
+const IC={
+bold:'t:B',italic:'t:I',
+link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+insertUnorderedList:'<circle cx="5" cy="7" r="1"/><circle cx="5" cy="12" r="1"/><circle cx="5" cy="17" r="1"/><path d="M10 7h10M10 12h10M10 17h10"/>',
+insertOrderedList:'<path d="M4 6h1v4M4 14h2l-2 3h2M10 7h10M10 12h10M10 17h10"/>',
+removeFormat:'<path d="M5 5h14M9 5l-2 14M15 5l-3 8M15 15l5 5M20 15l-5 5"/>',
+table:'<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M3 10h18M3 15h18M9 4v16"/>',
+img:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/>',
+video:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5v5l4.5-2.5z"/>',
+cta:'<rect x="3" y="8" width="18" height="8" rx="4"/><path d="M8 12h8"/>',
+footer:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15h18M7 18h6"/>',
+contact:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/>',
+hr:'<path d="M3 12h18M8 7l4-3 4 3M8 17l4 3 4-3"/>',
+undo:'<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/>',
+redo:'<path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/>',
+merge:'<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M8 12h8M10 10l-2 2 2 2M14 10l2 2-2 2"/>',
+split:'<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M12 4v16M3 12h5M16 12h5"/>',
+eqCols:'<rect x="3" y="4" width="18" height="16" rx="1"/><path d="M9 4v16M15 4v16"/>',
+money:'t:₫',moneyCol:'t:₫↓',
+rowBefore:'<rect x="3" y="11" width="18" height="9" rx="1"/><path d="M12 3v5M9.5 5.5h5"/>',
+rowAfter:'<rect x="3" y="4" width="18" height="9" rx="1"/><path d="M12 16v5M9.5 18.5h5"/>',
+colBefore:'<rect x="11" y="3" width="10" height="18" rx="1"/><path d="M3 12h5M5.5 9.5v5"/>',
+colAfter:'<rect x="3" y="3" width="10" height="18" rx="1"/><path d="M16 12h5M18.5 9.5v5"/>',
+rowDel:'<rect x="3" y="3" width="18" height="7" rx="1"/><path d="M8 14l8 6M16 14l-8 6"/>',
+colDel:'<rect x="3" y="3" width="7" height="18" rx="1"/><path d="M14 8l6 8M20 8l-6 8"/>',
+alignL:'<path d="M4 6h16M4 10h10M4 14h16M4 18h10"/>',
+alignC:'<path d="M4 6h16M7 10h10M4 14h16M7 18h10"/>',
+head:'<rect x="3" y="4" width="18" height="16" rx="1"/><rect x="3" y="4" width="18" height="5" fill="currentColor"/>',
+colWider:'<path d="M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4"/>',
+colNarrower:'<path d="M3 12h6M6 9l3 3-3 3M21 12h-6M18 9l-3 3 3 3"/>',
+rowTaller:'<path d="M12 4v16M8 8l4-4 4 4M8 16l4 4 4-4"/>',
+rowShorter:'<path d="M12 3v6M9 6l3 3 3-3M12 21v-6M9 18l3-3 3 3"/>',
+bgClear:'<path d="M7 14l5-9 5 9z"/><path d="M4 20h16M4 4l16 16"/>',
+zebra:'<rect x="3" y="4" width="18" height="16" rx="1"/><rect x="3" y="9" width="18" height="6" fill="currentColor" opacity=".3"/><path d="M3 9h18M3 15h18"/>',
+del:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>'
+};
+['tableDel','imgDel','objDel','contactDel'].forEach(k=>IC[k]=IC.del);
+IC.alignR='<path d="M4 6h16M10 10h10M4 14h16M10 18h10"/>'; IC.alJ='<path d="M4 6h16M4 10h16M4 14h16M4 18h16"/>';
+IC.alL=IC.alignL; IC.alC=IC.alignC; IC.alR=IC.alignR; IC.underline='t:U'; IC.strikeThrough='t:S';
+const TI={
+bold:['In đậm','Làm chữ đang chọn đậm hơn. Phím tắt Ctrl+B'],
+italic:['In nghiêng','Làm chữ đang chọn nghiêng. Phím tắt Ctrl+I'],
+link:['Chèn liên kết','Biến chữ đang chọn thành đường dẫn. Phím tắt Ctrl+K'],
+insertUnorderedList:['Danh sách chấm','Mỗi ý một dòng, có dấu chấm đầu dòng'],
+insertOrderedList:['Danh sách số','Mỗi ý một dòng, đánh số 1, 2, 3…'],
+removeFormat:['Xóa định dạng','Bỏ màu và in đậm/nghiêng của phần đang chọn'],
+table:['Bảng','Chèn bảng (giá, thông số, so sánh…)'],
+img:['Ảnh','Chèn ảnh bằng link ảnh trên website hoặc từ máy'],
+video:['Video','Chèn video YouTube, khách bấm vào sẽ xem toàn màn hình'],
+cta:['Nút mua hàng','Nút cam bóng dẫn khách tới trang sản phẩm'],
+footer:['Ghi chú cuối bài','Tự điền: Biên tập, Cập nhật lần cuối (tháng/năm hôm nay), lưu ý giá và Nguồn tham khảo. Bấm lại để tạo mới'],
+contact:['Khung liên hệ','Chèn khung Hotline, Zalo, Fanpage, địa chỉ cửa hàng'],
+hr:['Đường kẻ','Đường kẻ ngang ngăn cách các phần của bài'],
+undo:['Hoàn tác','Quay lại thao tác trước. Phím tắt Ctrl+Z'],
+redo:['Làm lại','Làm lại thao tác vừa hoàn tác. Phím tắt Ctrl+Y'],
+merge:['Gộp ô','Kéo chuột chọn nhiều ô trước, rồi bấm để gộp thành 1 ô'],
+split:['Tách ô','Tách ô đã gộp về lại các ô nhỏ'],
+eqCols:['Chia đều cột','Cho mọi cột rộng bằng nhau'],
+money:['Định dạng số tiền (ô chọn)','Gõ 2670000 → 2.670.000 ₫ cho ô đang đứng hoặc các ô đã chọn'],
+moneyCol:['Định dạng số tiền (cả cột)','Đổi cả cột thành số tiền, trừ dòng tiêu đề'],
+rowBefore:['Thêm dòng phía trên','Chèn 1 dòng trống ngay trên dòng đang đứng'],
+rowAfter:['Thêm dòng phía dưới','Chèn 1 dòng trống ngay dưới dòng đang đứng. Cũng có thể bấm Tab ở ô cuối'],
+colBefore:['Thêm cột bên trái','Chèn 1 cột trống bên trái cột đang đứng'],
+colAfter:['Thêm cột bên phải','Chèn 1 cột trống bên phải cột đang đứng'],
+rowDel:['Xóa dòng này','Xóa dòng đang đứng'],
+colDel:['Xóa cột này','Xóa cột đang đứng'],
+alignL:['Căn trái ô','Căn trái ô đang đứng, hoặc các ô đã kéo chọn'],
+alignC:['Căn giữa ô','Căn giữa ô đang đứng, hoặc các ô đã kéo chọn'],
+head:['Bật/tắt dòng tiêu đề đỏ','Dòng đầu tiên có nền đỏ, chữ trắng'],
+colWider:['Cột rộng hơn','Nới cột đang đứng thêm 5%, các cột còn lại tự thu nhỏ đều nhau. Hoặc kéo mép phải ô'],
+colNarrower:['Cột hẹp lại','Thu hẹp cột đang đứng 5%, các cột còn lại tự nới đều nhau'],
+rowTaller:['Dòng cao hơn','Tăng chiều cao dòng. Hoặc kéo mép dưới ô'],
+rowShorter:['Dòng thấp lại','Giảm chiều cao dòng'],
+bgClear:['Bỏ màu nền ô','Xóa màu nền của ô đang đứng hoặc các ô đã chọn'],
+zebra:['Dòng xen kẽ 2 màu / 1 màu','Chuyển qua lại giữa dòng xen kẽ và tất cả một màu'],
+tableDel:['Xóa cả bảng','Xóa toàn bộ bảng này'],
+imgDel:['Xóa ảnh','Xóa ảnh đang chọn'],
+objDel:['Xóa mục này','Xóa mục đang chọn'],
+contactDel:['Xóa khung liên hệ','Xóa cả khung liên hệ'],
+alignR:['Căn phải ô','Căn phải ô đang đứng, hoặc các ô đã kéo chọn (hợp với giá tiền)'],
+underline:['Gạch chân','Gạch chân chữ đang chọn. Phím tắt Ctrl+U'],
+strikeThrough:['Gạch ngang chữ','Gạch ngang chữ đang chọn (VD: giá cũ)'],
+alL:['Căn trái','Căn đoạn đang đứng sang trái (ô bảng: căn riêng ô đó)'],
+alC:['Căn giữa','Căn đoạn đang đứng vào giữa'],
+alR:['Căn phải','Căn đoạn đang đứng sang phải'],
+alJ:['Căn đều 2 bên','Đoạn văn thẳng hàng cả 2 mép'],
+'p.':['Chữ thường','Đoạn văn bình thường'],
+'h2.':['Tiêu đề lớn','Tên từng phần lớn của bài. Google dựa vào đây để hiểu bài'],
+'h3.':['Tiêu đề nhỏ','Tiêu đề phụ nằm trong một phần'],
+'p.gioi-thieu':['Khung tóm tắt','Khung nền xám viền đỏ ở đầu bài, tóm tắt trong 2–3 câu'],
+'p.ghi-chu':['Ghi chú nhỏ','Chữ nhỏ màu xám cho ghi chú cuối bài']
+};
+const BIG=new Set(['table','img','video','cta','contact','footer','hr']);
+const svgOf=k=>{ const v=IC[k]; return v.startsWith('t:') ? '<b class="tg">'+v.slice(2)+'</b>' : '<svg viewBox="0 0 24 24" aria-hidden="true">'+v+'</svg>'; };
+$$('#tools [title]').forEach(b=>{ b.dataset.tip=b.getAttribute('title'); b.removeAttribute('title'); if(!b.getAttribute('aria-label')) b.setAttribute('aria-label',b.dataset.tip); });
+$$('#tools button').forEach(b=>{
+  const d=b.dataset, a=d.act;
+  const k = d.cmd || d.pop || d.t || (['contact','footer','hr','undo','redo'].includes(a)&&a) || (a==='align'&&'al'+d.al.toUpperCase()) || (a==='block'&&d.tag+'.'+d.cls);
+  const T=k&&TI[k]; if(!T) return;
+  d.tip=T[0]+'|'+T[1]; b.setAttribute('aria-label',T[0]);
+  if(IC[k]){ const lb=b.textContent.trim(); b.innerHTML=svgOf(k)+(BIG.has(k)?'<span class="bl">'+esc(lb)+'</span>':''); b.classList.add('ic'); if(BIG.has(k)) b.classList.add('big'); }
+});
+$('#bar').setAttribute('role','toolbar'); $('#bar').setAttribute('aria-label','Công cụ soạn bài');
+const tip=document.createElement('div'); tip.id='tip'; tip.setAttribute('role','tooltip'); tip.hidden=true; document.body.appendChild(tip);
+let tipT, tipEl=null;
+function showTip(el){
+  const t=el.dataset.tip; if(!t) return; const p=t.split('|');
+  tip.innerHTML='<b>'+esc(p[0])+'</b>'+(p[1]?'<span>'+esc(p[1])+'</span>':''); tip.hidden=false;
+  const r=el.getBoundingClientRect(), w=tip.offsetWidth;
+  tip.style.left=Math.max(6,Math.min(r.left+r.width/2-w/2,innerWidth-w-6))+'px'; tip.style.top=(r.bottom+8)+'px';
+  el.setAttribute('aria-describedby','tip'); tipEl=el;
+}
+function hideTip(){ clearTimeout(tipT); tip.hidden=true; if(tipEl){ tipEl.removeAttribute('aria-describedby'); tipEl=null; } }
+const tools=$('#tools');
+tools.addEventListener('mouseover',e=>{ const b=e.target.closest('[data-tip]'); if(!b||b===tipEl) return; clearTimeout(tipT); tipT=setTimeout(()=>showTip(b),250); });
+tools.addEventListener('mouseout',e=>{ if(e.relatedTarget && tip.contains(e.relatedTarget)) return; hideTip(); });
+tip.addEventListener('mouseleave',hideTip);
+tools.addEventListener('focusin',e=>{ const b=e.target.closest('[data-tip]'); if(b) showTip(b); });
+tools.addEventListener('focusout',hideTip);
+tools.addEventListener('click',hideTip);
+addEventListener('scroll',hideTip,{passive:true});
+tools.addEventListener('keydown',e=>{
+  if((e.key!=='ArrowRight'&&e.key!=='ArrowLeft')||e.target.matches('input,textarea')) return;
+  const bs=$$('#tools button').filter(b=>b.offsetParent), i=bs.indexOf(e.target); if(i<0) return;
+  e.preventDefault(); bs[(i+(e.key==='ArrowRight'?1:-1)+bs.length)%bs.length].focus();
+});
+
+/* ===== Kiểu đoạn (như Word/WordPress) ===== */
+{ const g=$('#bar .grp .btns');
+  g.innerHTML='<select id="styleSel" data-tip="Kiểu đoạn|Chọn Đoạn văn hoặc Heading. Tiêu đề chính của bài (Heading 1) do website tự lấy từ ô Tiêu đề bài viết">'
+   +'<option value="" hidden>Kiểu đoạn</option><option value="p.">Đoạn văn</option><option value="h2.">Heading 2 – Tiêu đề lớn</option><option value="h3.">Heading 3 – Tiêu đề nhỏ</option><option value="h4.">Heading 4 – Tiêu đề phụ</option><option value="p.gioi-thieu">Khung tóm tắt</option><option value="p.ghi-chu">Ghi chú nhỏ</option></select>';
+  $('#styleSel').setAttribute('aria-label','Kiểu đoạn');
+  $('#styleSel').addEventListener('change',e=>{ const v=e.target.value, t=v.split('.')[0], c=v.slice(t.length+1);
+    ensureFocus(); if(keyOf(currentTop())!==v) setBlock(t,c); ed.focus(); syncUI(); });
+}
+function alignBlock(a){
+  ensureFocus();
+  const e=curEl(), cell=e&&e.closest('td,th');
+  if(cell && inEd(cell)){ (selCells.length>1?selCells:[cell]).forEach(x=>x.setAttribute('data-a',a)); done(); return; }
+  const s=getSelection(); if(!s.rangeCount) return; const r=s.getRangeAt(0);
+  Array.from(ed.children).filter(b=>/^(P|H2|H3|H4|UL|OL)$/.test(b.tagName)&&r.intersectsNode(b)).forEach(b=>{ if(a==='l') b.removeAttribute('data-a'); else b.setAttribute('data-a',a); });
+  done();
+}
+/* ===== Ô chọn màu luôn hiện đúng màu tại vị trí con trỏ ===== */
+const hex=c=>{ const m=(c||'').match(/rgba?\(([^)]+)\)/); if(!m) return null; const p=m[1].split(',').map(parseFloat); if(p.length>3 && p[3]===0) return null; return '#'+p.slice(0,3).map(v=>Math.round(v).toString(16).padStart(2,'0')).join(''); };
+function syncUI(){
+  const e=curEl(); if(!e || e===ed || !inEd(e)) return;
+  const fg=hex(getComputedStyle(e).color); if(fg) $('#fgIn').value=fg;
+  let bg='#ffffff';
+  for(let n=e; n && n!==ed; n=n.parentElement){ if(getComputedStyle(n).display!=='inline') break; const h=hex(getComputedStyle(n).backgroundColor); if(h){ bg=h; break; } }
+  $('#bgIn').value=bg;
+  const c=e.closest('td,th');
+  if(c){ let h=null; for(const n of [c,c.parentElement,c.closest('table')]){ h=hex(getComputedStyle(n).backgroundColor); if(h) break; } $('#cellBg').value=h||'#ffffff'; }
+  $$('#bar [data-act="color"]').forEach(b=>b.classList.toggle('on',(b.dataset.cmd==='foreColor'?fg:bg)===b.dataset.c));
+  const sel=$('#styleSel'), key=keyOf(currentTop()); if(sel) sel.value=[...sel.options].some(o=>o.value===key)?key:'';
+}
+/* Xem thử phóng to ảnh: bấm đúp vào ảnh trong bài */
+const lb=document.createElement('div'); lb.id='lb'; lb.hidden=true; lb.innerHTML='<img alt=""><p>Bấm bất kỳ đâu để đóng</p>'; document.body.appendChild(lb);
+lb.addEventListener('click',()=>{ lb.hidden=true; });
+ed.addEventListener('dblclick',e=>{ if(e.target.tagName==='IMG'){ $('img',lb).src=e.target.src; lb.hidden=false; } });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ hideTip(); lb.hidden=true; } });
+
+
+/* ================= Khung bài mẫu ================= */
+const REF_DOC="<!doctype html><html lang=\"vi\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><base target=\"_blank\"><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap\"><style>html{-webkit-text-size-adjust:100%}body{margin:0;background:#fff;color:#333;font:16px/1.7 \"Be Vietnam Pro\",system-ui,Arial,sans-serif}\n.post{max-width:820px;margin:0 auto;padding:22px clamp(14px,4vw,32px) 60px}.cat{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#999}\nh1{font-size:1.7em;line-height:1.25;margin:.3em 0 .5em;color:#111;text-transform:uppercase}.dv{width:30px;height:3px;background:rgba(0,0,0,.1);margin:1em 0 1.5em}\nh2{font-size:1.45em;line-height:1.3;color:#111;margin:1.6em 0 .6em}h3{font-size:1.2em;line-height:1.35;color:#111;margin:1.4em 0 .5em}h4{font-size:1.05em;margin:1.2em 0 .4em}\np,ul,ol{margin:0 0 1.2em}img{max-width:100%;height:auto}a{color:#334862}table{border-collapse:collapse}\n    .zzm-cta-btn {\n      position: relative;\n      overflow: hidden;\n      display: inline-block;\n      text-align: center;\n      background: linear-gradient(180deg, #ffb74d 0%, #ff9800 45%, #f57c00 100%);\n      color: #ffffff !important;\n      text-decoration: none !important;\n      padding: 16px 34px;\n      border-radius: 50px;\n      font-weight: 700;\n      font-size: 16px;\n      box-shadow: 0 6px 14px rgba(245, 124, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.5);\n      transition: all 0.2s ease;\n    }\n    .zzm-cta-btn::before {\n      content: \"\";\n      position: absolute;\n      top: 6%;\n      left: 8%;\n      width: 55%;\n      height: 45%;\n      background: radial-gradient(ellipse at center, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 70%);\n      border-radius: 50%;\n      pointer-events: none;\n    }\n    .zzm-cta-btn:hover {\n      transform: translateY(-2px);\n      box-shadow: 0 10px 20px rgba(245, 124, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.6);\n    }\n    .zzm-cta-btn:active {\n      transform: translateY(0);\n      box-shadow: 0 4px 8px rgba(245, 124, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.4);\n    }\n    \n\t/* FIX canh giữa: dùng margin:auto thay vì phụ thuộc text-align của <td> cha,\n\t   vì theme có thể đè text-align bằng CSS ưu tiên cao hơn -> khung video bị lệch trái */\n\t#zzmVidWrap {\n\t\tdisplay: block !important;\n\t\tmargin: 0 auto !important;\n\t}\n\t/* Trung hòa thẻ <p> mà WordPress (wpautop) tự chèn quanh ảnh thumbnail bên trong wrap */\n\t#zzmVidWrap p {\n\t\tmargin: 0;\n\t\tpadding: 0;\n\t\tline-height: 0;\n\t}\n\t#zzmVidWrap.zzm-fs {\n\t\tposition: fixed !important;\n\t\ttop: 0 !important;\n\t\tleft: 0 !important;\n\t\twidth: 100vw !important;\n\t\theight: 100vh !important;\n\t\tmax-width: none !important;\n\t\tmax-height: none !important;\n\t\tmargin: 0 !important;\n\t\tborder: 0 !important;\n\t\tz-index: 999999 !important;\n\t\tbackground: #000;\n\t}\n\t#zzmVidClose {\n\t\tposition: fixed;\n\t\ttop: 12px;\n\t\tright: 12px;\n\t\twidth: 40px;\n\t\theight: 40px;\n\t\tborder-radius: 50%;\n\t\tbackground: rgba(0,0,0,0.6);\n\t\tcolor: #fff;\n\t\tfont-size: 22px;\n\t\tline-height: 40px;\n\t\ttext-align: center;\n\t\tz-index: 1000000;\n\t\tcursor: pointer;\n\t\tdisplay: none;\n\t}\n\t#zzmVidClose.zzm-show { display: block; }\n\tbody.zzm-vid-lock { overflow: hidden !important; height: 100% !important; }\n\t<\/style><\/head><body><article class=\"post\"><div class=\"cat\">Chưa được phân loại<\/div><h1>DÀN ÁO AB 2026 , AIR BLADE 125 / 160 2026 CHÍNH HÃNG<\/h1><div class=\"dv\"><\/div>\n\n\t<p style=\"font-size: 18px; line-height: 1.7; background: #f7f9fb; border-left: 4px solid #d32f2f; padding: 16px 20px; margin: 0 0 28px 0;\"><strong>Dàn áo AB 2026 chính hãng Honda<\/strong> dành cho cả Air Blade 125 và Air Blade 160 hiện có đủ tại Zin Zin Motor, gồm <strong>12 món nhựa màu (đã dán sẵn tem zin)<\/strong>, giá từ <strong>2.540.000 ₫<\/strong> đến <strong>2.780.000 ₫/bộ<\/strong> tùy phiên bản màu (Tiêu chuẩn, Đặc biệt, Thể thao). Cửa hàng nhận thay trọn bộ hoặc bán lẻ từng chi tiết, cam kết hàng chính hãng 100%, bảo hành đổi trả NẾU “SẢN PHẨM CÓ LỖI TỪ NHÀ SẢN XUẤT” cho khách hàng mua sản phẩm online.<\/p>\n\n<h2 id=\"gom-nhung-gi\">1. Dàn áo AB 2026 chính hãng gồm những gì?<\/h2>\n<p><strong>Dàn áo AB 2026<\/strong> là trọn bộ 12 chi tiết nhựa màu thân xe (ốp đầu, yếm, ốp sườn, dè, ốp sàn để chân…) được sản xuất theo tiêu chuẩn Honda, đã dán sẵn tem chính hãng theo từng phiên bản màu — nghĩa là khi thay xong, xe có ngoại hình đúng như nguyên bản xuất xưởng mà không cần mua thêm tem rời.<\/p>\n<h3>Chất liệu &amp; tiêu chuẩn sản xuất<\/h3>\n<p>Các chi tiết được làm từ <strong>nhựa ABS nguyên sinh<\/strong>, độ dày đồng đều, nước sơn bền màu, ngàm lắp chính xác theo khuôn gốc — giúp dàn áo ôm khít thân xe, hạn chế rung lắc khi vận hành và giữ được độ bền màu sơn lâu dài.<\/p>\n<h3>3 phiên bản màu phối<\/h3>\n<p>Dàn áo AB 2026 chia theo 3 phiên bản tương ứng với các bản xe gốc:<\/p>\n<ul style=\"line-height: 1.8;\">\n<li><strong>Tiêu chuẩn<\/strong> — tông màu đơn giản, dễ phối<\/li>\n<li><strong>Đặc biệt<\/strong> — điểm nhấn màu nhám/logo chrome<\/li>\n<li><strong>Thể thao<\/strong> — tem thể thao nổi bật, tương ứng bản xe cao cấp nhất<\/li>\n<\/ul>\n<hr style=\"margin: 36px 0; border: none; border-top: 1px solid #e0e0e0;\">\n<h2 id=\"bang-gia\">2. Bảng giá dàn áo AB 2026 theo màu (cập nhật 08/2026)<\/h2>\n<p><a class=\"zzm-cta-btn\" href=\"https://zzm.vn/san-pham/dan-ao-ab-2026-xe-air-blade-125-airblade-160-2026-chinh-hang/\">→ Xem bảng giá mới nhất và đặt mua bộ dàn áo Air Blade 2026<\/a><\/p>\n<div style=\"width: 100%; max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; margin: 16px 0; display: block;\">\n<table style=\"width: 100% !important; min-width: 480px; border-collapse: collapse !important; font-size: 15px; table-layout: auto !important;\">\n<thead>\n<tr>\n<th style=\"border: 1px solid #ddd; padding: 10px; text-align: center; background: #d32f2f; color: #fff; font-weight: bold; width: 6%;\">#<\/th>\n<th style=\"border: 1px solid #ddd; padding: 10px; text-align: center; background: #d32f2f; color: #fff; font-weight: bold; width: 18%;\">Ảnh<\/th>\n<th style=\"border: 1px solid #ddd; padding: 10px; background: #d32f2f; color: #fff; font-weight: bold; text-align: center; width: 38%;\">Màu sắc<\/th>\n<th style=\"border: 1px solid #ddd; padding: 10px; text-align: center; background: #d32f2f; color: #fff; font-weight: bold; width: 20%;\">Giá bộ (12 chi tiết)<\/th>\n<th style=\"border: 1px solid #ddd; padding: 10px; text-align: center; background: #d32f2f; color: #fff; font-weight: bold; width: 18%;\">Phiên bản<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">1<\/td>\n<td style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\">\n<div style=\"width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;\"><a title=\"Bấm để phóng to\" href=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-trang-do-den.jpg\" target=\"_blank\" rel=\"noopener\"><img decoding=\"async\" style=\"max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-trang-do-den.jpg\" alt=\"Dàn Áo AB 125 2026 - Trắng Đỏ Đen\"><\/a><\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dàn Áo AB 125 2026 – Trắng Đỏ Đen<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2.670.000 ₫<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\" rowspan=\"2\">Thể thao 125<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2<\/td>\n<td style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\">\n<div style=\"width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;\"><a title=\"Bấm để phóng to\" href=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-xam-xi-mang.jpg\" target=\"_blank\" rel=\"noopener\"><img decoding=\"async\" style=\"max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-xam-xi-mang.jpg\" alt=\"Dàn Áo AB 125 2026 - Xám Xi Măng (Xám Đỏ Đen)\"><\/a><\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dàn Áo AB 125 2026 – Xám Xi Măng (Xám Đỏ Đen)<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2.600.000 ₫<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">3<\/td>\n<td style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\">\n<div style=\"width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;\"><a title=\"Bấm để phóng to\" href=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-den-nham.jpg\" target=\"_blank\" rel=\"noopener\"><img decoding=\"async\" style=\"max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-den-nham.jpg\" alt=\"Dàn Áo AB 125 2026 - Đen Nhám (Đen Xám)\"><\/a><\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dàn Áo AB 125 2026 – Đen Nhám (Đen Xám)<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2.780.000 ₫<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\" rowspan=\"2\">Đặc biệt 125<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">4<\/td>\n<td style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\">\n<div style=\"width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;\"><a title=\"Bấm để phóng to\" href=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-den-bong.jpg\" target=\"_blank\" rel=\"noopener\"><img decoding=\"async\" style=\"max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-den-bong.jpg\" alt=\"Dàn Áo AB 125 2026 - Xanh Nhám (Xanh Đen Xám)\"><\/a><\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dàn Áo AB 125 2026 – Xanh Nhám (Xanh Đen Xám)<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2.780.000 ₫<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">5<\/td>\n<td style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\">\n<div style=\"width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;\"><a title=\"Bấm để phóng to\" href=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-xanh-nham.jpg\" target=\"_blank\" rel=\"noopener\"><img decoding=\"async\" style=\"max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-xanh-nham.jpg\" alt=\"Dàn Áo AB 125 2026 - Đen Bóng\"><\/a><\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dàn Áo AB 125 2026 – Đen Bóng<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2.780.000 ₫<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\" rowspan=\"2\">Tiêu chuẩn 125<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">6<\/td>\n<td style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\">\n<div style=\"width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;\"><a title=\"Bấm để phóng to\" href=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-do-do.jpg\" target=\"_blank\" rel=\"noopener\"><img decoding=\"async\" style=\"max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-125-2026-do-do.jpg\" alt=\"Dàn Áo AB 125 2026 - Đỏ Đen\"><\/a><\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dàn Áo AB 125 2026 – Đỏ Đen<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2.775.000 ₫<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">7<\/td>\n<td style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\">\n<div style=\"width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;\"><a title=\"Bấm để phóng to\" href=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-160-2026-trang-do-den.jpg\" target=\"_blank\" rel=\"noopener\"><img decoding=\"async\" style=\"max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-160-2026-trang-do-den.jpg\" alt=\"Dàn Áo AB 160 2026 - Trắng Đỏ Đen\"><\/a><\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dàn Áo AB 160 2026 – Trắng Đỏ Đen<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2.780.000 ₫<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">Thể thao 160<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">8<\/td>\n<td style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\">\n<div style=\"width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;\"><a title=\"Bấm để phóng to\" href=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-160-2026-den-nham.jpg\" target=\"_blank\" rel=\"noopener\"><img decoding=\"async\" style=\"max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-160-2026-den-nham.jpg\" alt=\"Dàn Áo AB 160 2026 - Đen Nhám (Đen Xám)\"><\/a><\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dàn Áo AB 160 2026 – Đen Nhám (Đen Xám)<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2.540.000 ₫<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">Đặc biệt 160<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">9<\/td>\n<td style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\">\n<div style=\"width: 100%; aspect-ratio: 1/1; margin: 0 auto; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 3px; display: flex; align-items: center; justify-content: center; background: #fafafa; overflow: hidden;\"><a title=\"Bấm để phóng to\" href=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-160-2026-do-do.jpg\" target=\"_blank\" rel=\"noopener\"><img decoding=\"async\" style=\"max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/dan-ao-ab-160-2026-do-do.jpg\" alt=\"Dàn Áo AB 160 2026 - Đỏ Đen\"><\/a><\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dàn Áo AB 160 2026 – Đỏ Đen<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2.775.000 ₫<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">Tiêu chuẩn 160<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<\/div>\n<p style=\"font-size: 14px; color: #666; font-style: italic;\">Giá đã bao gồm 12 chi tiết nhựa dán sẵn tem chính hãng, chưa gồm công thay. Giá có thể thay đổi theo thời điểm, anh em liên hệ hotline để được báo giá chính xác nhất.<\/p>\n<p>Nếu xe chỉ hư hỏng một vài chi tiết, khách hàng có thể mua lẻ từng món thay vì cả bộ, vừa tiết kiệm chi phí vừa giữ được độ đồng bộ màu sắc với các chi tiết còn lại trên xe (xem mục 3 bên dưới).<\/p>\n<hr style=\"margin: 36px 0; border: none; border-top: 1px solid #e0e0e0;\">\n<h2 id=\"danh-sach-12-chi-tiet\">3. Danh sách 12 chi tiết nhựa màu trong bộ dàn áo AB 2026<\/h2>\n<p><a class=\"zzm-cta-btn\" href=\"https://zzm.vn/danao/dan-ao-ab-2026-dan-ao-xe-air-blade-160-dan-ao-xe-ab-125-2026/\">→ Xem chi tiết từng món và đặt mua món lẻ dàn áo Air Blade 2026<\/a><\/p>\n<div style=\"width: 100%; max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; margin: 16px 0; display: block;\">\n<table style=\"width: 100% !important; min-width: 480px; border-collapse: collapse !important; font-size: 15px; table-layout: fixed !important;\">\n<thead>\n<tr>\n<th style=\"border: 1px solid #ddd; padding: 10px; text-align: center; background: #d32f2f; color: #fff; font-weight: bold; width: 6%;\">#<\/th>\n<th style=\"border: 1px solid #ddd; padding: 10px; text-align: center; background: #d32f2f; color: #fff; font-weight: bold; width: 30%;\">Video<\/th>\n<th style=\"border: 1px solid #dddddd; padding: 10px; background: #d32f2f; color: #ffffff; font-weight: bold; width: 32%; text-align: center;\">Tên chi tiết<\/th>\n<th style=\"border: 1px solid #dddddd; padding: 10px; background: #d32f2f; color: #ffffff; font-weight: bold; width: 32%; text-align: center;\">Vị trí lắp<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">1<\/td>\n<td id=\"zzmVidCell\" style=\"border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;\" rowspan=\"12\">\n<div id=\"zzmVidWrap\" style=\"position: relative; display: block; margin: 0px auto; width: 256px; aspect-ratio: 9 / 16; border: 1px solid rgb(204, 204, 204); box-sizing: border-box; background: rgb(0, 0, 0); overflow: hidden; cursor: pointer; height: 455px;\">\n<p><img decoding=\"async\" style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center;\" src=\"./DÀN ÁO AB 2026 , AIR BLADE 125 _ 160 2026 CHÍNH HÃNG_files/hqdefault.jpg\" alt=\"Video 12 chi tiết dàn áo AB 2026\"><\/p>\n<div style=\"position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;\">\n<div style=\"width: 56px; height: 56px; border-radius: 50%; background: rgba(211,47,47,0.9); display: flex; align-items: center; justify-content: center;\">\n<div style=\"width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 20px solid #fff; margin-left: 4px;\"><\/div>\n<\/div>\n<\/div>\n<\/div>\n<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Chắn gió ốp đồng hồ AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Phía trước, quanh cụm đồng hồ<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">2<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Mặt nạ nhỏ AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Đầu xe, trên cụm đèn pha<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">3<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Mặt nạ lớn AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Đầu xe, bao quanh đèn pha<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">4<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Ốp dưới đèn pha AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Phía dưới cụm đèn trước<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">5<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Yếm trái AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Hai bên thân xe, phía trước, bên trái<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">6<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Yếm phải AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Hai bên thân xe, phía trước, bên phải<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">7<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Ốp sàn để chân trái AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Sàn để chân, bên trái<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">8<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Ốp sàn để chân phải AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Sàn để chân, bên phải<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">9<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Ốp sườn trái AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Hông xe, phía sau, bên trái<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">10<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Ốp sườn phải AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Hông xe, phía sau, bên phải<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">11<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Mu rùa AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Cốp sau, ốp đèn hậu<\/td>\n<\/tr>\n<tr>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: center; vertical-align: middle;\">12<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Dè trước AB 2026<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px; text-align: left; vertical-align: middle;\">Trên bánh trước, dưới phuộc<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<\/div>\n<p>Mỗi chi tiết đều mang mã phụ tùng riêng và có thể đặt mua độc lập tùy nhu cầu sửa chữa.<\/p>\n<hr style=\"margin: 36px 0; border: none; border-top: 1px solid #e0e0e0;\">\n<h2 id=\"khac-doi-truoc\">4. Vì sao dàn áo AB 2026 (cá mập) khác các đời trước?<\/h2>\n<p>Honda Việt Nam chính thức giới thiệu thế hệ Air Blade 2026 vào ngày 4/11/2025 với 6 phiên bản, chia đều cho hai tùy chọn động cơ 125cc và 160cc (mỗi loại 3 bản: Tiêu chuẩn, Đặc biệt, Thể thao), giá bán lẻ đề xuất dao động khoảng 42,99 – 58,59 triệu đồng tùy phiên bản. Đây là bản nâng cấp thiết kế toàn diện chứ không chỉ đổi màu, nên dàn áo đi kèm cũng thay đổi hẳn so với các đời trước.<\/p>\n<p>Thay đổi lớn nhất nằm ở phần đầu và đuôi xe: cụm đầu được thiết kế lại theo phong cách góc cạnh, gọn gàng hơn, mang hơi hướng người anh Vario 160; đèn pha LED dạng chữ V tích hợp công nghệ chiếu sáng mới; đuôi xe vuốt nhọn hơn với cụm đèn hậu LED hai tầng. Chính vì kết cấu đầu – đuôi đổi khác, các chi tiết nhựa ốp theo cũng phải làm lại khuôn mới, không thể dùng chung với dàn áo đời 2021–2025.<\/p>\n<p style=\"font-size: 14px; color: #666; font-style: italic;\">(Nguồn tham khảo: Honda Việt Nam – honda.com.vn; Tuổi Trẻ Online; Báo Tiền Phong; Autopro.com.vn)<\/p>\n<div style=\"width: 100%; max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; margin: 16px 0; display: block;\">\n<table style=\"width: 100% !important; min-width: 480px; border-collapse: collapse !important; color: #333; font-size: 15px; table-layout: auto !important;\">\n<thead>\n<tr style=\"background: #d32f2f;\">\n<th style=\"border: 1px solid #ddd; padding: 10px; text-align: center; color: #fff;\">Tiêu chí<\/th>\n<th style=\"border: 1px solid #ddd; padding: 10px; text-align: center; color: #fff;\">Dàn áo AB 2026<\/th>\n<th style=\"border: 1px solid #ddd; padding: 10px; text-align: center; color: #fff;\">Dàn áo AB 2022–2025<\/th>\n<\/tr>\n<\/thead>\n<tbody>\n<tr style=\"background: #fff;\">\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Kiểu dáng đầu xe<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Góc cạnh, gọn gàng, gần giống Vario 160<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Bo tròn, mềm mại hơn<\/td>\n<\/tr>\n<tr style=\"background: #f7f9fb;\">\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Cụm đèn<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">LED dạng chữ V, công nghệ chiếu sáng mới<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">LED dạng khối truyền thống<\/td>\n<\/tr>\n<tr style=\"background: #fff;\">\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Đuôi xe<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Vuốt nhọn, đèn hậu LED 2 tầng<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Đuôi vuông vức hơn<\/td>\n<\/tr>\n<tr style=\"background: #f7f9fb;\">\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Khả năng lắp lẫn đời cũ<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Không lắp trực tiếp, cần pát chuyển đổi nếu “lên đời”<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">—<\/td>\n<\/tr>\n<tr style=\"background: #fff;\">\n<td style=\"border: 1px solid #ddd; padding: 10px;\">Số lượng chi tiết trong bộ<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">12 món<\/td>\n<td style=\"border: 1px solid #ddd; padding: 10px;\">20 món<\/td>\n<\/tr>\n<\/tbody>\n<\/table>\n<\/div>\n<p>Vì kết cấu ngàm và hình dáng khác biệt, muốn “lên đời” dàn áo 2026 cho xe Air Blade đời cũ, khách hàng nên tham khảo các cửa hàng có kinh nghiệm xử lý pát gắn để đảm bảo an toàn và độ khít khi lắp.<\/p>\n<hr style=\"margin: 36px 0; border: none; border-top: 1px solid #e0e0e0;\">\n<h2 id=\"phan-biet-chinh-hang\">5. Cách phân biệt dàn áo AB 2026 chính hãng và hàng lô<\/h2>\n<ul style=\"line-height: 1.8;\">\n<li>Sản phẩm có bao bì ghi rõ mã phụ tùng và tem nhãn Honda.<\/li>\n<li>Nhựa ABS nguyên sinh dày dặn, đường viền sơn sắc nét, không dính sơn thừa ở mép chi tiết.<\/li>\n<li>Mỗi món dàn áo chính hãng đều có sẵn tem, logo Honda và mã số khuôn đúc ở mặt sau.<\/li>\n<\/ul>\n<hr style=\"margin: 36px 0; border: none; border-top: 1px solid #e0e0e0;\">\n<h2 id=\"faq\">6. Câu hỏi thường gặp<\/h2>\n<h3>Giá dàn áo AB 2026 chính hãng bao nhiêu?<\/h3>\n<p>Dao động từ 2.540.000 ₫ đến 2.780.000 đồng/bộ (12 món, đã dán sẵn tem zin) tùy phiên bản màu.<\/p>\n<h3>Dàn áo AB 2026 có gắn vừa cho AB đời trước không?<\/h3>\n<p>Không lắp trực tiếp do thiết kế đầu – đuôi xe đã thay đổi. Muốn “lên đời” cần xử lý pát chuyển đổi tại cửa hàng có kinh nghiệm.<\/p>\n<h3>Làm sao phân biệt dàn áo Air Blade 125 / 160 2026 chính hãng và hàng lô?<\/h3>\n<p>Kiểm tra bao bì mã phụ tùng, chất nhựa ABS nguyên sinh, đường sơn sắc nét và mã khuôn Honda ở mặt sau từng chi tiết.<\/p>\n<h3>Thay trọn bộ dàn áo AB 2026 mất bao lâu?<\/h3>\n<p>Tùy tình trạng xe, thời gian thay trọn bộ 12 chi tiết thường mất khoảng nửa buổi đến 1 buổi làm việc tại cửa hàng.<\/p>\n<h3>Dàn áo xe Air Blade 2026 có được bảo hành không?<\/h3>\n<p>Zin Zin Motor áp dụng chính sách bảo hành theo quy định của cửa hàng đối với phụ tùng chính hãng: đổi trả hàng NẾU ” SẢN PHẨM BỊ LỖI TỪ NHÀ SẢN XUẤT”.<\/p>\n<hr style=\"margin: 36px 0; border: none; border-top: 1px solid #e0e0e0;\">\n<h2 id=\"mua-o-dau\">7. Mua dàn áo AB 2026 chính hãng ở đâu uy tín?<\/h2>\n<p>Zin Zin Motor chuyên cung cấp <strong>dàn áo xe AB 2026<\/strong> chính hãng, nhựa màu Air Blade, nhựa nhám, tem Honda chính hãng và nhiều phụ tùng Honda khác. Cửa hàng cập nhật đầy đủ các màu mới, hỗ trợ tư vấn đúng đời xe, đúng phiên bản và đúng màu phối, nhận thay trọn bộ hoặc bán lẻ từng chi tiết.<br>\nNếu bạn đang tìm <strong>dàn áo xe AB 2026<\/strong>, cần dàn áo xe Air Blade 125 hoặc Air Blade 160 chính hãng, hoặc muốn thay nhựa màu 12 món sẵn tem, liên hệ Zin Zin Motor để được tư vấn và báo giá chi tiết.<\/p>\n<div style=\"background: #f7f9fb; border-radius: 8px; padding: 20px 24px; margin: 20px 0;\">\n<p style=\"margin: 0 0 8px 0;\"><strong>Hotline:<\/strong> 0966 962 993<\/p>\n<p style=\"margin: 0 0 8px 0;\"><strong>Zalo tư vấn nhanh:<\/strong> <a href=\"https://zalo.me/0966962993\" target=\"_blank\" rel=\"nofollow noopener\">zalo.me/0966962993<\/a> — gửi ảnh xe / chi tiết cần thay để được báo giá ngay<\/p>\n<p style=\"margin: 0 0 8px 0;\"><strong>Fanpage:<\/strong> <a href=\"https://www.facebook.com/ZINZINMOTOR\" target=\"_blank\" rel=\"nofollow noopener\">facebook.com/ZINZINMOTOR<\/a> — xem thêm hình ảnh thực tế và phản hồi từ khách hàng đã lắp dàn áo AB 2026<\/p>\n<p style=\"margin: 0;\"><strong>Địa chỉ:<\/strong> 58 Bình Phú, Tam Phú, Thủ Đức, TP. Hồ Chí Minh<\/p>\n<\/div>\n<hr style=\"margin: 36px 0; border: none; border-top: 1px solid #e0e0e0;\">\n<p style=\"font-size: 14px; color: #666;\"><strong>Biên tập:<\/strong> Đội ngũ kỹ thuật Zin Zin Motor<br>\n<strong>Cập nhật lần cuối:<\/strong> 08/2026 — Giá và thông tin sản phẩm mang tính tham khảo, có thể thay đổi theo thời điểm — vui lòng liên hệ trực tiếp cửa hàng để có báo giá chính xác nhất.<\/p>\n<p style=\"font-size: 14px; color: #666;\"><strong>Nguồn tham khảo:<\/strong> Honda Việt Nam (honda.com.vn) · Tuổi Trẻ Online · Báo Tiền Phong · Autopro.com.vn · 24h.com.vn<\/p><\/article><script>\n\t(function () {\n\t  var YT_ID_DEFAULT = 'dxOi7-sE3VA'; // dự phòng cho bài cũ\n\t  var YT_ID = YT_ID_DEFAULT;\n\t  var VID_ALT = 'Video';\n\t  function zzmReadVideo(wrap) {\n\t    var im = wrap.querySelector('img');\n\t    var m = im && (im.getAttribute('src') || '').match(/\\/vi(?:_webp)?\\/([\\w-]{11})\\//);\n\t    YT_ID = m ? m[1] : YT_ID_DEFAULT;\n\t    VID_ALT = (im && im.getAttribute('alt')) || 'Video';\n\t  }\n\t  var isFullscreenActive = false;\n\n\t  function zzmFitVideo9x16() {\n\t    if (isFullscreenActive) return; // đang xem toàn màn hình thì không tính lại kích thước theo cell\n\t    var cell = document.getElementById('zzmVidCell');\n\t    var wrap = document.getElementById('zzmVidWrap');\n\t    if (!cell || !wrap) return;\n\t    wrap.style.width = '0px';\n\t    wrap.style.height = '0px';\n\n\t    // FIX (v2): clientWidth/clientHeight của td bao gồm cả padding.\n\t    // wrap lại nằm trong content-box của td (không tính padding),\n\t    // nên phải trừ padding ra thì mới đúng vùng chứa thật sự -> tránh\n\t    // video bị tràn/lệch qua cột bên cạnh khi td có padding khác 0.\n\t    var cs = getComputedStyle(cell);\n\t    var padL = parseFloat(cs.paddingLeft) || 0;\n\t    var padR = parseFloat(cs.paddingRight) || 0;\n\t    var padT = parseFloat(cs.paddingTop) || 0;\n\t    var padB = parseFloat(cs.paddingBottom) || 0;\n\n\t    var availW = cell.clientWidth - padL - padR;\n\t    var availH = cell.clientHeight - padT - padB;\n\t    if (availW <= 0) return;\n\t    // Ô chứa thấp (video đứng riêng, không gộp dòng) -> không giới hạn theo chiều cao\n\t    if (availH < 60) availH = 100000;\n\n\t    // Không kẹp maxW nữa -> video full theo chiều rộng khả dụng của ô chứa,\n\t    // vẫn giữ tỉ lệ 9:16 và chỉ co lại nếu chiều cao khả dụng không đủ.\n\t    var w = availW;\n\t    var h = Math.round(w * 16 / 9);\n\t    if (h > availH) {\n\t      h = availH;\n\t      w = Math.round(h * 9 / 16);\n\t    }\n\t    wrap.style.width = w + 'px';\n\t    wrap.style.height = h + 'px';\n\t  }\n\t  window.addEventListener('load', zzmFitVideo9x16);\n\t  window.addEventListener('resize', zzmFitVideo9x16);\n\t  document.addEventListener('DOMContentLoaded', zzmFitVideo9x16);\n\n\t  function ensureCloseButton() {\n\t    var btn = document.getElementById('zzmVidClose');\n\t    if (btn) return btn;\n\t    btn = document.createElement('div');\n\t    btn.id = 'zzmVidClose';\n\t    btn.innerHTML = '&times;';\n\t    btn.setAttribute('aria-label', 'Đóng video');\n\t    document.body.appendChild(btn);\n\t    btn.addEventListener('click', function (e) {\n\t      e.stopPropagation();\n\t      zzmCloseFullscreen();\n\t    });\n\t    return btn;\n\t  }\n\n\t  function zzmOpenFullscreen(wrap) {\n\t    isFullscreenActive = true;\n\t    wrap.classList.add('zzm-fs');\n\t    document.body.classList.add('zzm-vid-lock');\n\t    ensureCloseButton().classList.add('zzm-show');\n\t    // Enhancement: thử fullscreen API thật nếu trình duyệt hỗ trợ (không bắt buộc,\n\t    // vì đã có lớp CSS fallback ở trên đảm bảo trải nghiệm toàn màn hình rồi)\n\t    try {\n\t      var req = wrap.requestFullscreen || wrap.webkitRequestFullscreen || wrap.msRequestFullscreen;\n\t      if (req) { req.call(wrap); }\n\t    } catch (err) { /* bỏ qua nếu không hỗ trợ */ }\n\t  }\n\n\t  function zzmCloseFullscreen() {\n\t    var wrap = document.getElementById('zzmVidWrap');\n\t    isFullscreenActive = false;\n\t    if (wrap) {\n\t      wrap.classList.remove('zzm-fs');\n\t      // Dừng video (gỡ iframe) và trả lại ảnh thumbnail ban đầu\n\t      wrap.innerHTML =\n\t        '<img style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;\" ' +\n\t        'src=\"https://img.youtube.com/vi/' + YT_ID + '/hqdefault.jpg\" alt=\"' + VID_ALT.replace(/\"/g, '&quot;') + '\" />' +\n\t        '<div style=\"position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;\">' +\n\t        '<div style=\"width:56px;height:56px;border-radius:50%;background:rgba(211,47,47,0.9);display:flex;align-items:center;justify-content:center;\">' +\n\t        '<div style=\"width:0;height:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:20px solid #fff;margin-left:4px;\"><\/div>' +\n\t        '<\/div><\/div>';\n\t      wrap.style.cursor = 'pointer';\n\t    }\n\t    document.body.classList.remove('zzm-vid-lock');\n\t    var btn = document.getElementById('zzmVidClose');\n\t    if (btn) btn.classList.remove('zzm-show');\n\t    if (document.fullscreenElement && document.exitFullscreen) {\n\t      document.exitFullscreen().catch(function () {});\n\t    }\n\t    zzmFitVideo9x16();\n\t  }\n\n\t  document.addEventListener('click', function (e) {\n\t    var wrap = document.getElementById('zzmVidWrap');\n\t    if (!wrap || !wrap.contains(e.target)) return;\n\t    if (isFullscreenActive) return; // đã mở rồi thì bỏ qua\n\t    zzmReadVideo(wrap); // đọc ID + mô tả video của bài này\n\t    var iframe = document.createElement('iframe');\n\t    // mute=1: bắt buộc để đảm bảo autoplay luôn chạy được (Chrome/Safari Autoplay Policy)\n\t    // rel=0: không gợi ý video của kênh khác khi kết thúc\n\t    iframe.src = 'https://www.youtube.com/embed/' + YT_ID + '?autoplay=1&mute=1&playsinline=1&rel=0';\n\t    iframe.title = VID_ALT;\n\t    iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:0;';\n\t    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';\n\t    iframe.allowFullscreen = true;\n\t    wrap.innerHTML = '';\n\t    wrap.style.cursor = 'default';\n\t    wrap.appendChild(iframe);\n\t    zzmOpenFullscreen(wrap);\n\t  });\n\n\t  // Nếu người dùng thoát fullscreen thật (trên máy có hỗ trợ), đồng bộ lại giao diện\n\t  ['fullscreenchange', 'webkitfullscreenchange', 'msfullscreenchange'].forEach(function (evt) {\n\t    document.addEventListener(evt, function () {\n\t      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement && isFullscreenActive) {\n\t        zzmCloseFullscreen();\n\t      }\n\t    });\n\t  });\n\t})();\n\t<\/script><\/body><\/html>";
+{ const pane=$('#refPane'), btn=$('#btnRef'), fr=$('#refFrame'), grip=$('#refGrip'); let loaded=false;
+  const save=(k,v)=>{ try{ localStorage.setItem(k,v); }catch(e){} }, load=k=>{ try{ return localStorage.getItem(k); }catch(e){ return null; } };
+  function setW(w){ w=Math.max(300,Math.min(w,innerWidth-460)); document.documentElement.style.setProperty('--refW',w+'px'); save('zzm-ref-w',Math.round(w)); }
+  function toggle(on){
+    if(on===undefined) on=!document.body.classList.contains('ref-on');
+    document.body.classList.toggle('ref-on',on); pane.hidden=!on; btn.setAttribute('aria-pressed',on); btn.classList.toggle('on',on);
+    btn.textContent = on ? 'Đóng bài mẫu' : 'Xem bài mẫu';
+    if(on && !loaded){ fr.srcdoc=REF_DOC; loaded=true; }
+    save('zzm-ref-on',on?'1':''); hideTip();
+  }
+  btn.addEventListener('click',()=>toggle()); $('#refClose').addEventListener('click',()=>toggle(false));
+  grip.addEventListener('pointerdown',e=>{ grip.setPointerCapture(e.pointerId); document.body.classList.add('ref-drag'); });
+  grip.addEventListener('pointermove',e=>{ if(document.body.classList.contains('ref-drag')) setW(innerWidth-e.clientX); });
+  const end=()=>document.body.classList.remove('ref-drag'); grip.addEventListener('pointerup',end); grip.addEventListener('pointercancel',end);
+  grip.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft'||e.key==='ArrowRight'){ e.preventDefault(); setW(pane.offsetWidth+(e.key==='ArrowLeft'?24:-24)); } });
+  const w0=parseInt(load('zzm-ref-w')); if(w0) setW(w0);
+  if(load('zzm-ref-on')==='1' && innerWidth>900) toggle(true);
+}
+/* ================= Khởi động ================= */
+(function init(){
+  let saved=null; try{ saved=localStorage.getItem(STORE_KEY); }catch(e){}
+  if(saved && saved.replace(/<[^>]*>/g,'').trim().length + (saved.includes('<img')?1:0) + (saved.includes('<table')?1:0) > 0){
+    ed.innerHTML=saved; setStatus('Đã mở lại bài đang viết dở'); 
+  } else { ed.innerHTML=starterHTML(); }
+  ensureTail(); syncPh(); commit(); refreshCtx();
+})();
+})();
+</script>
+</body>
+</html>
