@@ -2,7 +2,6 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex,nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Soạn bài viết – Zin Zin Motor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -171,6 +170,8 @@ input[type=color]{width:34px;height:30px;padding:0;border:1px solid var(--line);
 .colw .cwi.lock{border-color:#1976d2;background:#e8f1fb}
 .colw .cwi.lock input{border-color:#1976d2}
 .colw .tot{font-size:12.5px;color:var(--mute)}
+.colw .cwi .lk{border:0;background:none;cursor:pointer;font-size:14px;padding:0 2px;line-height:1}
+.colw .cwi .cn{cursor:pointer;user-select:none}
 .colw .tip2{flex-basis:100%;font-size:12.5px;color:var(--mute)}
 
 /* ===== Khung bài mẫu (bên phải) ===== */
@@ -705,7 +706,7 @@ function tableOp(op){
   done(); if(focus){ selectCell(focus); refreshCtx(); }
 }
 /* ---- Chia độ rộng cột: chỉnh 1 cột thì các cột còn lại cùng bù/trừ đều, tổng luôn 100% ---- */
-const COL_MIN=6;
+const COL_MIN=1;
 function getColWidths(table){
   const g=tmap(table), n=Math.max(...g.map(r=>r?r.length:0)), tw=table.offsetWidth||1, w=[];
   for(let c=0;c<n;c++){
@@ -714,21 +715,24 @@ function getColWidths(table){
   }
   const sum=w.reduce((a,b)=>a+b,0)||1; return w.map(v=>v*100/sum);
 }
+const COLLOCK=new WeakMap();
+const colLocks=(t,n)=>{ const a=(COLLOCK.get(t)||[]).filter(i=>i<n); COLLOCK.set(t,a); return a; };
+/* Quy tắc: cột nào bị KHÓA thì đứng yên. Chỉnh 1 cột thì các cột còn lại CHƯA khóa (cả 2 bên) cùng chia đều phần tăng/giảm, tổng luôn 100%. */
 function applyColWidth(table,col,v,base){
-  const w=(base||getColWidths(table)).slice(), n=w.length; if(n<2||col<0||col>=n) return;
-  const oth=w.map((_,i)=>i).filter(i=>i!==col);
-  v=Math.max(COL_MIN,Math.min(100-COL_MIN*(n-1),v));
-  let rem=-(v-w[col]); w[col]=v;               // rem>0: chia thêm cho các cột kia; rem<0: lấy bớt của các cột kia
+  const w=(base||getColWidths(table)).slice(), n=w.length; if(n<2||col<0||col>=n) return false;
+  const lk=colLocks(table,n), ids=[]; for(let i=0;i<n;i++) if(i!==col && !lk.includes(i)) ids.push(i);
+  const cap=ids.reduce((a,i)=>a+w[i]-COL_MIN,0);
+  v=Math.max(COL_MIN,Math.min(v,w[col]+cap));
+  let rem=w[col]-v; w[col]=v;
   for(let k=0;k<12 && Math.abs(rem)>0.01;k++){
-    const act=oth.filter(i=>rem>0 || w[i]>COL_MIN+0.001); if(!act.length) break;
+    const act=ids.filter(i=>rem>0 || w[i]>COL_MIN+0.001); if(!act.length) break;
     const share=rem/act.length;
     act.forEach(i=>{ const nv=Math.max(COL_MIN,w[i]+share); rem-=(nv-w[i]); w[i]=nv; });
   }
-  const g=tmap(table);
-  g.forEach(r=>r && r.forEach((x,c)=>{ if(x && x.colSpan===1){ const t=w[c].toFixed(1); x.setAttribute('data-cw',t); x.style.width=t+'%'; } }));
+  writeColWidths(table,w); return true;
 }
 /* ---- Nhập số % cho từng cột ---- */
-let colWT=null, colWLock=[], colWSig='';
+let colWT=null;
 const sigOf=w=>w.map(v=>v.toFixed(1)).join(',');
 function writeColWidths(table,w){
   tmap(table).forEach(r=>r && r.forEach((x,c)=>{ if(x && x.colSpan===1 && c<w.length){ const t=w[c].toFixed(1); x.setAttribute('data-cw',t); x.style.width=t+'%'; } }));
@@ -738,36 +742,30 @@ function renderColW(force){
   if(!force && document.activeElement && box.contains(document.activeElement)) return;
   const info=cellInfo(); if(!info) return;
   const t=info.table, w=getColWidths(t), n=w.length, sg=sigOf(w);
-  if(colWT!==t || sg!==colWSig){ colWLock=[]; colWT=t; colWSig=sg; }
   if(n<2){ box.innerHTML='<span class="hint">Bảng chỉ có 1 cột nên không cần chỉnh độ rộng.</span>'; return; }
   const head=tmap(t)[0]||[];
   let ins=$$('input[data-c]',box);
   if(ins.length!==n){
     box.innerHTML='<span class="cl">Độ rộng cột (%)</span>'+w.map((v,i)=>{
       const h=((head[i]&&head[i].textContent)||'').trim().slice(0,30);
-      return `<label class="cwi" title="${esc(h||'Cột '+(i+1))}"><span>Cột ${i+1}</span><input type="number" inputmode="decimal" step="0.1" min="${COL_MIN}" max="${100-COL_MIN*(n-1)}" data-c="${i}" aria-label="Độ rộng cột ${i+1} (phần trăm)">%</label>`;
-    }).join('')+'<span class="tot"></span><span class="tip2">Gõ số vào cột muốn đổi rồi nhấn Enter. Cột đã gõ (viền xanh) được giữ nguyên, các cột còn lại tự chia đều phần còn lại, tổng luôn 100%.</span>';
+      return `<span class="cwi" title="${esc(h||'Cột '+(i+1))}"><span class="cn" data-lk="${i}" data-tip="Bấm để khóa / mở khóa|Cột đã khóa (🔒) giữ nguyên %, không đổi khi bạn chỉnh cột khác">Cột ${i+1}</span><input type="number" inputmode="decimal" step="0.1" min="${COL_MIN}" max="${100-COL_MIN*(n-1)}" data-c="${i}" aria-label="Độ rộng cột ${i+1} (phần trăm)">%<button type="button" class="lk" data-lk="${i}" aria-label="Khóa cột ${i+1}" data-tip="Khóa / mở khóa cột|Cột đã khóa giữ nguyên % khi bạn chỉnh cột khác">🔓</button></span>`;
+    }).join('')+'<span class="tot"></span><span class="tip2">Bấm vào chữ “Cột 1, Cột 2…” (hoặc ổ khóa) để KHÓA cột đã chốt %. Sau đó gõ số vào cột muốn đổi rồi nhấn Enter: chỉ các cột chưa khóa tự chia đều phần tăng/giảm, tổng luôn 100%.</span>';
     ins=$$('input[data-c]',box);
   }
-  ins.forEach((inp,i)=>{ inp.value=w[i].toFixed(1).replace(/\.0$/,''); inp.closest('.cwi').classList.toggle('lock',colWLock.includes(i)); });
+  const lkd=colLocks(t,n);
+  ins.forEach((inp,i)=>{ inp.value=w[i].toFixed(1).replace(/\.0$/,''); const bx=inp.closest('.cwi'); bx.classList.toggle('lock',lkd.includes(i)); bx.querySelector('.lk').textContent=lkd.includes(i)?'🔒':'🔓'; });
   $('.tot',box).textContent='Tổng: '+w.reduce((a,b)=>a+b,0).toFixed(0)+'%';
 }
 function applyColInput(inp){
   const info=cellInfo(); if(!info) return;
-  const t=info.table, w=getColWidths(t), n=w.length, c=+inp.dataset.c;
-  if(colWT!==t || sigOf(w)!==colWSig){ colWLock=[]; colWT=t; }
-  let v=parseFloat(String(inp.value).replace(',','.'));
-  if(!isFinite(v)){ renderColW(true); return; }
-  colWLock=colWLock.filter(i=>i!==c && i<n); colWLock.push(c); while(colWLock.length>n-1) colWLock.shift();
-  const others=colWLock.filter(i=>i!==c), unl=n-colWLock.length;
-  const sumO=others.reduce((a,i)=>a+w[i],0), vmax=100-sumO-COL_MIN*unl; let msg='';
-  if(v>vmax){ v=Math.max(COL_MIN,vmax); msg='Các cột còn lại cần ít nhất '+COL_MIN+'% mỗi cột, nên cột '+(c+1)+' tối đa '+v.toFixed(1).replace(/\.0$/,'')+'%.'; }
-  if(v<COL_MIN){ v=COL_MIN; msg='Mỗi cột tối thiểu '+COL_MIN+'%.'; }
-  const nw=w.slice(); nw[c]=v; const share=(100-sumO-v)/unl;
-  for(let i=0;i<n;i++) if(!colWLock.includes(i)) nw[i]=share;
-  writeColWidths(t,nw); colWSig=sigOf(getColWidths(t)); colWT=t;
-  done(); renderColW(true); if(msg) toast(msg);
+  const t=info.table, w=getColWidths(t), c=+inp.dataset.c;
+  const v=parseFloat(String(inp.value).replace(',','.')); if(!isFinite(v)){ renderColW(true); return; }
+  applyColWidth(t,c,v,w); const after=getColWidths(t)[c];
+  done(); renderColW(true);
+  if(Math.abs(after-v)>0.05) toast('Cột '+(c+1)+' chỉ chỉnh được đến '+after.toFixed(1).replace(/\.0$/,'')+'% vì các cột còn lại (chưa khóa) không thể nhỏ hơn '+COL_MIN+'% hoặc đều đang bị khóa.');
 }
+$('#colW').addEventListener('click',e=>{ const b=e.target.closest('[data-lk]'); if(!b) return; const info=cellInfo(); if(!info) return;
+  const t=info.table, n=getColWidths(t).length, i=+b.dataset.lk, a=colLocks(t,n), k=a.indexOf(i); if(k>=0) a.splice(k,1); else a.push(i); renderColW(true); });
 $('#colW').addEventListener('change',e=>{ const inp=e.target.closest('input[data-c]'); if(inp) applyColInput(inp); });
 $('#colW').addEventListener('keydown',e=>{ if(e.key==='Escape'){ renderColW(true); ed.focus(); } });
 function tabMove(dir){
@@ -1447,8 +1445,8 @@ colDel:['Xóa cột này','Xóa cột đang đứng'],
 alignL:['Căn trái ô','Căn trái ô đang đứng, hoặc các ô đã kéo chọn'],
 alignC:['Căn giữa ô','Căn giữa ô đang đứng, hoặc các ô đã kéo chọn'],
 head:['Bật/tắt dòng tiêu đề đỏ','Dòng đầu tiên có nền đỏ, chữ trắng'],
-colWider:['Cột rộng hơn','Nới cột đang đứng thêm 5%, các cột còn lại tự thu nhỏ đều nhau. Hoặc kéo mép phải ô'],
-colNarrower:['Cột hẹp lại','Thu hẹp cột đang đứng 5%, các cột còn lại tự nới đều nhau'],
+colWider:['Cột rộng hơn','Nới cột đang đứng thêm 5%; các cột chưa khóa thu nhỏ đều nhau, cột đã khóa giữ nguyên. Hoặc kéo mép phải ô'],
+colNarrower:['Cột hẹp lại','Thu hẹp cột đang đứng 5%; các cột chưa khóa nới ra đều nhau, cột đã khóa giữ nguyên'],
 rowTaller:['Dòng cao hơn','Tăng chiều cao dòng. Hoặc kéo mép dưới ô'],
 rowShorter:['Dòng thấp lại','Giảm chiều cao dòng'],
 bgClear:['Bỏ màu nền ô','Xóa màu nền của ô đang đứng hoặc các ô đã chọn'],
