@@ -47,7 +47,7 @@ button,input,select{font:inherit;color:inherit}
 .grp{display:flex;flex-direction:column;gap:4px}
 .gl{font-size:12px;color:var(--mute)}
 .btns{display:flex;flex-wrap:wrap;gap:5px}
-.ctx{border-top:1px solid var(--line);padding:9px 12px;min-height:56px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:color-mix(in srgb,var(--chrome) 92%,var(--red) 4%);border-radius:0 0 10px 10px}
+.ctx{border-top:1px solid var(--line);padding:7px 12px;min-height:46px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;background:color-mix(in srgb,var(--chrome) 92%,var(--red) 4%);border-radius:0 0 10px 10px}
 .ctx[hidden]{display:flex}
 .ctx .lbl{font-weight:600;margin-right:4px}
 .ctx .hint{color:var(--mute);font-size:13.5px}
@@ -187,6 +187,11 @@ body.ref-on .wrap{max-width:none;margin:0;flex:1 1 0;min-width:0}
 #refGrip:hover::after,#refGrip:focus-visible::after{background:var(--red)}
 body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;cursor:col-resize}
 @media(max-width:900px){body.ref-on #split{display:block}body.ref-on #refPane{position:fixed;inset:0;width:auto;height:auto;z-index:60}#refGrip{display:none}}
+.topacts{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;margin-left:auto}
+.topacts .btn{white-space:nowrap}.topacts .status{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+#btnNew{min-width:140px}
+@media(max-width:760px){.topacts{flex-wrap:wrap;margin-left:0}}
+.ctx .panel[data-panel="table"]>.hint{flex:1 1 0;min-width:0;width:auto!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style>
 </head>
 <body>
@@ -197,11 +202,13 @@ body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;curso
       <p class="steps">1. Gõ nội dung vào tờ giấy bên dưới &nbsp;•&nbsp; 2. Bấm biểu tượng phía trên (rê chuột vào để xem công dụng) để thêm tiêu đề, bảng, ảnh &nbsp;•&nbsp; 3. Bấm “Lấy mã đăng web” rồi dán vào website</p>
     </div>
     <div class="grow"></div>
+    <div class="topacts">
     <span class="status" id="status" aria-live="polite"></span>
     <button class="btn" id="btnRef" type="button" aria-pressed="false" data-tip="Bài mẫu|Mở bài chuẩn bên phải để vừa xem vừa viết">Xem bài mẫu</button>
     <button class="btn" id="btnMob" type="button" aria-pressed="false">Xem như điện thoại</button>
-    <button class="btn" id="btnNew" type="button">Bài mới</button>
+    <button class="btn" id="btnNew" type="button" title="Xóa bài hiện tại để viết bài mới (bấm 2 lần để xác nhận, lỡ tay thì bấm Hoàn tác)">Bài mới</button>
     <button class="btn primary" id="btnExport" type="button">Lấy mã đăng web</button>
+    </div>
   </div>
 
   <div class="tools" id="tools">
@@ -258,11 +265,18 @@ body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;curso
     </div>
 
     <div class="ctx" id="ctx">
-      <div class="panel" data-panel="none"><span class="hint">Bấm vào một bảng hoặc một tấm ảnh trong bài, các nút chỉnh sửa (thêm/xóa dòng, cột, đổi cỡ ảnh…) sẽ hiện ở đây.</span></div>
+      <div class="panel" data-panel="none"><span class="hint">Bấm vào bảng, ảnh hoặc khung liên hệ trong bài để hiện nút chỉnh sửa.</span></div>
+
+      <div class="panel" data-panel="tablemin" hidden>
+        <span class="lbl">Bảng</span>
+        <button class="btn" type="button" id="tblOpen" data-tip="Chỉnh sửa bảng|Hiện các nút thêm/xóa dòng, cột, gộp ô, độ rộng cột, màu nền…">✎ Chỉnh sửa bảng ▾</button>
+        <span class="hint">Bấm để hiện các nút chỉnh sửa; không cần thì để ẩn.</span>
+      </div>
 
       <div class="panel" data-panel="table" hidden>
         <span class="lbl">Đang sửa bảng</span>
-        <span class="hint" style="width:100%">Mẹo: kéo chuột qua nhiều ô để chọn (Delete để xóa chữ); kéo mép phải / mép dưới của ô để đổi độ rộng cột / chiều cao dòng.</span>
+        <span class="hint" title="Kéo chuột qua nhiều ô để chọn (Delete để xóa chữ). Kéo mép phải / mép dưới của ô để đổi độ rộng cột / chiều cao dòng.">Mẹo: kéo chuột qua nhiều ô để chọn (Delete để xóa chữ); kéo mép phải / mép dưới ô để đổi độ rộng cột / chiều cao dòng.</span>
+        <button class="btn" type="button" id="tblClose" data-tip="Ẩn bảng chỉnh sửa|Thu gọn lại cho rộng chỗ soạn bài">Ẩn ▴</button>
         <div class="colw" id="colW" role="group" aria-label="Độ rộng từng cột (%)"></div>
         <button class="btn" type="button" data-t="merge">Gộp ô đã chọn</button>
         <button class="btn" type="button" data-t="split">Tách ô</button>
@@ -746,10 +760,10 @@ function renderColW(force){
   const head=tmap(t)[0]||[];
   let ins=$$('input[data-c]',box);
   if(ins.length!==n){
-    box.innerHTML='<span class="cl">Độ rộng cột (%)</span>'+w.map((v,i)=>{
+    box.innerHTML='<span class="cl" data-tip="Độ rộng cột (%)|Bấm chữ Cột 1, Cột 2… (hoặc ổ khóa) để khóa cột đã chốt %. Gõ số vào cột muốn đổi rồi Enter: chỉ các cột chưa khóa chia đều phần tăng/giảm, tổng luôn 100%.">Độ rộng cột (%) ⓘ</span>'+w.map((v,i)=>{
       const h=((head[i]&&head[i].textContent)||'').trim().slice(0,30);
       return `<span class="cwi" title="${esc(h||'Cột '+(i+1))}"><span class="cn" data-lk="${i}" data-tip="Bấm để khóa / mở khóa|Cột đã khóa (🔒) giữ nguyên %, không đổi khi bạn chỉnh cột khác">Cột ${i+1}</span><input type="number" inputmode="decimal" step="0.1" min="${COL_MIN}" max="${100-COL_MIN*(n-1)}" data-c="${i}" aria-label="Độ rộng cột ${i+1} (phần trăm)">%<button type="button" class="lk" data-lk="${i}" aria-label="Khóa cột ${i+1}" data-tip="Khóa / mở khóa cột|Cột đã khóa giữ nguyên % khi bạn chỉnh cột khác">🔓</button></span>`;
-    }).join('')+'<span class="tot"></span><span class="tip2">Bấm vào chữ “Cột 1, Cột 2…” (hoặc ổ khóa) để KHÓA cột đã chốt %. Sau đó gõ số vào cột muốn đổi rồi nhấn Enter: chỉ các cột chưa khóa tự chia đều phần tăng/giảm, tổng luôn 100%.</span>';
+    }).join('')+'<span class="tot"></span>';
     ins=$$('input[data-c]',box);
   }
   const lkd=colLocks(t,n);
@@ -851,6 +865,8 @@ function selectedObj(){
 }
 let curObj=null;
 function showPanel(name){ $$('.panel',ctx).forEach(p=>p.hidden = p.dataset.panel!==name); }
+let tblOpen=false; try{ tblOpen=localStorage.getItem('zzm-tbl-open')==='1'; }catch(e){}
+function setTblOpen(v){ tblOpen=v; try{ localStorage.setItem('zzm-tbl-open',v?'1':''); }catch(e){} hideTip(); const a=document.activeElement; if(a && ctx.contains(a)) a.blur(); ensureFocus(); const ce=curEl(); if((!ce || !ce.closest('td,th')) && lastCell && inEd(lastCell)) caretIn(lastCell,true); refreshCtx(); }
 function refreshCtx(){
   if(document.activeElement && (ctx.contains(document.activeElement)||pop.contains(document.activeElement))) return;
   $$('[data-chon]',ed).forEach(x=>x.removeAttribute('data-chon'));
@@ -871,7 +887,7 @@ function refreshCtx(){
     $$('#sizeBox .btn').forEach(b=>b.classList.toggle('on', b.dataset.w===(obj.getAttribute('data-w')||'65')));
   }
   else if(obj){ showPanel('hr'); }
-  else if(e && e.closest('td,th') && inEd(e)){ lastCell=e.closest('td,th'); showPanel('table'); renderColW(); }
+  else if(e && e.closest('td,th') && inEd(e)){ lastCell=e.closest('td,th'); showPanel(tblOpen?'table':'tablemin'); if(tblOpen) renderColW(); }
   else if(e && e.closest('.lien-he')){ showPanel('contact'); }
   else showPanel('none');
   updateActive();
@@ -1114,6 +1130,9 @@ $('#btnMob').addEventListener('click',ev=>{
   const b=ev.currentTarget, on=ed.classList.toggle('mobile'); mobTables();
   b.classList.toggle('on',on); b.setAttribute('aria-pressed',on); b.textContent=on?'Thoát xem điện thoại':'Xem như điện thoại';
 });
+
+$('#tblOpen').addEventListener('click',e=>{ e.stopPropagation(); setTblOpen(true); });
+$('#tblClose').addEventListener('click',e=>{ e.stopPropagation(); setTblOpen(false); });
 
 /* ================= Kiểm tra bài trước khi lấy mã ================= */
 function checkPost(){
@@ -1366,7 +1385,7 @@ let newT;
 $('#btnNew').addEventListener('click',e=>{
   const b=e.currentTarget;
   if(!b.dataset.arm){
-    b.dataset.arm='1'; b.textContent='Bấm lần nữa để xóa bài này'; b.classList.add('danger');
+    b.dataset.arm='1'; b.textContent='Xác nhận xóa?'; b.classList.add('danger');
     newT=setTimeout(resetNewBtn,3500); return;
   }
   resetNewBtn(); commit(); ed.innerHTML=starterHTML(); ensureTail(); syncPh(); clearSel(); lastCell=null; curObj=null; lastSel=null; getSelection().removeAllRanges(); mobTables(); commit(); refreshCtx(); scrollTo(0,0);
