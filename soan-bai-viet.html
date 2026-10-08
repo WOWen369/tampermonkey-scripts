@@ -100,7 +100,7 @@ button,input,select{font:inherit;color:inherit}
 .tablewrap{overflow-x:auto}
 #ed td[data-sel],#ed th[data-sel]{outline:2px solid #1976d2;outline-offset:-2px;background-image:linear-gradient(rgba(25,118,210,.18),rgba(25,118,210,.18))!important}
 #ed.dragging{-webkit-user-select:none;user-select:none}
-#ed.mobile{max-width:390px;margin:0 auto;overflow-x:auto}
+#ed.mobile{max-width:402px;margin:0 auto;overflow-x:auto}
 .sw{width:28px;min-width:28px;min-height:28px;padding:0;border-radius:50%}
 input[type=color]{width:34px;height:30px;padding:0;border:1px solid var(--line);border-radius:6px;background:var(--chrome);cursor:pointer}
 #ed .vidblk{position:relative;width:200px;max-width:100%;aspect-ratio:9/16;margin:16px auto;background:#000 center/cover;border:1px solid #ccc;cursor:pointer}
@@ -225,6 +225,11 @@ body.ref-on #toTop{right:calc(var(--refW,46vw) + 18px)}
 #mImport:active{background:#1b5e20;border-color:#1b5e20;box-shadow:none;transform:none}
 #mImport:focus-visible{outline:2px solid #66bb6a;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){#mImport{transition:none}#mImport:hover{transform:none}}
+/* Xem như điện thoại: rộng 402px (iPhone 18 Pro) và lề 16px như bài thật (4vw của 402px) */
+#ed.mobile{padding-left:16px;padding-right:16px}
+/* Độ rộng cột cố định: chữ gõ dài tới đâu cũng xuống dòng trong ô, không tự nới cột. Chỉ đổi khi người dùng kéo mép cột / nhập % */
+#ed:not(.mobile) table{table-layout:fixed}
+#ed td,#ed th{overflow-wrap:anywhere;word-break:break-word}
 </style>
 </head>
 <body>
@@ -238,7 +243,7 @@ body.ref-on #toTop{right:calc(var(--refW,46vw) + 18px)}
     <div class="topacts">
     <span class="status" id="status" aria-live="polite"></span>
     <button class="btn" id="btnRef" type="button" aria-pressed="false" data-tip="Bài mẫu|Mở bài chuẩn bên phải để vừa xem vừa viết">Xem bài mẫu</button>
-    <button class="btn" id="btnMob" type="button" aria-pressed="false">Xem như điện thoại</button>
+    <button class="btn" id="btnMob" type="button" aria-pressed="false" title="Thu khung bài về bề rộng 402px, đúng màn hình iPhone 18 Pro">Xem như điện thoại</button>
     <button class="btn" id="btnNew" type="button" title="Xóa bài hiện tại để viết bài mới (bấm 2 lần để xác nhận, lỡ tay thì bấm Hoàn tác)">Bài mới</button>
     <button class="btn primary" id="btnExport" type="button">Lấy mã đăng web</button>
     </div>
@@ -535,7 +540,25 @@ function applyState(st){
 function undo(){ commit(); if(H.i>0){ H.i--; applyState(H.stack[H.i]); } }
 function redo(){ commit(); if(H.i<H.stack.length-1){ H.i++; applyState(H.stack[H.i]); } }
 function updateUndo(){ $('#btnUndo').disabled = H.i<=0; $('#btnRedo').disabled = H.i>=H.stack.length-1; }
-function syncPh(){ $$('[data-ph]',ed).forEach(x=>{ const empty=!x.textContent.replace(/[\u200b\u00a0]/g,'').trim() && !x.querySelector('img,.vidblk'); if(empty) x.setAttribute('data-e',''); else x.removeAttribute('data-e'); }); }
+/* Video trong ô bảng: tự co/giãn theo ô chứa (giống mã đăng web: rộng tối đa bằng ô, giữ tỉ lệ 9:16, không cao quá ô gộp) */
+function fitVideos(){
+  $$('.vidblk',ed).forEach(v=>{
+    const cell=v.closest('td,th'); if(!cell) return;
+    const t=cell.closest('table');
+    if(t && !t.querySelector('[data-cw]')){ try{ writeColWidths(t,getColWidths(t)); }catch(e){} }   /* ghim độ rộng cột để cột không co theo video */
+    v.style.width='0px'; v.style.height='0px';
+    const cs=getComputedStyle(cell);
+    const aw=cell.clientWidth-(parseFloat(cs.paddingLeft)||0)-(parseFloat(cs.paddingRight)||0);
+    let ah=cell.clientHeight-(parseFloat(cs.paddingTop)||0)-(parseFloat(cs.paddingBottom)||0);
+    if(!(aw>0)){ v.style.width=''; v.style.height=''; return; }
+    if(ah<60) ah=100000;   /* ô thấp (video đứng riêng 1 dòng) -> không giới hạn theo chiều cao */
+    let w=Math.floor(aw), h=Math.round(w*16/9);
+    if(h>ah){ h=Math.floor(ah); w=Math.round(h*9/16); }
+    v.style.width=w+'px'; v.style.height=h+'px';
+  });
+}
+let fitRaf=0; const fitSoon=()=>{ cancelAnimationFrame(fitRaf); fitRaf=requestAnimationFrame(fitVideos); };
+function syncPh(){ $$('[data-ph]',ed).forEach(x=>{ const empty=!x.textContent.replace(/[\u200b\u00a0]/g,'').trim() && !x.querySelector('img,.vidblk'); if(empty) x.setAttribute('data-e',''); else x.removeAttribute('data-e'); }); fitVideos(); }
 function mobTables(){ $$('table',ed).forEach(t=>{ if(ed.classList.contains('mobile')){ const n=Math.max(1,...Array.from(t.rows).map(r=>r.cells.length)); t.style.setProperty('--n',n); } else if(t.style.getPropertyValue('--n')){ t.style.removeProperty('--n'); if(!t.getAttribute('style')) t.removeAttribute('style'); } }); }
 function done(){ mobTables(); normalizeRoot(); ensureTail(); syncPh(); refreshCtx(); commit(); }
 
@@ -679,13 +702,23 @@ function tableOp(op){
   const {cell,row,table}=info; const idx=cell.cellIndex;
   let focus=null;
   if(op==='rowBefore'||op==='rowAfter'){
-    const tr=document.createElement('tr'); const n=row.children.length;
-    for(let i=0;i<n;i++){ const c=mkCell('td'); const a=row.children[i].getAttribute('data-a'); if(a) c.setAttribute('data-a',a); tr.appendChild(c); }
+    /* Dựa trên lưới cột thật (tmap), không đếm số ô vật lý của dòng: dòng nằm dưới ô gộp dọc (rowspan) có ít ô hơn số cột */
+    const rows=Array.from(table.rows), ri=rows.indexOf(row), g=tmap(table);
+    const b=(op==='rowAfter'||row.parentElement.tagName==='THEAD') ? ri+1 : ri;   /* đường biên chèn: giữa dòng b-1 và dòng b */
+    const cols=Math.max(...g.map(r=>r?r.length:0));
+    const tr=document.createElement('tr'), crossed=new Set(), made=[];
+    for(let c=0;c<cols;c++){
+      const up=(b>0&&g[b-1])?g[b-1][c]:null, dn=g[b]?g[b][c]:null;
+      if(up && dn && up===dn){ crossed.add(up); continue; }   /* ô gộp dọc đang chạy xuyên qua đường biên -> kéo dài thêm 1 dòng, không tạo ô mới */
+      const nc=mkCell('td'); const src=g[ri]&&g[ri][c]; const a=src&&src.getAttribute('data-a'); if(a) nc.setAttribute('data-a',a);
+      tr.appendChild(nc); made[c]=nc;
+    }
+    crossed.forEach(x=>{ x.rowSpan=x.rowSpan+1; });
     if(row.parentElement.tagName==='THEAD'){
       let tb=table.tBodies[0]; if(!tb){ tb=document.createElement('tbody'); table.appendChild(tb); }
       tb.insertBefore(tr,tb.firstChild);
     } else row.parentElement.insertBefore(tr, op==='rowBefore'?row:row.nextSibling);
-    focus=tr.children[Math.min(idx,n-1)];
+    focus=made[cell._p?cell._p[1]:0]||tr.firstElementChild||cell;
   }
   else if(op==='colBefore'||op==='colAfter'){
     let f=null;
@@ -784,6 +817,9 @@ function tableOp(op){
   else if(op==='tableDel'){
     const prev=table.previousElementSibling, next=table.nextElementSibling; table.remove(); lastCell=null;
     ensureTail(); done(); const t=next||prev; if(t) caretIn(t, !next); return;
+  }
+  if((op==='colBefore'||op==='colAfter'||op==='colDel') && table.isConnected && table.querySelector('[data-cw]')){
+    const n=Math.max(...tmap(table).map(r=>r?r.length:0)); if(n>0) writeColWidths(table,Array(n).fill(100/n));   /* đổi số cột: chia lại đều để cột mới/cột còn lại có đủ chỗ */
   }
   done(); if(focus){ selectCell(focus); refreshCtx(); }
 }
@@ -1251,6 +1287,7 @@ document.addEventListener('mousemove',e=>{
       const v=Math.round(Math.max(4,Math.min(60,rz.v0+(e.clientY-rz.y)/2)));
       Array.from(rz.cell.parentElement.children).forEach(x=>{ if(!x.querySelector('img')){ x.setAttribute('data-rh',v); x.style.padding=v+'px 10px'; } });
     }
+    fitVideos();
     return;
   }
   if(drag && e.buttons===1){
@@ -1303,6 +1340,8 @@ document.addEventListener('selectionchange',()=>{
   if(s.rangeCount && inEd(s.anchorNode)){ lastSel=saveSel(); refreshCtx(); }
 });
 ed.addEventListener('input',()=>{ normalizeRoot(); ensureTail(); syncPh(); later(); });
+addEventListener('resize',fitSoon); addEventListener('load',fitSoon); if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitSoon);
+$('#btnMob').addEventListener('click',()=>setTimeout(fitVideos,0));
 ed.addEventListener('beforeinput',e=>{
   if(e.inputType==='historyUndo'){ e.preventDefault(); undo(); }
   else if(e.inputType==='historyRedo'){ e.preventDefault(); redo(); }
@@ -1420,9 +1459,9 @@ const S = {
   hr:'margin: 36px 0; border: none; border-top: 1px solid #e0e0e0;',
   list:'line-height: 1.8;',
   wrap:'width: 100%; max-width: 100%; overflow-x: auto !important; -webkit-overflow-scrolling: touch; margin: 16px 0; display: block;',
-  table:'width: 100% !important; min-width: 480px; border-collapse: collapse !important; font-size: 15px; table-layout: auto !important;',
-  th:'border: 1px solid #ddd; padding: 10px; text-align: center; background: #d32f2f; color: #fff; font-weight: bold;',
-  td:'border: 1px solid #ddd; padding: 10px; vertical-align: middle;',
+  table:'width: 100% !important; min-width: 480px; border-collapse: collapse !important; font-size: 15px; table-layout: fixed !important;',
+  th:'border: 1px solid #ddd; padding: 10px; text-align: center; background: #d32f2f; color: #fff; font-weight: bold; overflow-wrap: anywhere; word-break: break-word;',
+  td:'border: 1px solid #ddd; padding: 10px; vertical-align: middle; overflow-wrap: anywhere; word-break: break-word;',
   tdImg:'border: 1px solid #ddd; padding: 3px; text-align: center; vertical-align: middle;',
   contact:'background: #f7f9fb; border-radius: 8px; padding: 20px 24px; margin: 20px 0;',
   cta:'display: inline-block; background: #d32f2f; color: #fff; padding: 12px 22px; border-radius: 6px; font-weight: bold; text-decoration: none;',
