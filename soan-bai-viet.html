@@ -194,6 +194,37 @@ body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;curso
 #btnNew{min-width:140px}
 @media(max-width:760px){.topacts{flex-wrap:wrap;margin-left:0}}
 .ctx .panel[data-panel="table"]>.hint{flex:1 1 0;min-width:0;width:auto!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ===== Thanh công cụ gọn: bỏ nhãn nhóm (đã có chú thích khi rê chuột), ô cỡ chữ kiểu Word ===== */
+#bar .gl{display:none}
+.row{gap:6px 10px;padding:8px 10px}
+.grp{padding-right:10px}
+#styleSel{min-width:150px}
+.btn.big{width:58px;height:54px}
+.fsbox{position:relative;display:inline-flex;align-items:stretch}
+#fsIn{width:44px;height:36px;border:1px solid var(--line);border-right:0;border-radius:7px 0 0 7px;padding:0 2px}
+.fsarrow{width:22px;height:36px;padding:0;border:1px solid var(--line);border-radius:0 7px 7px 0;background:var(--chrome);display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.fsarrow:hover{background:var(--hover)}
+.fsarrow svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#fsMenu{position:absolute;top:calc(100% + 4px);left:0;width:132px;max-height:270px;overflow:auto;background:var(--chrome);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.28);z-index:40;padding:4px}
+#fsMenu[hidden]{display:none}
+.fso{padding:6px 10px;border-radius:5px;cursor:pointer;font-size:14px;line-height:1.2}
+.fso:hover{background:var(--hover)}
+.fso.on{background:var(--on);color:var(--red);font-weight:600}
+.fso0{font-size:12.5px;color:var(--mute);border-bottom:1px solid var(--line);border-radius:5px 5px 0 0;margin-bottom:3px}
+/* ===== Nút lên đầu trang ===== */
+#toTop{position:fixed;right:18px;bottom:calc(22px + env(safe-area-inset-bottom,0px));width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3);z-index:50;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s,transform .2s,visibility .2s}
+#toTop.show{opacity:1;visibility:visible;transform:none}
+#toTop:hover{background:var(--red-d)}
+#toTop svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+body.ref-on #toTop{right:calc(var(--refW,46vw) + 18px)}
+@media(max-width:900px){body.ref-on #toTop{right:18px}}
+@media (prefers-reduced-motion:reduce){#toTop{transition:none}}
+#mImport{background:#2e7d32;border-color:#2e7d32;color:#fff;font-weight:600;padding:8px 18px;transition:background .18s,border-color .18s,box-shadow .18s,transform .12s}
+#mImport:hover{background:#388e3c;border-color:#388e3c;box-shadow:0 4px 12px rgba(46,125,50,.4);transform:translateY(-1px)}
+#mImport:active{background:#1b5e20;border-color:#1b5e20;box-shadow:none;transform:none}
+#mImport:focus-visible{outline:2px solid #66bb6a;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){#mImport{transition:none}#mImport:hover{transform:none}}
 </style>
 </head>
 <body>
@@ -223,6 +254,7 @@ body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;curso
         <button class="btn" type="button" data-act="block" data-tag="p" data-cls="ghi-chu">Ghi chú nhỏ</button>
       </div></div>
       <div class="grp"><span class="gl">Định dạng</span><div class="btns">
+        <div class="fsbox" id="fsBox"><input id="fsIn" type="text" inputmode="numeric" value="16" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="fsMenu" aria-label="Cỡ chữ" title="Cỡ chữ|Bôi đen chữ trước, rồi chọn cỡ trong danh sách hoặc gõ số và bấm Enter. Mũi tên lên/xuống để lướt danh sách"><button type="button" class="fsarrow" id="fsArrow" tabindex="-1" aria-label="Mở danh sách cỡ chữ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><div id="fsMenu" role="listbox" hidden></div></div>
         <button class="btn b" type="button" data-act="cmd" data-cmd="bold" title="Ctrl+B">B</button>
         <button class="btn i" type="button" data-act="cmd" data-cmd="italic" title="Ctrl+I">I</button>
         <button class="btn" type="button" data-act="cmd" data-cmd="underline">U</button>
@@ -230,13 +262,6 @@ body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;curso
         <button class="btn" type="button" data-act="pop" data-pop="link" title="Ctrl+K">Liên kết</button>
         <button class="btn" type="button" data-act="cmd" data-cmd="insertUnorderedList">Danh sách</button>
         <button class="btn" type="button" data-act="cmd" data-cmd="insertOrderedList">Danh sách số</button>
-      </div></div>
-      <div class="grp"><span class="gl">Cỡ chữ (bôi đen chữ trước)</span><div class="btns" style="align-items:center">
-        <button class="btn" type="button" data-act="fs" data-fsd="-1" title="Giảm cỡ chữ 1">A−</button>
-        <input id="fsIn" type="text" inputmode="numeric" list="fsList" value="16" autocomplete="off" title="Chọn hoặc gõ cỡ chữ rồi bấm Enter" aria-label="Cỡ chữ">
-        <datalist id="fsList"><option value="10"><option value="11"><option value="12"><option value="13"><option value="14"><option value="15"><option value="16"><option value="17"><option value="18"><option value="20"><option value="22"><option value="24"><option value="26"><option value="28"><option value="32"><option value="36"><option value="40"><option value="48"><option value="60"><option value="72"></datalist>
-        <button class="btn" type="button" data-act="fs" data-fsd="1" title="Tăng cỡ chữ 1">A+</button>
-        <button class="btn" type="button" data-act="fs" data-fs="0" title="Bỏ cỡ chữ đã chỉnh, về cỡ gốc của đoạn">Cỡ gốc</button>
       </div></div>
       <div class="grp"><span class="gl">Căn đoạn</span><div class="btns">
         <button class="btn" type="button" data-act="align" data-al="l">Trái</button>
@@ -279,6 +304,7 @@ body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;curso
       <div class="panel" data-panel="tablemin" hidden>
         <span class="lbl">Bảng</span>
         <button class="btn" type="button" id="tblOpen" data-tip="Chỉnh sửa bảng|Hiện các nút thêm/xóa dòng, cột, gộp ô, độ rộng cột, màu nền…">✎ Chỉnh sửa bảng ▾</button>
+        <button class="btn" type="button" data-t="selAll" title="Chọn tất cả các ô của bảng này (hoặc bấm Ctrl+A 2 lần trong ô). Sau đó dùng được Delete để xóa chữ, đổi màu nền, căn chữ…">▦ Chọn cả bảng</button>
         <span class="hint">Bấm để hiện các nút chỉnh sửa; không cần thì để ẩn.</span>
       </div>
 
@@ -286,6 +312,7 @@ body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;curso
         <span class="lbl">Đang sửa bảng</span>
         <span class="hint" title="Kéo chuột qua nhiều ô để chọn (Delete để xóa chữ). Kéo mép phải / mép dưới của ô để đổi độ rộng cột / chiều cao dòng.">Mẹo: kéo chuột qua nhiều ô để chọn (Delete để xóa chữ); kéo mép phải / mép dưới ô để đổi độ rộng cột / chiều cao dòng.</span>
         <button class="btn" type="button" id="tblClose" data-tip="Ẩn bảng chỉnh sửa|Thu gọn lại cho rộng chỗ soạn bài">Ẩn ▴</button>
+        <button class="btn" type="button" data-t="selAll" title="Chọn tất cả các ô của bảng này (hoặc bấm Ctrl+A 2 lần trong ô). Sau đó dùng được Delete để xóa chữ, đổi màu nền, căn chữ…">▦ Chọn cả bảng</button>
         <div class="colw" id="colW" role="group" aria-label="Độ rộng từng cột (%)"></div>
         <button class="btn" type="button" data-t="merge">Gộp ô đã chọn</button>
         <button class="btn" type="button" data-t="split">Tách ô</button>
@@ -372,17 +399,18 @@ body.ref-drag #refFrame{pointer-events:none}body.ref-drag{user-select:none;curso
     </ol>
     <div class="note" id="mCheck" hidden></div>
     <div class="note" id="mNote" hidden></div>
-    <textarea id="pre" spellcheck="false" aria-label="Mã HTML của bài" placeholder="Muốn mở lại bài cũ: dán mã HTML của bài vào khung này rồi bấm nút Định dạng."></textarea>
-    <p style="font-size:12.5px;color:var(--mute);margin:6px 0 0">Muốn sửa lại bài đã đăng: xóa mã trong khung, dán mã HTML của bài cũ vào, bấm <b>Định dạng</b> để hiện lại giao diện soạn bài. Bài đang soạn sẽ được thay (vẫn Hoàn tác được).</p>
+    <textarea id="pre" spellcheck="false" aria-label="Mã HTML của bài" placeholder="Muốn mở lại bài cũ: dán mã HTML của bài vào khung này rồi bấm nút Trực quan."></textarea>
+    <p style="font-size:12.5px;color:var(--mute);margin:6px 0 0">Muốn sửa lại bài đã đăng: xóa mã trong khung, dán mã HTML của bài cũ vào, bấm <b>Trực quan</b> để hiện lại giao diện soạn bài. Bài đang soạn sẽ được thay (vẫn Hoàn tác được).</p>
     <textarea id="full" class="offscreen" tabindex="-1" aria-hidden="true"></textarea>
     <div class="acts">
-      <button class="btn" id="mImport" type="button" title="Dựng lại giao diện soạn bài từ mã HTML trong khung">Định dạng</button>
+      <button class="btn" id="mImport" type="button" title="Dựng lại giao diện soạn bài từ mã HTML trong khung">Trực quan</button>
       <button class="btn" id="mClose" type="button">Đóng</button>
       <button class="btn primary" id="mCopy" type="button">Sao chép mã</button>
     </div>
   </div>
 </div>
 <div id="toast" role="status"></div>
+<button id="toTop" type="button" aria-label="Lên đầu trang" title="Lên đầu trang"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 
 <script>
 (() => {
@@ -507,7 +535,7 @@ function applyState(st){
 function undo(){ commit(); if(H.i>0){ H.i--; applyState(H.stack[H.i]); } }
 function redo(){ commit(); if(H.i<H.stack.length-1){ H.i++; applyState(H.stack[H.i]); } }
 function updateUndo(){ $('#btnUndo').disabled = H.i<=0; $('#btnRedo').disabled = H.i>=H.stack.length-1; }
-function syncPh(){ $$('[data-ph]',ed).forEach(x=>{ const empty=!x.textContent.replace(/[\u200b\u00a0]/g,'').trim() && !x.querySelector('img'); if(empty) x.setAttribute('data-e',''); else x.removeAttribute('data-e'); }); }
+function syncPh(){ $$('[data-ph]',ed).forEach(x=>{ const empty=!x.textContent.replace(/[\u200b\u00a0]/g,'').trim() && !x.querySelector('img,.vidblk'); if(empty) x.setAttribute('data-e',''); else x.removeAttribute('data-e'); }); }
 function mobTables(){ $$('table',ed).forEach(t=>{ if(ed.classList.contains('mobile')){ const n=Math.max(1,...Array.from(t.rows).map(r=>r.cells.length)); t.style.setProperty('--n',n); } else if(t.style.getPropertyValue('--n')){ t.style.removeProperty('--n'); if(!t.getAttribute('style')) t.removeAttribute('style'); } }); }
 function done(){ mobTables(); normalizeRoot(); ensureTail(); syncPh(); refreshCtx(); commit(); }
 
@@ -898,10 +926,40 @@ function applyColor(cmd,c){
 function fsBase(el){ const b=el.closest('p,h2,h3,h4,li,td,th')||ed; return Math.round(parseFloat(getComputedStyle(b).fontSize))||16; }
 function fsApply(){ const v=parseInt($('#fsIn').value,10); if(!isFinite(v)) return; applyFontSize(Math.max(8,Math.min(96,v)),0); }
 (function(){
-  const fi=$('#fsIn');
-  fi.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); fsApply(); } });
-  fi.addEventListener('input',e=>{ if(e.inputType===undefined || e.inputType==='insertReplacementText') fsApply(); });
+  const fi=$('#fsIn'), menu=$('#fsMenu'), arrow=$('#fsArrow');
+  const SIZES=[10,11,12,13,14,15,16,17,18,20,22,24,26,28,32,36,40,48,60,72];
+  menu.innerHTML='<div role="option" class="fso fso0" data-v="0">Cỡ gốc của đoạn</div>'+SIZES.map(v=>'<div role="option" class="fso" data-v="'+v+'">'+v+'</div>').join('');
+  let open=false;
+  function mark(){ const cur=parseInt(fi.value,10); let hit=null; menu.querySelectorAll('.fso').forEach(o=>{ const on=o.dataset.v!=='0' && +o.dataset.v===cur; o.classList.toggle('on',on); if(on) hit=o; }); return hit; }
+  function setOpen(v){ open=v; menu.hidden=!v; fi.setAttribute('aria-expanded',v?'true':'false'); if(v){ const h=mark(); if(h) menu.scrollTop=Math.max(0,h.offsetTop-menu.clientHeight/2+h.offsetHeight/2); else menu.scrollTop=0; } }
+  arrow.addEventListener('click',()=>setOpen(!open));
+  menu.addEventListener('click',e=>{
+    const o=e.target.closest('.fso'); if(!o) return;
+    const v=+o.dataset.v; setOpen(false);
+    if(v===0) applyFontSize(0,0); else { fi.value=v; fsApply(); }
+  });
+  fi.addEventListener('keydown',e=>{
+    if(e.key==='Enter'){ e.preventDefault(); setOpen(false); fsApply(); }
+    else if(e.key==='Escape'){ setOpen(false); }
+    else if(e.key==='ArrowUp'||e.key==='ArrowDown'){
+      e.preventDefault();
+      const cur=parseInt(fi.value,10)||16, up=e.key==='ArrowUp';
+      const nx = up ? SIZES.find(v=>v>cur) : [...SIZES].reverse().find(v=>v<cur);
+      if(nx!==undefined) fi.value=nx;
+      setOpen(true); mark();
+    }
+  });
+  fi.addEventListener('input',()=>{ fi.value=fi.value.replace(/[^0-9]/g,'').slice(0,2); if(open) mark(); });
   fi.addEventListener('focus',()=>fi.select());
+  document.addEventListener('mousedown',e=>{ if(open && !e.target.closest('#fsBox')) setOpen(false); });
+})();
+/* ---- Nút lên đầu trang ---- */
+(function(){
+  const b=$('#toTop'); let tk=false;
+  const upd=()=>b.classList.toggle('show',(window.scrollY||document.documentElement.scrollTop)>320);
+  addEventListener('scroll',()=>{ if(tk) return; tk=true; requestAnimationFrame(()=>{ tk=false; upd(); }); },{passive:true});
+  b.addEventListener('click',()=>{ const rm=matchMedia('(prefers-reduced-motion:reduce)').matches; window.scrollTo({top:0,behavior:rm?'auto':'smooth'}); b.blur(); });
+  upd();
 })();
 function applyFontSize(px, delta){
   ensureFocus();
@@ -1103,6 +1161,7 @@ ctx.addEventListener('click',e=>{
     const t=b.dataset.t;
     if(t==='imgDel'||t==='objDel') removeObj();
     else if(t==='contactDel'){ const c=curEl() && curEl().closest('.lien-he'); if(c){ const nx=c.nextElementSibling||c.previousElementSibling; c.remove(); ensureTail(); done(); if(nx) caretIn(nx,false); } }
+    else if(t==='selAll') selectWholeTable();
     else{ tableOp(t); renderColW(true); }
   } else if(b.dataset.padall && curObj && curObj.tagName==='IMG'){
     const t=curObj.closest('table'); if(!t) return;
@@ -1160,6 +1219,13 @@ function clearSel(){ selCells.forEach(x=>x.removeAttribute('data-sel')); selCell
 function selectRect(a,b){
   const g=tmap(a.closest('table')), R=rectOf([a,b],g), seen=new Set(); clearSel();
   for(let r=R.r1;r<=R.r2;r++) for(let c=R.c1;c<=R.c2;c++){ const x=g[r][c]; if(x && !seen.has(x)){ seen.add(x); x.setAttribute('data-sel',''); selCells.push(x); } }
+}
+function selectWholeTable(){
+  const i=cellInfo(); if(!i) return;
+  const g=tmap(i.table), seen=new Set(); clearSel();
+  g.forEach(row=>{ if(row) row.forEach(x=>{ if(x && !seen.has(x)){ seen.add(x); x.setAttribute('data-sel',''); selCells.push(x); } }); });
+  const first=i.table.querySelector('th,td'); if(first) caretIn(first,false);
+  refreshCtx(); toast('Đã chọn cả bảng ('+seen.size+' ô). Delete = xóa chữ trong bảng; bấm ra ngoài để bỏ chọn.');
 }
 const nearR=(r,e)=>r.right-e.clientX<6 && r.right-e.clientX>=-2, nearB=(r,e)=>r.bottom-e.clientY<5 && r.bottom-e.clientY>=-2;
 ed.addEventListener('mousedown',e=>{
@@ -1248,6 +1314,19 @@ ed.addEventListener('click',e=>{
   else if(t.closest('a')){ e.preventDefault(); }
 });
 ed.addEventListener('keydown',e=>{
+  if((e.key==='Delete'||e.key==='Backspace') && !e.ctrlKey && !e.metaKey){ const o=selectedObj(); if(o){ e.preventDefault(); curObj=o; removeObj(); return; } }
+  if((e.ctrlKey||e.metaKey) && !e.shiftKey && !e.altKey && e.key.toLowerCase()==='a'){
+    const el=curEl(), c=el && el.closest('td,th');
+    if(c && inEd(c)){
+      const all=new Set(); tmap(c.closest('table')).forEach(r=>{ if(r) r.forEach(x=>{ if(x) all.add(x); }); });
+      if(all.size>1 && selCells.length>=all.size){ clearSel(); return; }   /* lần 3: để trình duyệt chọn cả bài */
+      const s=getSelection(), txt=c.textContent.replace(/\s/g,'');
+      const cellFull = !!txt && !s.isCollapsed && s.toString().replace(/\s/g,'')===txt;
+      e.preventDefault();
+      if(cellFull || !txt) selectWholeTable(); else { const r=document.createRange(); r.selectNodeContents(c); s.removeAllRanges(); s.addRange(r); }
+      return;
+    }
+  }
   if(e.key==='Tab' && !e.ctrlKey && !e.altKey){ const e2=curEl(); if(e2 && e2.closest('td,th')){ e.preventDefault(); tabMove(e.shiftKey?-1:1); return; } }
   if(e.key==='Enter' && !e.shiftKey){
     const s=getSelection(); if(!s.rangeCount) return;
